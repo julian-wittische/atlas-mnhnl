@@ -1,0 +1,32 @@
+project:
+  type: book
+
+book:
+  title : "x of Lux"
+  chapters:
+    - index.qmd
+    - acknowledgements.qmd
+    - introduction.qmd
+    - biophysical.qmd
+    - history.qmd
+    - ecology.qmd
+    - methodology.qmd
+    - glossary.qmd
+    - species.qmd
+    - statistics.qmd
+    - conservation.qmd
+    - references.qmd
+
+format:
+  html:
+    theme: cosmo
+    number-sections: true
+    toc: true
+
+  pdf:
+    documentclass: book
+
+execute:
+  echo: false
+  warning: false
+  message: false

@@ -1,0 +1,112 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "x of Lux",
+    "section": "",
+    "text": "Syrphidae of Luxembourg\n\nJulian Wittische\nAlain Frantz\nAlexander Weigand\n\nNational Museum of Natural History, Luxembourg · 2026",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Syrphidae of Luxembourg</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  Introduction",
+    "section": "",
+    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. (USA) 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
+  },
+  {
+    "objectID": "summary.html",
+    "href": "summary.html",
+    "title": "2  Summary",
+    "section": "",
+    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Summary</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. (USA) 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "crumbs": [
+      "References"
+    ]
+  },
+  {
+    "objectID": "biophysical.html",
+    "href": "biophysical.html",
+    "title": "4  Biophysical overview Luxembourg",
+    "section": "",
+    "text": "Geology",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+    ]
+  },
+  {
+    "objectID": "biophysical.html#altitude",
+    "href": "biophysical.html#altitude",
+    "title": "4  Biophysical overview Luxembourg",
+    "section": "Altitude",
+    "text": "Altitude",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+    ]
+  },
+  {
+    "objectID": "biophysical.html#soil",
+    "href": "biophysical.html#soil",
+    "title": "4  Biophysical overview Luxembourg",
+    "section": "Soil",
+    "text": "Soil",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+    ]
+  },
+  {
+    "objectID": "biophysical.html#land-cover",
+    "href": "biophysical.html#land-cover",
+    "title": "4  Biophysical overview Luxembourg",
+    "section": "Land Cover",
+    "text": "Land Cover",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+    ]
+  },
+  {
+    "objectID": "biophysical.html#climate",
+    "href": "biophysical.html#climate",
+    "title": "4  Biophysical overview Luxembourg",
+    "section": "Climate",
+    "text": "Climate",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+    ]
+  },
+  {
+    "objectID": "methodology.html",
+    "href": "methodology.html",
+    "title": "7  Methodology",
+    "section": "",
+    "text": "7.1 Data sources",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Methodology</span>"
+    ]
+  },
+  {
+    "objectID": "methodology.html#data-sources",
+    "href": "methodology.html#data-sources",
+    "title": "7  Methodology",
+    "section": "",
+    "text": "7.1.1 The importance of citizen science",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Methodology</span>"
+    ]
+  }
+]

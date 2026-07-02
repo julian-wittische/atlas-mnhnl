@@ -1,0 +1,19 @@
+---
+title: ""
+---
+
+<div style="text-align:center; margin-top:25vh;">
+
+# Syrphidae of Luxembourg {.unnumbered}
+
+<img src="images/coverpage.jpg" style="width:40%; border-radius:10px; margin:20px 0;">
+
+Julian Wittische  
+Alain Frantz  
+Alexander Weigand  
+
+<br>
+
+National Museum of Natural History, Luxembourg · 2026
+
+</div>
