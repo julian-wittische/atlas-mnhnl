@@ -2,11 +2,11 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "x of Lux",
+    "title": "Atlas of Syrphidae in Luxembourg",
     "section": "",
-    "text": "Syrphidae of Luxembourg\n\nJulian Wittische\nAlain Frantz\nAlexander Weigand\n\nNational Museum of Natural History, Luxembourg · 2026",
+    "text": "Acknowledgements",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Syrphidae of Luxembourg</span>"
+      "Acknowledgements"
     ]
   },
   {
@@ -42,51 +42,51 @@
   {
     "objectID": "biophysical.html",
     "href": "biophysical.html",
-    "title": "4  Biophysical overview Luxembourg",
+    "title": "2  Biophysical overview Luxembourg",
     "section": "",
     "text": "Geology",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
     ]
   },
   {
     "objectID": "biophysical.html#altitude",
     "href": "biophysical.html#altitude",
-    "title": "4  Biophysical overview Luxembourg",
+    "title": "2  Biophysical overview Luxembourg",
     "section": "Altitude",
     "text": "Altitude",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
     ]
   },
   {
     "objectID": "biophysical.html#soil",
     "href": "biophysical.html#soil",
-    "title": "4  Biophysical overview Luxembourg",
+    "title": "2  Biophysical overview Luxembourg",
     "section": "Soil",
     "text": "Soil",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
     ]
   },
   {
     "objectID": "biophysical.html#land-cover",
     "href": "biophysical.html#land-cover",
-    "title": "4  Biophysical overview Luxembourg",
+    "title": "2  Biophysical overview Luxembourg",
     "section": "Land Cover",
     "text": "Land Cover",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
     ]
   },
   {
     "objectID": "biophysical.html#climate",
     "href": "biophysical.html#climate",
-    "title": "4  Biophysical overview Luxembourg",
+    "title": "2  Biophysical overview Luxembourg",
     "section": "Climate",
     "text": "Climate",
     "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical overview Luxembourg</span>"
     ]
   },
   {
@@ -107,6 +107,37 @@
     "text": "7.1.1 The importance of citizen science",
     "crumbs": [
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>Methodology</span>"
+    ]
+  },
+  {
+    "objectID": "history.html",
+    "href": "history.html",
+    "title": "5  History of Syrphidae recording in Luxembourg",
+    "section": "",
+    "text": "6 title",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>`title`</span>"
+    ]
+  },
+  {
+    "objectID": "ecology.html",
+    "href": "ecology.html",
+    "title": "6  Ecology of Luxembourg - Syrphidae",
+    "section": "",
+    "text": "# Ecology of Luxembourg Syrphidae",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Ecology of Luxembourg - Syrphidae</span>"
+    ]
+  },
+  {
+    "objectID": "datasources.html",
+    "href": "datasources.html",
+    "title": "7  Data sources",
+    "section": "",
+    "text": "7.0.1 The importance of citizen science",
+    "crumbs": [
+      "Methodology",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Data sources</span>"
     ]
   }
 ]

@@ -1,14 +1,14 @@
 project:
   type: book
+  pre-render: R/pre-render.R
 
 book:
-  title : "x of Lux"
+  title: "Atlas of Syrphidae in Luxembourg"
   chapters:
     - index.qmd
-    - acknowledgements.qmd
     - introduction.qmd
     - biophysical.qmd
-    - history.qmd
+    - history.qmd    
     - ecology.qmd
     - methodology.qmd
     - glossary.qmd
