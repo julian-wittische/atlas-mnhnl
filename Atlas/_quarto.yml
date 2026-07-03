@@ -3,7 +3,7 @@ project:
   pre-render: R/pre-render.R
 
 book:
-  title: "Atlas of Syrphidae in Luxembourg"
+  title: "Atlas of Hoverflies in Luxembourg"
   chapters:
     - index.qmd
     - introduction.qmd

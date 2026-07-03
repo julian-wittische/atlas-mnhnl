@@ -1,4 +1,4 @@
-taxon <- "Syrphidae"
+taxon <- "Hoverflies"
 
 # book title
 titre_book <- paste0("Atlas of " , taxon, " in Luxembourg")
