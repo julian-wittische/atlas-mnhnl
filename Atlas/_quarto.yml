@@ -19,9 +19,10 @@ book:
 
 format:
   html:
-    theme: cosmo
     number-sections: true
     toc: true
+    theme: cosmo 
+
 
   pdf:
     documentclass: book
@@ -30,3 +31,4 @@ execute:
   echo: false
   warning: false
   message: false
+  freeze: auto

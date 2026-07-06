@@ -2,7 +2,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Atlas of Syrphidae in Luxembourg",
+    "title": "Atlas of Hoverflies in Luxembourg",
     "section": "",
     "text": "Acknowledgements",
     "crumbs": [
@@ -10,73 +10,43 @@
     ]
   },
   {
-    "objectID": "intro.html",
-    "href": "intro.html",
-    "title": "1  Introduction",
-    "section": "",
-    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. (USA) 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
-    ]
-  },
-  {
-    "objectID": "summary.html",
-    "href": "summary.html",
-    "title": "2  Summary",
-    "section": "",
-    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
-    "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Summary</span>"
-    ]
-  },
-  {
-    "objectID": "references.html",
-    "href": "references.html",
-    "title": "References",
-    "section": "",
-    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. (USA) 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
-    "crumbs": [
-      "References"
-    ]
-  },
-  {
     "objectID": "biophysical.html",
     "href": "biophysical.html",
-    "title": "2  Biophysical overview of Luxembourg",
+    "title": "2  Biophysical environment of Luxembourg",
     "section": "",
     "text": "Geology",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical overview of Luxembourg</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical environment of Luxembourg</span>"
     ]
   },
   {
     "objectID": "biophysical.html#altitude",
     "href": "biophysical.html#altitude",
-    "title": "2  Biophysical overview of Luxembourg",
+    "title": "2  Biophysical environment of Luxembourg",
     "section": "Altitude",
     "text": "Altitude",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical overview of Luxembourg</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical environment of Luxembourg</span>"
     ]
   },
   {
     "objectID": "biophysical.html#soil",
     "href": "biophysical.html#soil",
-    "title": "2  Biophysical overview of Luxembourg",
+    "title": "2  Biophysical environment of Luxembourg",
     "section": "Soil",
     "text": "Soil",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical overview of Luxembourg</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical environment of Luxembourg</span>"
     ]
   },
   {
     "objectID": "biophysical.html#land-cover",
     "href": "biophysical.html#land-cover",
-    "title": "2  Biophysical overview of Luxembourg",
+    "title": "2  Biophysical environment of Luxembourg",
     "section": "Land Cover",
     "text": "Land Cover",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical overview of Luxembourg</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical environment of Luxembourg</span>"
     ]
   },
   {
@@ -92,52 +62,71 @@
   {
     "objectID": "methodology.html",
     "href": "methodology.html",
-    "title": "7  Methodology",
+    "title": "5  Methodology",
     "section": "",
-    "text": "7.1 Data sources",
+    "text": "5.1 Data sources",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Methodology</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Methodology</span>"
     ]
   },
   {
     "objectID": "methodology.html#data-sources",
     "href": "methodology.html#data-sources",
-    "title": "7  Methodology",
+    "title": "5  Methodology",
     "section": "",
-    "text": "7.1.1 The importance of citizen science",
+    "text": "5.1.1 The importance of citizen science",
     "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Methodology</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Methodology</span>"
     ]
   },
   {
-    "objectID": "history.html",
-    "href": "history.html",
-    "title": "5  History of Syrphidae recording in Luxembourg",
+    "objectID": "introduction.html",
+    "href": "introduction.html",
+    "title": "1  General introduction",
     "section": "",
-    "text": "6 title",
+    "text": "Luxembourg\nBiodiversity citizen science, specifically the huge amount of photo-based contributions to data collection, has greatly accelerated our ability to document diversity and distribution of many taxa, and has helped to achieve thousands of research projects [@REF1].\nLuxembourg is the top country for citizen science activity on iNaturalist after correcting for country size and population [@REF2]. The MNHNL hosts a national XXX antennae, and pushes the use of citizen science platforms such as Observation.org and Naturalist.LU The MNHNL is also active in promoting events making heavy use of such platforms to both experienced naturalists and the public such as Biodiversity Day, and the City Nature Challenge. Such events have been shown to lead to useful and massive contributions [@REF3], but it is also the case in Luxembourg where both observations and identifications are stimulated. For example, several first national records were made during the City Nature Challenge: XXX.",
     "crumbs": [
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>`title`</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>General introduction</span>"
     ]
   },
   {
-    "objectID": "ecology.html",
-    "href": "ecology.html",
-    "title": "6  Ecology of Luxembourg - Syrphidae",
-    "section": "",
-    "text": "# Ecology of Luxembourg Syrphidae",
+    "objectID": "introduction.html#hoverflies-in-luxembourg",
+    "href": "introduction.html#hoverflies-in-luxembourg",
+    "title": "1  General introduction",
+    "section": "Hoverflies in Luxembourg",
+    "text": "Hoverflies in Luxembourg\nIn Luxembourg, biodiversity citizen science has greatly contributed to our effort to document the distribution of hoverflies. Despite being only % of all research-grade observations (georeferenced, dated, photographic proof, community agreement on the identification), and being only XXX% of all records available to us, biodiversity citizen science has led to first national records, that is considering every other possible source. Spilomyia manicata (pageXXX ; https://www.inaturalist.lu/observations/233984507) was first observed by Sam Schaack in August 2024 in the south of the country, and identified by himself, Hinatea Ariey, a user named “sirhck”, and Juliette Pfeiffer.\nFigure XXX",
     "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Ecology of Luxembourg - Syrphidae</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>General introduction</span>"
     ]
   },
   {
-    "objectID": "datasources.html",
-    "href": "datasources.html",
-    "title": "7  Data sources",
-    "section": "",
-    "text": "7.0.1 The importance of citizen science",
+    "objectID": "introduction.html#completeness-and-recognition",
+    "href": "introduction.html#completeness-and-recognition",
+    "title": "1  General introduction",
+    "section": "Completeness and Recognition",
+    "text": "Completeness and Recognition",
     "crumbs": [
-      "Methodology",
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Data sources</span>"
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>General introduction</span>"
+    ]
+  },
+  {
+    "objectID": "introduction.html#limits-and-opportunities",
+    "href": "introduction.html#limits-and-opportunities",
+    "title": "1  General introduction",
+    "section": "Limits and Opportunities",
+    "text": "Limits and Opportunities",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>General introduction</span>"
+    ]
+  },
+  {
+    "objectID": "biophysical.html#climate-change",
+    "href": "biophysical.html#climate-change",
+    "title": "2  Biophysical environment of Luxembourg",
+    "section": "Climate change",
+    "text": "Climate change",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Biophysical environment of Luxembourg</span>"
     ]
   }
 ]

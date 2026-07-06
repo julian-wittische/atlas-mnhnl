@@ -1,4 +1,4 @@
-# Biophysical overview of Luxembourg
+# Biophysical environment of Luxembourg
 
 
 ## Geology {.unnumbered}
@@ -9,5 +9,5 @@
 
 ## Land Cover {.unnumbered}
 
-## Climate {.unnumbered}
+## Climate change {.unnumbered}
 
