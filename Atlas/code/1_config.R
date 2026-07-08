@@ -1,0 +1,12 @@
+DATAPATH <- "C:/Users/CAG569/Desktop/Quarto/atlas-mnhnl/Atlas/data/"
+
+library(readxl)
+library(sf)
+library(tidyverse)
+library(dplyr)
+library(raster)
+library(geobounds)        
+library(crosstalk)
+library(mapview)
+library(leaflet)
+library(htmltools)
