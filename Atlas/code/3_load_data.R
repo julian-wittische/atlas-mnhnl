@@ -1,5 +1,5 @@
 # load libraries and datapath before this script
-source("Atlas/code/1_config.R")
+source("code/1_config.R")
 
 #import database from different tab of the doc
 BC1 <- read_xlsx(paste0(DATAPATH, "ID_Bycatch sorting_20260611.xlsx"),sheet=3)
@@ -64,7 +64,7 @@ DB <- DB[complete.cases(DB$Long),]
 DB <- DB[complete.cases(DB$Lat),]
 DB <- DB[complete.cases(DB$Year),]
 
-source("Atlas/code/2_load_borders.R")
+source("code/2_load_borders.R")
 
 ###### Make DB spatial ----
 DB_sf <- st_as_sf(DB,coords=c("Long", "Lat"), crs = st_crs(4326))

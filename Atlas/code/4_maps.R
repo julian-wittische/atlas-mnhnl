@@ -1,3 +1,4 @@
+
 blockCheckboxSP<- function(id, value, label) {
   tags$div(class = "checkbox",
            tags$label(
@@ -17,7 +18,7 @@ filter_checkboxSP <- function (id, label, sharedData, group, allLevels = FALSE, 
   values <- options$items$value
   options$items <- NULL
   makeCheckbox <- if (inline) 
-    inlineCheckbox
+    inlineCheckboxSP
   else blockCheckboxSP
   htmltools::browsable(htmltools::attachDependencies(tags$div(id = id, 
                                                               class = "form-group crosstalk-input-checkboxgroup crosstalk-input", 
@@ -30,7 +31,18 @@ filter_checkboxSP <- function (id, label, sharedData, group, allLevels = FALSE, 
                                                                                                                                                                                                              pretty = TRUE))), c(list(jqueryLib()), crosstalkLibs())))
 }
 
-
+inlineCheckboxSP <- function(id, value, label) {
+  tags$label(
+    class = "checkbox-inline",
+    tags$input(
+      type = "checkbox",
+      name = id,
+      value = value,
+      checked = "checked"
+    ),
+    tags$span(label)
+  )
+}
 
 
 
@@ -92,10 +104,10 @@ source_filter <- filter_checkboxSP(
   label = "Data sources",
   sharedData = DB_shared,
   group = ~Source,
-  inline = FALSE,
+  inline = TRUE,
   allLevels = FALSE,
   columns = 1
 )
+carte1 <- bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
 
 
-bscols(widths = c(12, 12, 12), slider, source_filter, m@map)

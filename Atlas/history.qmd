@@ -1,3 +1,18 @@
 ---
 title: "History of Hoverflies recording in Luxembourg"
 ---
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+
+
+source("code/1_config.R")
+source("code/2_load_borders.R")
+source("code/3_load_data.R")
+source("code/4_maps.R")
+
+carte1
+```
