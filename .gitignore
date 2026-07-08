@@ -34,5 +34,5 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 atlas-mnhnl.Rproj
-_book/
-_freeze/
+Atlas/_book/
+Atlas/_freeze/
