@@ -1,6 +1,6 @@
 project:
   type: book
-  pre-render: R/pre-render.R
+  pre-render: code/pre-render.R
 
 book:
   title: "Atlas of Hoverflies in Luxembourg"
