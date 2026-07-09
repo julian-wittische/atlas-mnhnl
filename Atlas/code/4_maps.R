@@ -1,5 +1,6 @@
 ###### Function ----
 
+
 blockCheckboxSP<- function(id, value, label) {
   tags$div(class = "checkbox",
            tags$label(

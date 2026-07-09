@@ -22,7 +22,7 @@ format:
     number-sections: true
     toc: true
     theme: cosmo 
-    css : style.css
+    css : styles.css
 
 
   pdf:
