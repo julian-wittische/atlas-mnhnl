@@ -1,3 +1,5 @@
+###### Function ----
+
 blockCheckboxSP<- function(id, value, label) {
   tags$div(class = "checkbox",
            tags$label(
@@ -17,7 +19,7 @@ filter_checkboxSP <- function (id, label, sharedData, group, allLevels = FALSE, 
   values <- options$items$value
   options$items <- NULL
   makeCheckbox <- if (inline) 
-    inlineCheckbox
+    inlineCheckboxSP
   else blockCheckboxSP
   htmltools::browsable(htmltools::attachDependencies(tags$div(id = id, 
                                                               class = "form-group crosstalk-input-checkboxgroup crosstalk-input", 
@@ -30,11 +32,26 @@ filter_checkboxSP <- function (id, label, sharedData, group, allLevels = FALSE, 
                                                                                                                                                                                                              pretty = TRUE))), c(list(jqueryLib()), crosstalkLibs())))
 }
 
-
+inlineCheckboxSP <- function(id, value, label) {
+  tags$label(
+    class = "checkbox-inline",
+    tags$input(
+      type = "checkbox",
+      name = id,
+      value = value,
+      checked = "checked"
+    ),
+    tags$span(label)
+  )
+}
 
 
 
 attach(loadNamespace("crosstalk"), name = "crosstalk_all")
+
+
+
+###### Base map ######
 
 mapviewOptions(fgb = FALSE)
 
@@ -58,7 +75,6 @@ m <- mapView(rtp,
 
 
 DB_sf_wgs84 <- st_transform(DB_sf, crs = 4326)
-
 DB_sf_wgs84$YearPost20XX <- DB_sf_wgs84$Year
 DB_sf_wgs84$YearPost20XX[DB_sf_wgs84$YearPost20XX<2016] <- 2016
 
@@ -74,6 +90,7 @@ m@map <- m@map %>%
     fillOpacity = 0.7
   )
 
+# Adding filters
 
 slider <- filter_slider(
   id = "year_filter",
@@ -92,10 +109,38 @@ source_filter <- filter_checkboxSP(
   label = "Data sources",
   sharedData = DB_shared,
   group = ~Source,
-  inline = FALSE,
+  inline = TRUE,
   allLevels = FALSE,
   columns = 1
 )
+carte1 <- bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
 
 
-bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
+###### Geology map ----
+
+
+m2 <-  mapview(uniteGeo, zcol = "CODESTRATUNIT", col.regions = colorRampPalette(RColorBrewer::brewer.pal(12, "Set3"))(n_niveaux), legend = FALSE, homebutton = FALSE,  popup = FALSE) +
+      #mapview(contours, color = "#F5F5DC",lwd = 1,  legend = FALSE,  homebutton = FALSE) +
+      mapview( failles, color = "red",  lwd = 1,legend = FALSE,homebutton = FALSE ) 
+  
+
+m2@map <- m2@map %>%
+  addLabelOnlyMarkers(
+    data = symbole,
+    label = ~ABREVSTRAT,
+    group = "Labels",
+    labelOptions = labelOptions(
+      noHide = TRUE,
+      direction = "center",
+      textOnly = TRUE,
+      style = list("font-size" = "9px", "font-weight" = "bold", "color" = "black")
+    )
+  ) %>%
+  groupOptions("Labels", zoomLevels = 14:52
+  ) 
+
+m2
+
+
+
+

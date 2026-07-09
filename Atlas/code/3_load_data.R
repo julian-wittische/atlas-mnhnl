@@ -1,5 +1,5 @@
 # load libraries and datapath before this script
-source("Atlas/code/1_config.R")
+source("code/1_config.R")
 
 #import database from different tab of the doc
 BC1 <- read_xlsx(paste0(DATAPATH, "ID_Bycatch sorting_20260611.xlsx"),sheet=3)
@@ -64,7 +64,7 @@ DB <- DB[complete.cases(DB$Long),]
 DB <- DB[complete.cases(DB$Lat),]
 DB <- DB[complete.cases(DB$Year),]
 
-source("Atlas/code/2_load_borders.R")
+source("code/2_load_borders.R")
 
 ###### Make DB spatial ----
 DB_sf <- st_as_sf(DB,coords=c("Long", "Lat"), crs = st_crs(4326))
@@ -74,4 +74,18 @@ DB_sf <- DB_sf %>%
   st_transform("EPSG:2169")
 
 rm(BC1, BC2, BC3, BC6, BC7, HN1, HN2, HN3, HN4, HN5, BC, HN, MD)
+
+
+###### Fusion geology ---
+
+symbole  <- st_read("OAPIF:https://features.geoportail.lu/", layer = "2167/1")
+uniteGeo <- st_read("OAPIF:https://features.geoportail.lu/", layer = "2167/6")
+failles  <- st_read("OAPIF:https://features.geoportail.lu/", layer = "2167/2")
+contours <- st_read("OAPIF:https://features.geoportail.lu/", layer = "2167/3")
+
+
+uniteGeo <- st_transform(uniteGeo, crs = st_crs(lux_borders))
+contours <- st_transform(contours, crs = st_crs(lux_borders))
+failles  <- st_transform(failles,  crs = st_crs(lux_borders))
+symbole  <- st_transform(symbole,  crs = st_crs(lux_borders))
 
