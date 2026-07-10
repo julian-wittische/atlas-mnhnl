@@ -8,7 +8,8 @@
 
 ###### Base map ----
 
-mapviewOptions(fgb = FALSE)  # désactive le format fgb
+# Important as fgb is not recognised by pandoc
+mapviewOptions(fgb = FALSE)  
 
 ############ Carte choix (OSM / satellite)
 base_map <- leaflet() %>%
