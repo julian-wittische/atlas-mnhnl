@@ -1,87 +1,49 @@
-###### Function ----
+######################## PROJECT: Atlas Template
+# Author: Selene Perez
+# Request: Julian Wittische
+# Start: Summer 2026
+# Script objective : Interactive map with filters (year/sources)
+################################################################################
 
 
-blockCheckboxSP<- function(id, value, label) {
-  tags$div(class = "checkbox",
-           tags$label(
-             tags$input(type = "checkbox", name = id, value = value, checked = "checked" ),
-             tags$span(label)
-           )
-  )
-}
+###### Base map ----
 
+mapviewOptions(fgb = FALSE)  # désactive le format fgb
 
-
-filter_checkboxSP <- function (id, label, sharedData, group, allLevels = FALSE, inline = FALSE, 
-                               columns = 1) 
-{
-  options <- makeGroupOptions(sharedData, group, allLevels)
-  labels <- options$items$label
-  values <- options$items$value
-  options$items <- NULL
-  makeCheckbox <- if (inline) 
-    inlineCheckboxSP
-  else blockCheckboxSP
-  htmltools::browsable(htmltools::attachDependencies(tags$div(id = id, 
-                                                              class = "form-group crosstalk-input-checkboxgroup crosstalk-input", 
-                                                              tags$label(class = "control-label", `for` = id, label), 
-                                                              tags$div(class = "crosstalk-options-group", columnize(columns, 
-                                                                                                                    mapply(labels, values, FUN = function(label, value) {
-                                                                                                                      makeCheckbox(id, value, label)
-                                                                                                                    }, SIMPLIFY = FALSE, USE.NAMES = FALSE))), tags$script(type = "application/json", 
-                                                                                                                                                                           `data-for` = id, jsonlite::toJSON(options, dataframe = "columns", 
-                                                                                                                                                                                                             pretty = TRUE))), c(list(jqueryLib()), crosstalkLibs())))
-}
-
-inlineCheckboxSP <- function(id, value, label) {
-  tags$label(
-    class = "checkbox-inline",
-    tags$input(
-      type = "checkbox",
-      name = id,
-      value = value,
-      checked = "checked"
-    ),
-    tags$span(label)
-  )
-}
-
-
-
-attach(loadNamespace("crosstalk"), name = "crosstalk_all")
-
-
-
-###### Base map ######
-
-mapviewOptions(fgb = FALSE)
-
+############ Carte choix (OSM / satellite)
 base_map <- leaflet() %>%
   addProviderTiles("OpenStreetMap", group = "OSM") %>%
   addProviderTiles("Esri.WorldImagery", group = "Satellite") %>%
   addLayersControl(baseGroups = c("OSM", "Satellite"),
                    options = layersControlOptions(collapsed = FALSE))
 
+############ Superposition de la grille sur la carte
+
 m <- mapView(rtp,
-             method = "ngb", 
+             method = "ngb",
              na.color = rgb(0, 0, 255, max = 255, alpha = 0),
              query.type = "click",
              trim = TRUE,
              legend = FALSE,
-             map = base_map,      
+             map = base_map,
              alpha.regions = 0,
              alpha = 0.3,
              lwd = 2,
              color = "red")
 
+###### Données d'observation ----
 
+############ Reprojection des observations en WGS84 (requis pour leaflet)
 DB_sf_wgs84 <- st_transform(DB_sf, crs = 4326)
-DB_sf_wgs84$YearPost20XX <- DB_sf_wgs84$Year
-DB_sf_wgs84$YearPost20XX[DB_sf_wgs84$YearPost20XX<2016] <- 2016
 
+############ Regroupement des années antérieures à 2016 (pour un curseur temporel plus lisible)
+DB_sf_wgs84$YearPost20XX <- DB_sf_wgs84$Year
+DB_sf_wgs84$YearPost20XX[DB_sf_wgs84$YearPost20XX < 2016] <- 2016
+
+############ Objet partagé crosstalk (lie la carte, le slider et le filtre checkbox entre eux)
 DB_shared <- SharedData$new(DB_sf_wgs84, group = "lux_group")
 
-
+############ Ajout des points d'observation sur la carte (fond + grille) créée plus haut
 m@map <- m@map %>%
   addCircleMarkers(
     data = DB_shared,
@@ -91,8 +53,9 @@ m@map <- m@map %>%
     fillOpacity = 0.7
   )
 
-# Adding filters
+###### Adding filters ----
 
+############ Curseur temporel cumulatif par année
 slider <- filter_slider(
   id = "year_filter",
   label = "Year (cumulated observations)",
@@ -101,10 +64,11 @@ slider <- filter_slider(
   step = 1,
   animate = TRUE,
   sep = " ",
-  ticks=TRUE,
-  width="10cm"
+  ticks = TRUE,
+  width = "10cm"
 )
 
+############ Filtre par source de données (cases cochées par défaut, cf. filter_checkboxSP dans functions.R)
 source_filter <- filter_checkboxSP(
   id = "source_filter",
   label = "Data sources",
@@ -114,8 +78,11 @@ source_filter <- filter_checkboxSP(
   allLevels = FALSE,
   columns = 1
 )
-carte1 <- bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
 
+###### Assemblage final ----
+
+############ Carte + slider + filtre empilés verticalement (largeur pleine sur 12 colonnes)
+carte1 <- bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
 
 ###### Geology map ----
 
@@ -282,6 +249,7 @@ rtp_centroid <- st_centroid(rtp_richness[,c("layer","Richness")])
 
 m4 <- mapView(
   rtp,
+  layer.name = "Grid",
   method = "ngb", 
   na.color = rgb(0, 0, 255, max = 255, alpha = 0),
   query.type = "click",
@@ -319,7 +287,7 @@ m4@map <- m4@map %>%
       noHide = TRUE,
       direction = "center",
       textOnly = TRUE,
-      style = list("font-size" = "10px", "font-weight" = "bold", "color" = "black")
+      style = list("font-size" = "18px", "font-weight" = "bold", "color" = "black")
     ))
  
 m4
