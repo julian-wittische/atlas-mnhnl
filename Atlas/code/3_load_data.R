@@ -52,6 +52,7 @@ colnames(DB)[5] <- "Year"
 MD <- MD[,c(11,12,5,17,28)]
 colnames(MD)[3] <- "ID"
 
+
 DB <- rbind(DB,MD)
 DB[(DB$Source %in% c("Inaturalist", "Observation.org")), "Source"] <- "Citizen science"
 DB[!(DB$Source %in% c("Citizen science","Hand netting","Malaise traps","Pan traps")),"Source"] <- "MNHNL"
@@ -76,7 +77,7 @@ DB_sf <- DB_sf %>%
 
 # rm(BC1, BC2, BC3, BC6, BC7, HN1, HN2, HN3, HN4, HN5, BC, HN, MD)
 
-
+BC$Longitude[BC$Longitude == 2723371] <- 5.98
 # ###### Geology ---
 # 
 # symbole  <- st_read("OAPIF:https://features.geoportail.lu/", layer = "2167/1")

@@ -237,7 +237,7 @@ m3 <- mapView(
     legend = FALSE,
     layer.name = "Points",
     alpha.regions = 1
-    , popup = paste0("Source : ",DB2s$Source,"<br>"
+    , popup = paste0("<strong>Source : ",DB2s$Source,"<br>"
                     # , "Identifier : ", DB2$ID 
                      )
   )
@@ -254,3 +254,72 @@ m3
 
 
 
+###### Species Richness Map ----
+
+DB_rich <- DB2
+
+
+
+
+
+# nb species + species list per cell
+richness_cell <- DB_rich |>
+  group_by(Cell) |>
+  summarise(Richness = n_distinct(ID), Species_list = paste(unique(ID), collapse = "<br>"),
+            .groups = "drop")
+
+
+
+# subset cell
+rtp_richness <- subset( rtp_wgs84, layer %in% richness_cell$Cell)
+
+# info grid
+rtp_richness <- merge( rtp_richness,  richness_cell,by.x = "layer",by.y = "Cell")
+rtp_centroid <- st_centroid(rtp_richness[,c("layer","Richness")])
+
+
+# map
+
+m4 <- mapView(
+  rtp,
+  method = "ngb", 
+  na.color = rgb(0, 0, 255, max = 255, alpha = 0),
+  query.type = "click",
+  trim = TRUE,
+  legend = FALSE,
+  map = base_map,
+  popup = FALSE,
+  alpha.regions = 0,
+  alpha = 0.3,
+  lwd = 2
+) + 
+  
+  mapView(
+  rtp_richness,
+  label = rtp_richness$layer,
+  zcol = "Richness",
+  col.regions = colorRampPalette(
+    c("white", "orange", "red")
+  )(50),
+  alpha.regions = 0.7,
+  lwd = 1,
+  legend = TRUE,
+  popup = paste0(
+    rtp_richness$Species_list),
+    layer.name = "Number of species recorded") 
+
+rtp_centroid
+
+m4@map <- m4@map %>%
+  addLabelOnlyMarkers(
+    data = rtp_centroid,
+    label = ~Richness,
+    group = "Labels",
+    labelOptions = labelOptions(
+      noHide = TRUE,
+      direction = "center",
+      textOnly = TRUE,
+      style = list("font-size" = "10px", "font-weight" = "bold", "color" = "black")
+    ))
+ 
+m4
