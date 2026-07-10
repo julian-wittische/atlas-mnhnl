@@ -122,7 +122,7 @@ carte1 <- bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
 
 m2 <-  mapview(uniteGeo, zcol = "CODESTRATUNIT", col.regions = colorRampPalette(RColorBrewer::brewer.pal(12, "Set3"))(n_niveaux), legend = FALSE, homebutton = FALSE,  popup = FALSE) +
       #mapview(contours, color = "#F5F5DC",lwd = 1,  legend = FALSE,  homebutton = FALSE) +
-      mapview( failles, color = "red",  lwd = 1,legend = FALSE,homebutton = FALSE ) 
+      mapview( failles, color = "red",  lwd = 1,legend = FALSE, homebutton = FALSE ) 
   
 
 m2@map <- m2@map %>%
@@ -141,3 +141,116 @@ m2@map <- m2@map %>%
   ) 
 
 m2
+
+
+###### Species Account Map ----
+
+DB2s <- DB2[which(DB2$ID == "Blera fallax"),]
+
+
+rtp_wgs84 <- st_transform(rtp_sf, 4326)
+
+# Precense in one cell
+presence_cell <- unique(DB2s$Cell)
+rtp_presence <- subset(rtp_wgs84, layer %in% presence_cell)
+DB_sf <- st_as_sf(DB2s, coords = c("Long", "Lat"), crs = 4326)
+
+# Data sources summary per cell
+source_cell <- DB2s |> 
+  group_by(Cell, Source) |> 
+  summarise(
+    Number = n(),
+    .groups = "drop"
+  )
+
+source_summary <- source_cell |>
+  group_by(Cell) |>
+  summarise(
+    Source_summary = paste0(Source, ": ", Number, collapse = "<br>"),
+    .groups = "drop"
+  )
+
+
+# Observations per cell
+
+obs_cell <- DB2s |> 
+  group_by(Cell) |> 
+  summarise(
+    Observation=n(),
+    .groups = "drop")
+
+
+# rtp presence
+
+rtp_presence <- merge(
+  rtp_presence,
+  obs_cell,
+  by.x = "layer",
+  by.y = "Cell"
+)
+
+rtp_presence <- merge(
+  rtp_presence,
+  source_summary,
+  by.x = "layer",
+  by.y = "Cell"
+)
+
+
+m3 <- mapView(
+  rtp,
+  method = "ngb", 
+  na.color = rgb(0, 0, 255, max = 255, alpha = 0),
+  query.type = "click",
+  trim = TRUE,
+  legend = FALSE,
+  map = base_map,
+  popup = FALSE,
+  alpha.regions = 0,
+  alpha = 0.3,
+  lwd = 2,
+  color = "red",
+  layer.name = "Grid"
+) + 
+  
+  mapView(
+    rtp_presence,
+    color = "red",
+    col.regions = col_presence,
+    alpha.regions = 0.5,
+    lwd = 1,
+    label = rtp_presence$layer,
+    legend = FALSE,
+    popup = paste0(
+      rtp_presence$Observation,
+      " records<br>","<br>",
+      rtp_presence$Source_summary
+    ),
+    layer.name = "Cells"
+  ) +
+  
+  mapView(
+    DB_sf,
+    col.regions ="red",
+    color = "red",
+    cex = 4,
+    legend = FALSE,
+    layer.name = "Points",
+    alpha.regions = 1
+    , popup = paste0("Source : ",DB2s$Source,"<br>"
+                    # , "Identifier : ", DB2$ID 
+                     )
+  )
+
+
+m3@map <- m3@map %>%
+  groupOptions("Cells", zoomLevels = 0:11) %>%
+  groupOptions( "Points",zoomLevels = 12:52 )
+
+m3
+
+
+
+
+
+
