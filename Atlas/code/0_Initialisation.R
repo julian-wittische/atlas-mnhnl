@@ -4,9 +4,8 @@
 # Start: Summer 2026
 # Script objective : Load libraries
 
-library(here)
 
-source(here::here("Atlas", "code", "1_config.R"))
+source("code/config.R")
 
 ############ Reading files ----
 library(readxl)
@@ -29,6 +28,7 @@ library(htmlwidgets)
 library(RColorBrewer)
 library(rayshader)
 library(ggplot2)
+library(cowplot)
 
 ############ Data manipulation ----
 library(tidyverse)

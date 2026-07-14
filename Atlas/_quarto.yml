@@ -5,7 +5,6 @@ project:
 
 book:
   title: "Atlas of Hoverflies in Luxembourg"
-  #cover-image: cover.png
   chapters:
     - index.qmd
     - acknowledgement.qmd

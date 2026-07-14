@@ -4,8 +4,6 @@
 # Start: Summer 2026
 # Script objective : Interactive map with filters (year/sources)
 
-source("Atlas/code/utils.R")
-
 ###### Base map ----
 
 mapviewOptions(fgb = FALSE)  # désactive le format fgb

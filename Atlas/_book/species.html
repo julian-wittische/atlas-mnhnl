@@ -192,18 +192,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#activity-period" id="toc-activity-period" class="nav-link active" data-scroll-target="#activity-period">Activity period</a></li>
-  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
-  <li><a href="#habitat" id="toc-habitat" class="nav-link" data-scroll-target="#habitat">Habitat</a>
-  <ul class="collapse">
-  <li><a href="#immature" id="toc-immature" class="nav-link" data-scroll-target="#immature">Immature</a></li>
-  <li><a href="#mature" id="toc-mature" class="nav-link" data-scroll-target="#mature">Mature</a></li>
-  </ul></li>
-  <li><a href="#distribution" id="toc-distribution" class="nav-link" data-scroll-target="#distribution">Distribution</a>
-  <ul class="collapse">
-  <li><a href="#national" id="toc-national" class="nav-link" data-scroll-target="#national">National</a></li>
-  <li><a href="#global" id="toc-global" class="nav-link" data-scroll-target="#global">Global</a></li>
-  </ul></li>
+  <li><a href="#conservation-status" id="toc-conservation-status" class="nav-link active" data-scroll-target="#conservation-status">Conservation status</a></li>
   </ul>
 </nav>
     </div>
@@ -230,42 +219,86 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div class="species-common-names">
-<p>Yellow-haired Sun Fly • Batmanschwiefmecke • Totenkopfschwebfliege • Éristale des fleurs • Mosca-zangão amarela</p>
+<p><strong>EN</strong> &nbsp; Yellow-haired Sun Fly <br> <strong>LB</strong> &nbsp; Batmanschwiefmecke<br> <strong>FR</strong> &nbsp; Éristale des fleurs<br> <strong>DE</strong> &nbsp; Totenkopfschwebfliege<br> <strong>PT</strong> &nbsp; Mosca-zangão amarela</p>
 </div>
-<p><img src="batman.jpeg" class="species-photo img-fluid"></p>
-<section id="activity-period" class="level2">
-<h2 class="anchored" data-anchor-id="activity-period">Activity period</h2>
+<section id="conservation-status" class="level2">
+<h2 class="anchored" data-anchor-id="conservation-status">Conservation status</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p>GRAPH 2</p>
+<section id="europe" class="level3">
+<h3 class="anchored" data-anchor-id="europe">Europe</h3>
+</section>
 </div><div class="column" style="width:50%;">
-<p>GRAPH 2</p>
+<p><img src="LC.png" class="iucn img-fluid"></p>
 </div>
 </div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<section id="european-union-27" class="level3">
+<h3 class="anchored" data-anchor-id="european-union-27">European Union (27)</h3>
 </section>
-<section id="description" class="level2">
-<h2 class="anchored" data-anchor-id="description">Description</h2>
+</div><div class="column" style="width:50%;">
+<p><img src="LC.png" class="iucn img-fluid"></p>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<section id="luxembourg-preliminary" class="level3">
+<h3 class="anchored" data-anchor-id="luxembourg-preliminary">Luxembourg (preliminary)</h3>
 </section>
-<section id="habitat" class="level2">
-<h2 class="anchored" data-anchor-id="habitat">Habitat</h2>
-<section id="immature" class="level3">
-<h3 class="anchored" data-anchor-id="immature">Immature</h3>
-</section>
-<section id="mature" class="level3">
-<h3 class="anchored" data-anchor-id="mature">Mature</h3>
-</section>
-</section>
-<section id="distribution" class="level2">
-<h2 class="anchored" data-anchor-id="distribution">Distribution</h2>
-<section id="national" class="level3">
-<h3 class="anchored" data-anchor-id="national">National</h3>
-</section>
-<section id="global" class="level3">
-<h3 class="anchored" data-anchor-id="global">Global</h3>
-<p>MAP</p>
+</div><div class="column" style="width:50%;">
+<p><img src="NT.png" class="iucn img-fluid"></p>
+</div>
+</div>
+<p><img src="batman.jpeg" class="species-photo img-fluid"></p>
+<!-- ## Activity period -->
+<!-- ::: {.columns} -->
+<!-- ::: {.column width="50%"} -->
+<!-- ```{r g1} -->
+<!-- #| echo: false -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+<!-- source("code/1_config.R") -->
+<!-- source("code/2_LoadBorders.R") -->
+<!-- source("code/3_LoadData.R") -->
+<!-- source("code/6_PresenceMois.R") -->
+<!-- gSource -->
+<!-- ``` -->
+<!-- :::  -->
+<!-- ::: {.column width="50%"} -->
+<!-- ```{r g2} -->
+<!-- #| echo: false -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+<!-- #| results: 'hide' -->
+<!-- source("code/1_config.R") -->
+<!-- source("code/2_LoadBorders.R") -->
+<!-- source("code/3_LoadData.R") -->
+<!-- source("code/6_PresenceMois.R") -->
+<!-- g2 -->
+<!-- ``` -->
+<!-- ::: -->
+<!-- ::: -->
+<!-- ## Description -->
+<!-- ## Habitat -->
+<!-- ### Immature -->
+<!-- ### Mature -->
+<!-- ## Distribution -->
+<!-- ### National -->
+<!-- ```{r m3} -->
+<!-- #| echo: false -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+<!-- source("code/1_config.R") -->
+<!-- source("code/utils.R") -->
+<!-- source("code/2_LoadBorders.R") -->
+<!-- source("code/3_LoadData.R") -->
+<!-- source("code/4_MainMap.R") -->
+<!-- source("code/5_SpeciesMaps.R") -->
+<!-- m3@map -->
+<!-- ``` -->
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

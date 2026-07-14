@@ -1,0 +1,5 @@
+here: C:/Users/CAG569/Desktop/Quarto/atlas-mnhnl/Atlas
+wd: C:/Users/CAG569/Desktop/Quarto/atlas-mnhnl/Atlas
+target: C:/Users/CAG569/Desktop/Quarto/atlas-mnhnl/Atlas/Atlas/code/0_Initialisation.R
+exists: FALSE
+readable: FALSE

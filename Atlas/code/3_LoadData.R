@@ -6,13 +6,13 @@
 
 
 ############ Local configuration ----
-source(here::here("Atlas", "code", "1_config.R"))
+source("code/1_config.R")
 
 ############ Loading libraries ----
-source(here::here("Atlas", "code", "0_Initialisation.R"))
+source("code/0_Initialisation.R")
 
 ############ Loading Luxembourg borders ----
-source(here::here("Atlas", "code", "2_LoadBorders.R"))
+source("code/2_LoadBorders.R")
 
 ############ Load and preprocess observations ----
 
@@ -247,14 +247,14 @@ DB3 <- DB3[complete.cases(DB3$Date), ]
 
 
 ################################################################################
-#Checkpoint
-print(DB3[DB3$Lat %in% c("49.71013",
-                              "49.7101297")
-          & DB3$ID %in% c("Pipizella virens",
-                          "Pipizella viduata",
-                          "Triglyphus primus",
-                          "Eristalis arbustorum"),
-          ])
+# Checkpoint (désactivé)
+# print(DB3[DB3$Lat %in% c("49.71013",
+#                               "49.7101297")
+#           & DB3$ID %in% c("Pipizella virens",
+#                           "Pipizella viduata",
+#                           "Triglyphus primus",
+#                           "Eristalis arbustorum"),
+#           ])
 ################################################################################
 
 ###### Make DB3 spatial ----

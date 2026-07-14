@@ -15,66 +15,145 @@ include-in-header:
 # Myathropa florea
 
 ::: {.species-common-names}
-Yellow-haired Sun Fly •	Batmanschiefmecke •	Totenkopfschwebfliege •	Éristale des fleurs •	Mosca-zangão amarela
+**EN** &nbsp;   Yellow-haired Sun Fly <br>
+**LB** &nbsp;   Batmanschwiefmecke<br>
+**FR** &nbsp;   Éristale des fleurs<br>
+**DE** &nbsp;   Totenkopfschwebfliege<br>
+**PT** &nbsp;   Mosca-zangão amarela
 :::
 
-![](batman.jpeg){.species-photo}
 
-## Activity period
 
-```{r}
-#| echo: false
-#| warning: false
-#| message: false
 
-source(here::here("Atlas", "code", "0_Initialisation.R"))
-source(here::here("Atlas", "code", "2_LoadBorders.R"))
-source(here::here("Atlas", "code", "3_LoadData.R"))
-source(here::here("Atlas", "code", "6_PresenceMois.R"))
 
-plot_phenologie(DB3, "Myathropa florea")
-```
+## Conservation status
+::: {.columns}
+
+::: {.column width="50%"}
+
+### Europe
+
+
+::: 
+
+::: {.column width="50%"}
+
+![](LC.png){.iucn}
+
+
+
+:::
+
+:::
 
 ::: {.columns}
 
 ::: {.column width="50%"}
-GRAPH 2
-:::
+
+
+### European Union (27)
+
+::: 
 
 ::: {.column width="50%"}
-GRAPH 2
+
+![](LC.png){.iucn}
+
+:::
+
+:::
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+
+### Luxembourg (preliminary)
+::: 
+
+::: {.column width="50%"}
+
+![](NT.png){.iucn}
+
 :::
 
 :::
 
 
 
-## Description
+![](batman.jpeg){.species-photo}
 
-## Habitat
-
-### Immature
-
-### Mature
-
-
-## Distribution
-
-### National
-
-### Global
-
-MAP
+<!-- ## Activity period -->
 
 
 
-```{r}
-#| echo: false
-#| warning: false
-message("here: ", here::here())
-message("wd: ", getwd())
-message("target file: ", here::here("Atlas", "code", "0_Initialisation.R"))
-message("file exists? ", file.exists(here::here("Atlas", "code", "0_Initialisation.R")))
-source(here::here("Atlas", "code", "0_Initialisation.R"))
-```
+<!-- ::: {.columns} -->
+
+<!-- ::: {.column width="50%"} -->
+<!-- ```{r g1} -->
+<!-- #| echo: false -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+
+
+<!-- source("code/1_config.R") -->
+<!-- source("code/2_LoadBorders.R") -->
+<!-- source("code/3_LoadData.R") -->
+<!-- source("code/6_PresenceMois.R") -->
+
+<!-- gSource -->
+<!-- ``` -->
+<!-- :::  -->
+
+<!-- ::: {.column width="50%"} -->
+<!-- ```{r g2} -->
+<!-- #| echo: false -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+<!-- #| results: 'hide' -->
+
+
+<!-- source("code/1_config.R") -->
+<!-- source("code/2_LoadBorders.R") -->
+<!-- source("code/3_LoadData.R") -->
+<!-- source("code/6_PresenceMois.R") -->
+
+<!-- g2 -->
+<!-- ``` -->
+<!-- ::: -->
+
+<!-- ::: -->
+
+
+
+<!-- ## Description -->
+
+<!-- ## Habitat -->
+
+<!-- ### Immature -->
+
+<!-- ### Mature -->
+
+
+<!-- ## Distribution -->
+
+<!-- ### National -->
+
+
+<!-- ```{r m3} -->
+<!-- #| echo: false -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+
+
+
+<!-- source("code/1_config.R") -->
+<!-- source("code/utils.R") -->
+<!-- source("code/2_LoadBorders.R") -->
+<!-- source("code/3_LoadData.R") -->
+<!-- source("code/4_MainMap.R") -->
+<!-- source("code/5_SpeciesMaps.R") -->
+
+<!-- m3@map -->
+<!-- ``` -->
 

@@ -4,9 +4,7 @@
 # Start: Summer 2026
 # Script objective : get borders for nice map
 
-
-source(here::here("Atlas", "code", "0_Initialisation.R"))  
-
+source("code/0_Initialisation.R")
 
 ############ Bbox for the Greater Region
 bbox <- st_bbox(c(xmin = 5.7, xmax = 6.55, ymax = 50.2, ymin = 49.4),
