@@ -5,12 +5,15 @@
 # Script objective : cartes par espèce et carte de richesse spécifique
 
 
+source("Atlas/code/utils.R")
+
 ###### Species Account Map ----
 
 ############ Sélection des observations pour une espèce donnée (ici Blera fallax)
 DB2s <- DB2[which(DB2$ID == "Blera fallax"),]
 
 ############ Grille de cellules reprojetée en WGS84 (pour affichage leaflet)
+rtp_sf <- st_as_sf(rtp, crs = st_crs(4326))
 rtp_wgs84 <- st_transform(rtp_sf, 4326)
 
 # Precense in one cell
@@ -80,7 +83,7 @@ m3 <- mapView(
   mapView(
     rtp_presence,
     color = "red",
-    col.regions = col_presence,
+    col.regions = "red",
     alpha.regions = 0.5,
     lwd = 1,
     label = rtp_presence$layer,

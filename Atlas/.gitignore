@@ -4,3 +4,8 @@ history.qmd
 _book/
 *.html
 _book/*.html
+code/1_config.R
+data/DB3.rds
+chapters/species/*.qmd
+!chapters/species/_template.qmd
+!chapters/species/PLACEHOLDER.qmd

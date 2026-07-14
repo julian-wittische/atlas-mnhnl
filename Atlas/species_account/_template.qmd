@@ -1,0 +1,23 @@
+---
+title: "{{SPECIES}}"
+---
+
+## {{SPECIES}}
+
+```{r}
+#| echo: false
+DB3 <- readRDS(here::here("data/DB3.rds"))
+sp_data <- DB3[DB3$ID == "{{SPECIES}}", ]
+```
+
+### Distribution
+
+<!-- carte, à partir de sp_data -->
+
+### Phénologie
+
+<!-- graphique par mois/année, à partir de sp_data -->
+
+### Statut
+
+<!-- protégée / invasive / etc. -->

@@ -1,11 +1,14 @@
 project:
   type: book
-  pre-render: code/pre-render.R
+  execute-dir: project
+  #pre-render: code/pre-render.R
 
 book:
   title: "Atlas of Hoverflies in Luxembourg"
+  #cover-image: cover.png
   chapters:
     - index.qmd
+    - acknowledgement.qmd
     - introduction.qmd
     - biophysical.qmd
     - history.qmd    
@@ -13,20 +16,24 @@ book:
     - methodology.qmd
     - glossary.qmd
     - species.qmd
+  #  - part: species.qmd
+  #    chapters:
+  #      - chapters/species/PLACEHOLDER.qmd
     - statistics.qmd
     - conservation.qmd
     - references.qmd
 
 format:
   html:
-    number-sections: true
+    number-sections: false
     toc: true
-    theme: cosmo 
-    css : styles.css
-
-
-  pdf:
-    documentclass: book
+    toc-depth: 3
+    smooth-scroll: true
+    html-math-method: katex
+    theme:
+        - cosmo
+    css :
+        - style.css
 
 execute:
   echo: false

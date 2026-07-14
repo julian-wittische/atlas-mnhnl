@@ -1,1 +1,20 @@
-# Acknowledgements {-}
+---
+format:
+  html:
+    include-in-header:
+      text: |
+        <style>
+          #title-block-header {
+            display: none;
+          }
+        </style>
+title: "Couverture"
+title-block-style: none
+---
+
+
+::: {.column-screen}
+![](cover.png){style="display: block; margin: 0 auto; max-width: 100%;"}
+:::
+
+

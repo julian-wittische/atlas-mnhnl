@@ -4,7 +4,7 @@
 # Start: Summer 2026
 # Script objective : Interactive map with filters (year/sources)
 
-
+source("Atlas/code/utils.R")
 
 ###### Base map ----
 
@@ -83,3 +83,4 @@ source_filter <- filter_checkboxSP(
 
 ############ Carte + slider + filtre empilés verticalement (largeur pleine sur 12 colonnes)
 carte1 <- bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
+

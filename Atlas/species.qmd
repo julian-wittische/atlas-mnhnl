@@ -1,2 +1,80 @@
-# Species Account
+---
+include-in-header:
+  - text: |
+      <style>
+      #title-block-header .title{
+          text-align:center;
+          font-size:3rem;
+          font-style:italic;
+          font-family:Georgia, "Times New Roman", serif;
+          color:#000;
+      }
+      </style>
+---
+
+# Myathropa florea
+
+::: {.species-common-names}
+Yellow-haired Sun Fly •	Batmanschiefmecke •	Totenkopfschwebfliege •	Éristale des fleurs •	Mosca-zangão amarela
+:::
+
+![](batman.jpeg){.species-photo}
+
+## Activity period
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "2_LoadBorders.R"))
+source(here::here("Atlas", "code", "3_LoadData.R"))
+source(here::here("Atlas", "code", "6_PresenceMois.R"))
+
+plot_phenologie(DB3, "Myathropa florea")
+```
+
+::: {.columns}
+
+::: {.column width="50%"}
+GRAPH 2
+:::
+
+::: {.column width="50%"}
+GRAPH 2
+:::
+
+:::
+
+
+
+## Description
+
+## Habitat
+
+### Immature
+
+### Mature
+
+
+## Distribution
+
+### National
+
+### Global
+
+MAP
+
+
+
+```{r}
+#| echo: false
+#| warning: false
+message("here: ", here::here())
+message("wd: ", getwd())
+message("target file: ", here::here("Atlas", "code", "0_Initialisation.R"))
+message("file exists? ", file.exists(here::here("Atlas", "code", "0_Initialisation.R")))
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+```
 

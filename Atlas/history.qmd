@@ -8,11 +8,10 @@ title: "History of Hoverflies recording in Luxembourg"
 #| message: false
 
 
-
-source("code/1_config.R")
-source("code/2_load_borders.R")
-source("code/3_load_data.R")
-source("code/4_maps.R")
+source(here::here("Atlas", "code", "1_config.R"))
+source(here::here("Atlas", "code", "2_LoadBorders.R"))
+source(here::here("Atlas", "code", "3_LoadData.R"))
+source(here::here("Atlas", "code", "4_MainMap.R"))
 
 carte1
 ```

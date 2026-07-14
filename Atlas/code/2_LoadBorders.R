@@ -5,8 +5,7 @@
 # Script objective : get borders for nice map
 
 
-source("00_libraries.R")   
-source("01_borders.R")
+source(here::here("Atlas", "code", "0_Initialisation.R"))  
 
 
 ############ Bbox for the Greater Region

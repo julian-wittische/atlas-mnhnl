@@ -1,0 +1,49 @@
+---
+references:
+- id: liczner2024
+  _eprint: "https://onlinelibrary.wiley.com/doi/pdf/10.1002/ece3.70231"
+  accessed: "14:33:52"
+  author:
+  - family: Liczner
+    given: Amanda R.
+  - family: Pither
+    given: Richard
+  - family: Bennett
+    given: Joseph R.
+  - family: Bowman
+    given: Jeff
+  - family: Hall
+    given: Kimberly R.
+  - family: Fletcher Jr
+    given: Robert J.
+  - family: Ford
+    given: Adam T.
+  - family: Michalak
+    given: Julia L.
+  - family: Rayfield
+    given: Bronwyn
+  - family: Wittische
+    given: Julian
+  - family: Pither
+    given: Jason
+  citationKey: licznerAdvancesChallengesEcological2024
+  container-title: Ecology and Evolution
+  DOI: 10.1002/ece3.70231
+  ISSN: 2045-7758
+  issue: 9
+  issued: 2024
+  key: QMKG6DHU
+  language: en
+  libraryID: 1
+  note: "\\_eprint:
+    https://onlinelibrary.wiley.com/doi/pdf/10.1002/ece3.70231"
+  page: e70231
+  providerKey: 2509FBBE-5BB0-44C4-B119-6083A81ED673
+  rights: © 2024 The Author(s). Ecology and Evolution published by John
+    Wiley & Sons Ltd.
+  source: Wiley Online Library
+  title: Advances and challenges in ecological connectivity science
+  type: article-journal
+  URL: "https://onlinelibrary.wiley.com/doi/abs/10.1002/ece3.70231"
+  volume: 14
+...
