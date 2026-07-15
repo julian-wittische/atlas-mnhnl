@@ -46,32 +46,41 @@ $spacer-xl: 3rem;
 }
 
 // -----------------------------------------------------------------
-// Typographie générale du book 
+// Design général du book 
 // -----------------------------------------------------------------
+
+
+
 body {
     color: $body-color;
     line-height: 1.65;
 }
 
+#title-block-header .title {
+    margin-bottom: $spacer-xl !important;
+}
+
 h2 {
     font-size: 1.4rem;
     margin-top: $spacer-lg;
-    margin-bottom: $spacer-md ;
-    padding-bottom: $spacer-xs ;
+    margin-bottom: $spacer-md;
+    padding-bottom: $spacer-xs;
     color: $headings-color;
     font-weight: 600;
 }
 
 h3 {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     margin-top: $spacer-md;
     margin-bottom: $spacer-md;
+    font-family: $headings-font-family;
     color: $headings-color;
-    font-weight: 600;
+    font-weight: 400;
+    opacity: 0.85;
 }
 
 // -----------------------------------------------------------------
-// Sommaire (sidebar) -- épuré + actif en vert
+// Sommaire 
 // -----------------------------------------------------------------
 .sidebar-title {
     color: $headings-color;
@@ -79,9 +88,12 @@ h3 {
 }
 
 // Sommaire 
-div.sidebar-item-container .active {
+.sidebar-item-container .active,
+.sidebar-item-container .sidebar-item-text.active,
+.sidebar nav[role=doc-toc] a.active,
+.sidebar-item-section .active {
     font-weight: 600;
-    color: $primary; 
+    color: $primary;
 }
 
 // Table des matières
@@ -100,6 +112,16 @@ div.sidebar-item-container {
     }
 }
 
+
+.sidebar nav[role=doc-toc] ul > li > ul li a,
+.sidebar-item-container .sidebar-item-toggle ~ ul .sidebar-item-text,
+ul.sidebar-section .sidebar-item-text {
+    font-weight: 400;
+    color: $headings-color;
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
 // -----------------------------------------------------------------
 // Fiches espèces 
 // -----------------------------------------------------------------
@@ -110,7 +132,8 @@ div.sidebar-item-container {
     color: $text-muted;
     font-size: 1rem;
     line-height: 1.8;
-    margin-bottom: $spacer-lg;
+    margin-bottom: $spacer-lg; 
+  
 }
 
 // Photo principale de l'espèce
@@ -120,21 +143,22 @@ div.sidebar-item-container {
     max-width: 70%;
     border-radius: 4px;
     border: 1px solid $border-soft;
+    margin-bottom: 5rem !important;
 }
 
 // Logos de statut de conservation 
 .logo {
-    height: 45px;
+    height: 55px;
     width: auto;
     margin: $spacer-sm 0;
 }
 
 // Grille à deux colonnes
 .columns {
-    margin: $spacer-md 0;
+    display: flex !important;
     align-items: center;
+    margin: $spacer-xs 0;
 }
-
 .column {
     text-align: center;
 }

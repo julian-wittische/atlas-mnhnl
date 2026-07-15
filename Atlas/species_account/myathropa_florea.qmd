@@ -103,7 +103,6 @@ plot_activite_smooth(params$species)
 ### Mature
 
 ## Distribution
-### National
 ```{r m3}
 #| echo: false
 #| warning: false

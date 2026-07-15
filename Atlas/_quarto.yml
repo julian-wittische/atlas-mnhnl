@@ -21,7 +21,6 @@ book:
   - statistics.qmd
   - conservation.qmd
   - references.qmd
-  
 bibliography: references.bib
 format:
   html:
@@ -30,12 +29,12 @@ format:
     toc-depth: 3
     smooth-scroll: true
     html-math-method: katex
-    theme: 
-      light: 
-        - zephyr
-        - style.scss
+    theme:
+      light:
+      - zephyr
+      - style.scss
 execute:
-  echo: false
+  echo: true
   warning: false
   message: false
   freeze: auto
