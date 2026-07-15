@@ -38,7 +38,7 @@ include-in-header:
 
 ::: {.column width="50%"}
 
-![](LC.png){.iucn}
+![](images/LC.png){.iucn}
 
 
 
@@ -57,7 +57,7 @@ include-in-header:
 
 ::: {.column width="50%"}
 
-![](LC.png){.iucn}
+![](images/LC.png){.iucn}
 
 :::
 
@@ -73,7 +73,7 @@ include-in-header:
 
 ::: {.column width="50%"}
 
-![](NT.png){.iucn}
+![](images/NT.png){.iucn}
 
 :::
 
@@ -81,7 +81,7 @@ include-in-header:
 
 
 
-![](batman.jpeg){.species-photo}
+![](images/batman.jpeg){.species-photo}
 
 <!-- ## Activity period -->
 
