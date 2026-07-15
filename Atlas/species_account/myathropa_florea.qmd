@@ -68,7 +68,7 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 :::
 
-![](/images/myathropa-florea.jpeg){.species-photo}
+![](/images/myathropa_florea.jpeg){.species-photo}
 
 ## Activity period
 

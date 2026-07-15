@@ -3,6 +3,8 @@ project:
   execute-dir: project
 book:
   title: Atlas of Hoverflies in Luxembourg
+  reader-mode: true
+  repo-url: https://github.com/julian-wittische/atlas-mnhnl
   chapters:
   - index.qmd
   - acknowledgement.qmd
@@ -14,20 +16,24 @@ book:
   - glossary.qmd
   - part: Species accounts
     chapters:
-    - species_account/blera-fallax.qmd
-    - species_account/myathropa-florea.qmd
+    - species_account/blera_fallax.qmd
+    - species_account/myathropa_florea.qmd
   - statistics.qmd
   - conservation.qmd
   - references.qmd
+  
+bibliography: references.bib
 format:
   html:
     number-sections: false
-    toc: false
+    toc: true
     toc-depth: 3
     smooth-scroll: true
     html-math-method: katex
-    theme: cosmo
-    css: style.css
+    theme: 
+      light: 
+        - zephyr
+        - style.scss
 execute:
   echo: false
   warning: false

@@ -71,7 +71,7 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 :::
 
-![](/images/<<slug>>.jpeg){.species-photo}
+![](/images/<<slug>>.jpeg){.species_photo}
 
 ## Activity period
 

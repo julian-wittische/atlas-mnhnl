@@ -33,6 +33,7 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 ## Conservation status
+
 ::: {.columns}
 
 ::: {.column width="50%"}
@@ -68,7 +69,7 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 :::
 
-![](/images/blera-fallax.jpg){.species-photo}
+![](/images/blera_fallax.jpg){.species-photo}
 
 ## Activity period
 

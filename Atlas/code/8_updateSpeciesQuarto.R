@@ -54,5 +54,15 @@ if (length(idx_statistics) > 0) {
 
 config$book$chapters <- chapters
 
-yaml::write_yaml(config, qmd_path)
+yaml::write_yaml(
+  config,
+  qmd_path,
+  handlers = list(
+    logical = function(x) {
+      result <- ifelse(x, "true", "false")
+      class(result) <- "verbatim"
+      result
+    }
+  )
+)
 cat("_quarto.yml mis à jour avec", length(fichiers_especes), "fiches espèces.\n")

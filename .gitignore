@@ -40,3 +40,6 @@ Atlas/_book/history.html
 *.html
 Atlas/data/MNS_Lidar2024.tif
 Atlas/data/MNS_Lidar2024.tif
+
+/.quarto/
+**/*.quarto_ipynb

@@ -38,7 +38,7 @@ DB_sf_wgs84 <- st_transform(DB_sf, crs = 4326)
 DB_sf_wgs84$YearPost20XX <- DB_sf_wgs84$Year
 DB_sf_wgs84$YearPost20XX[DB_sf_wgs84$YearPost20XX < 2016] <- 2016
 
-############ Objet partagé crosstalk (lie la carte, le slider et le filtre checkbox)
+############ Objet partagé crosstalk 
 DB_shared <- SharedData$new(DB_sf_wgs84, group = "lux_group")
 
 ############ Ajout des points d'observation
@@ -79,6 +79,6 @@ source_filter <- filter_checkboxSP(
 
 ###### Assemblage final ----
 
-############ Carte + slider + filtre empilés verticalement (largeur pleine sur 12 colonnes)
+############ Carte + slider + filtre empilés
 carte1 <- bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
 

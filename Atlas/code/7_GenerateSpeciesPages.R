@@ -11,7 +11,7 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 slugify <- function(x) {
   x <- tolower(x)
-  x <- gsub("[^a-z0-9]+", "-", x)
+  x <- gsub("[^a-z0-9]+", "_", x)
   gsub("^-|-$", "", x)
 }
 
