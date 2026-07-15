@@ -1,4 +1,0 @@
-here: C:/Users/CAG569/Desktop/Quarto/atlas-mnhnl
-wd: C:/Users/CAG569/Desktop/Quarto/atlas-mnhnl/Atlas
-target: C:/Users/CAG569/Desktop/Quarto/atlas-mnhnl/Atlas/code/0_Initialisation.R
-exists: TRUE

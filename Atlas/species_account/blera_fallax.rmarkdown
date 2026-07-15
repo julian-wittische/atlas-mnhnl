@@ -1,7 +1,7 @@
 ---
-title: "Myathropa florea"
+title: "Blera fallax"
 params:
-  species: "Myathropa florea"
+  species: "Blera fallax"
 include-in-header:
   - text: |
       <style>
@@ -18,16 +18,15 @@ include-in-header:
 ---
 
 ::: {.species-taxonomy}
-**Sous-famille**  Eristalinae &nbsp; **Tribu**  Eristalini
+**Sous-famille** *Eristalinae* &nbsp; **Tribu** *Xylotini*
 :::
 
-
 ::: {.species-common-names}
-**EN** &nbsp;   Yellow-haired Sun Fly <br>
-**LB** &nbsp;   Batmanschwiefmecke<br>
-**FR** &nbsp;   Éristale des fleurs<br>
-**DE** &nbsp;   Totenkopfschwebfliege<br>
-**PT** &nbsp;   Mosca-zangão amarela
+**EN** &nbsp;   Pine Hoverfly<br>
+**LB** &nbsp;   Blera fallax<br>
+**FR** &nbsp;   Blera fallax<br>
+**DE** &nbsp;   Hundeschnauzenschwebfliege<br>
+**PT** &nbsp;   Blera fallax
 :::
 
 ```{r setup}
@@ -38,6 +37,7 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 ## Conservation status
+
 ::: {.columns}
 
 ::: {.column width="50%"}
@@ -73,7 +73,7 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 :::
 
-![](/images/myathropa_florea.jpeg){.species-photo}
+![](/images/blera_fallax.jpg){.species-photo}
 
 ## Activity period
 
@@ -103,30 +103,32 @@ plot_activite_smooth(params$species)
 
 ## Description
 
-A medium hoverfly with a bright yellow-orangish coloration. Very particular black-colour pattern on the thorax representing a bat or a skull, giving it the surname of “common batman fly” (Bot & Van de Meutter, 2023). This pattern could be reduced.
+A medium hoverfly with an unmistakable pattern of coloration. Head, thorax and the upper part of abdomen black, the rest of the body is orange. Proportion of the orange part may varies depending on the sex, it should be bigger and clearer in males. Antenna on a protrusion of the front, face yellow (Bot & Van de Meutter, 2023).
 
 ## Habitat
 ### Immature
 
-Larva is a typical rat-tailed maggot and lives in rot-holes trees or standing water (Speight, 2017) even in stagnant water at the bottom of tires or cow troughs (Bot & Van de Meutter, 2023).
+Larva can be found in cavities in coniferous trees (Bot & Van de Meutter, 2023).
 
 ### Mature
 
-Really widespread and common, this species can be find around deciduous forest and open habitat. This species like to sunbath on leaves and can be noticed through transparency when standing on leaves. The male is territorial and will fight in the air other insects (Bot & Van de Meutter, 2023).
+As the larva stage, adult affectioned spruce and pine forest with overmature trees but can also be observed in mixed forest (Speight, 2017; Bot & Van de Meutter, 2023).
 
 ## Distribution
 
-Well distributed through the country.
+Localised in coniferous area, this syrphid can be found all around Luxembourg if the habitat is suitable.
 
 
 ```{r m3}
 #| echo: false
 #| warning: false
 #| message: false
+
 m3 <- get_species_map(params$species)
 m3@map
 ```
 ## Notes
 
-Microsatellite analysis has shown that the population is genetically homogeneous across Luxembourg as far as Cologne, despite significant urbanisation (Wittische et al., 2024). However, two morphs are occurring at the same period and could transform this species in a species complex of two species in Europe if DNA evidence supports this theory.
+This species was record in 2021 and was not observed since 2025 despite all the science citizens platforms. Fortunately, the Hoverfly Atlas project has boosted interest in this family and enabled the observation of new specimens in two different localities.
+
 

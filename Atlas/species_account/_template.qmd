@@ -66,7 +66,7 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 :::
 
 ::: {.column width="50%"}
-![](/images/NT.png){.logo}
+![](/images/NTLU.png){.logo}
 :::
 
 :::
@@ -111,3 +111,5 @@ plot_activite_smooth(params$species)
 m3 <- get_species_map(params$species)
 m3@map
 ```
+
+## Notes

@@ -5,7 +5,7 @@ library(here)
 here::i_am("atlas-mnhnl.Rproj")
 
 ############ Titres reconnus dans le fichier texte ----
-titres <- c("## Description", "## Habitat", "### Immature", "### Mature", "## Distribution")
+titres <- c("## Description", "## Habitat", "### Immature", "### Mature", "## Distribution", "## Notes")
 
 ############ Fonction : parse un fichier texte en liste titre -> contenu ----
 parse_contenu <- function(chemin_txt) {
@@ -31,40 +31,62 @@ parse_contenu <- function(chemin_txt) {
   sections
 }
 
-############ Fonction : remplace tout le contenu entre un titre et le suivant ----
+############ remplace tout le contenu----
 injecter_contenu <- function(qmd_lines, sections) {
-  ############ Repère toutes les lignes de titre (n'importe quel niveau), pour délimiter les sections
-  heading_idx <- which(grepl("^#{1,6} ", qmd_lines))
   
   resultat <- c()
   i <- 1
   n <- length(qmd_lines)
   
   while (i <= n) {
+    
     ligne <- qmd_lines[i]
     resultat <- c(resultat, ligne)
     
     if (ligne %in% names(sections)) {
-      ############ Trouve la fin de la section actuelle : prochain titre après i, ou fin de fichier
-      idx_dans_headings <- which(heading_idx == i)
-      prochain_titre <- heading_idx[heading_idx > i][1]
-      fin_section <- if (is.na(prochain_titre)) n + 1 else prochain_titre
       
-      ############ Saute (ignore) l'ancien contenu entre le titre et le prochain titre
-      i <- fin_section - 1
+      i <- i + 1
       
-      ############ Insère le nouveau texte à la place
+      # Ajouter le nouveau texte
       texte <- trimws(sections[[ligne]])
       if (nchar(texte) > 0) {
         resultat <- c(resultat, "", texte, "")
       }
+      
+      # supprimer uniquement le texte jusqu'au prochain titre
+      while (i <= n && !grepl("^#{1,6} ", qmd_lines[i])) {
+        
+        # garder les blocs ::: et chunks R
+        if (grepl("^:::|^```", qmd_lines[i])) {
+          
+          debut_bloc <- i
+          
+          # avancer jusqu'à la fin du bloc
+          i <- i + 1
+          while (i <= n && !grepl("^```$|^:::$", qmd_lines[i])) {
+            i <- i + 1
+          }
+          
+          if (i <= n) {
+            i <- i + 1
+          }
+          
+          resultat <- c(resultat, qmd_lines[debut_bloc:i-1])
+        } else {
+          i <- i + 1
+        }
+      }
+      
+      next
     }
+    
     i <- i + 1
   }
+  
   resultat
 }
 
-############ Boucle sur toutes les fiches espèces ----
+# Boucle sur toutes les fiches
 fichiers_qmd <- list.files(here::here("Atlas", "species_account"), pattern = "\\.qmd$", full.names = FALSE)
 fichiers_qmd <- setdiff(fichiers_qmd, c("_template.qmd", "PLACEHOLDER.qmd"))
 

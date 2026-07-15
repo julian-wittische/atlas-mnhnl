@@ -1,186 +1,146 @@
 /*-- scss:defaults --*/
 
-// Palette
-$text-muted:  #5c635c;
-$border-soft: #e2e2e2;
-
 $primary: #5f7132 !default;
-$secondary: #6c757d !default;
-$body-bg: #ffffff !default;
 $body-color: #263126 !default;
-$link-color: #52662d !default;
-$link-hover-color: #33421b !default;
-
-// Typographie
-$font-size-root: 16px !default;
-$font-family-sans-serif: "Inter", "Source Sans 3", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
-$font-family-serif: Georgia, "Times New Roman", serif !default;
-$headings-font-family: "Inter", "Source Sans 3", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$body-bg: #ffffff !default;
 $headings-color: #16200f !default;
+$link-color: #52662d !default;
 
-$code-color: #6c3b20 !default;
-$code-bg: #f7f7f7 !default;
-
-// Sommaire (sidebar)
-$sidebar-hl: $primary;             
-$sidebar-fg: $headings-color;
-$sidebar-font-size: 0.9rem;
-$sidebar-font-size-section: 0.8rem;
-
-// Échelle d'espacement 
-$spacer-xs: 0.5rem;
-$spacer-sm: 1rem;
-$spacer-md: 2.5rem;
-$spacer-lg: 2.5rem;
-$spacer-xl: 3rem;
 
 /*-- scss:rules --*/
 
-:root {
-  --r4pde-green: #5f7132;
-  --r4pde-green-dark: #33421b;
-  --r4pde-paper: #ffffff;
-  --r4pde-paper-soft: #f2f2f2;
-  --r4pde-ink: #263126;
-  --r4pde-muted: #6f7668;
-}
 
-// -----------------------------------------------------------------
-// Design général du book 
-// -----------------------------------------------------------------
-
-
+/* General */
 
 body {
-    color: $body-color;
-    line-height: 1.65;
+  color: $body-color;
+  line-height: 1.65;
 }
 
 #title-block-header .title {
-    margin-bottom: $spacer-xl !important;
+  margin-bottom: 3rem !important;
 }
 
 h2 {
-    font-size: 1.4rem;
-    margin-top: $spacer-lg;
-    margin-bottom: $spacer-md;
-    padding-bottom: $spacer-xs;
-    color: $headings-color;
-    font-weight: 600;
+  font-size: 1.4rem;
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: .5rem;
+  border-bottom: 1.5px solid rgba($primary, 0.65);
+  color: $headings-color;
+  font-weight: 600;
 }
 
 h3 {
-    font-size: 1.15rem;
-    margin-top: $spacer-md;
-    margin-bottom: $spacer-md;
-    font-family: $headings-font-family;
-    color: $headings-color;
-    font-weight: 400;
-    opacity: 0.85;
+  font-size: 1.15rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  color: $headings-color;
+  font-weight: 500;
 }
 
-// -----------------------------------------------------------------
-// Sommaire 
-// -----------------------------------------------------------------
+
+/* Sidebar / Table of contents */
+
 .sidebar-title {
-    color: $headings-color;
-    font-weight: 600;
+  color: $headings-color;
+  font-weight: 600;
 }
 
-// Sommaire 
+
+.sidebar-item-container {
+  font-size: .9rem;
+}
+
+
 .sidebar-item-container .active,
 .sidebar-item-container .sidebar-item-text.active,
-.sidebar nav[role=doc-toc] a.active,
+.sidebar nav[role="doc-toc"] a.active,
 .sidebar-item-section .active {
-    font-weight: 600;
-    color: $primary;
-}
-
-// Table des matières
-.sidebar nav[role=doc-toc] ul > li > a.active,
-.sidebar nav[role=doc-toc] ul > li > ul > li > a.active {
-    font-weight: 600;
-    color: $primary; 
+  color: $primary;
+  font-weight: 600;
 }
 
 
-
-div.sidebar-item-container {
-    font-size: $sidebar-font-size;
-    a {
-        transition: color 0.15s ease;
-    }
-}
-
-
-.sidebar nav[role=doc-toc] ul > li > ul li a,
+.sidebar nav[role="doc-toc"] ul > li > ul li a,
 .sidebar-item-container .sidebar-item-toggle ~ ul .sidebar-item-text,
 ul.sidebar-section .sidebar-item-text {
-    font-weight: 400;
-    color: $headings-color;
-    font-size: 0.85rem;
-    opacity: 0.85;
+  color: $headings-color;
+  font-size: .85rem;
+  opacity: 0.65;
+  font-weight: 400;
 }
 
-// -----------------------------------------------------------------
-// Fiches espèces 
-// -----------------------------------------------------------------
 
-// Noms communs
+/* Species */
+
 .species-common-names {
-    text-align: left;
-    color: $text-muted;
-    font-size: 1rem;
-    line-height: 1.8;
-    margin-bottom: $spacer-lg; 
-  
+  color: #5c635c;
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
 }
 
-// Photo principale de l'espèce
+
 .species-photo {
-    display: block;
-    margin: $spacer-lg auto;
-    max-width: 70%;
-    border-radius: 4px;
-    border: 1px solid $border-soft;
-    margin-bottom: 5rem !important;
+  display: block;
+  max-width: 70%;
+  margin: 2.5rem auto 5rem auto;
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
 }
 
-// Logos de statut de conservation 
+
 .logo {
-    height: 55px;
-    width: auto;
-    margin: $spacer-sm 0;
+  height: 55px;
+  margin: 1rem 0;
 }
 
-// Grille à deux colonnes
+
+/* Columns */
+
 .columns {
-    display: flex !important;
-    align-items: center;
-    margin: $spacer-xs 0;
+  display: flex !important;
+  align-items: center;
+  margin: .5rem 0;
 }
+
 .column {
-    text-align: center;
+  text-align: center;
 }
 
-// Cible les h3 
 .columns h3 {
-    margin-top: 0;
-    margin-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-// Carte de distribution 
+.species-taxonomy {
+  text-align: left;
+  font-size: 1rem;
+  color: $body-color;
+  margin-bottom: 2rem;
+
+  em, i {
+    font-style: italic;
+  }
+
+  strong {
+    font-weight: 700;
+    color: $headings-color;
+  }
+}
+/* Map */
+
 .map-distribution {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid $border-soft;
-    border-radius: 4px;
-    overflow: hidden;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
 }
 
-// -----------------------------------------------------------------
-// Slider année 
-// -----------------------------------------------------------------
+
+/* Slider */
+
 .irs-grid-pol.small {
-    display: none !important; 
+  display: none !important;
 }
