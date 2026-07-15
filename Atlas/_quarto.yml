@@ -1,39 +1,33 @@
 project:
   type: book
   execute-dir: project
-  #pre-render: code/pre-render.R
-
 book:
-  title: "Atlas of Hoverflies in Luxembourg"
+  title: Atlas of Hoverflies in Luxembourg
   chapters:
-    - index.qmd
-    - acknowledgement.qmd
-    - introduction.qmd
-    - biophysical.qmd
-    - history.qmd    
-    - ecology.qmd
-    - methodology.qmd
-    - glossary.qmd
-    - species.qmd
-  #  - part: species.qmd
-  #    chapters:
-  #      - chapters/species/PLACEHOLDER.qmd
-    - statistics.qmd
-    - conservation.qmd
-    - references.qmd
-
+  - index.qmd
+  - acknowledgement.qmd
+  - introduction.qmd
+  - biophysical.qmd
+  - history.qmd
+  - ecology.qmd
+  - methodology.qmd
+  - glossary.qmd
+  - part: Species accounts
+    chapters:
+    - species_account/blera-fallax.qmd
+    - species_account/myathropa-florea.qmd
+  - statistics.qmd
+  - conservation.qmd
+  - references.qmd
 format:
   html:
     number-sections: false
-    toc: true
+    toc: false
     toc-depth: 3
     smooth-scroll: true
     html-math-method: katex
-    theme:
-        - cosmo
-    css :
-        - style.css
-
+    theme: cosmo
+    css: style.css
 execute:
   echo: false
   warning: false

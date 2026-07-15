@@ -1,4 +1,7 @@
 ---
+title: "Myathropa florea"
+params:
+  species: "Myathropa florea"
 include-in-header:
   - text: |
       <style>
@@ -9,11 +12,10 @@ include-in-header:
           font-family:Georgia, "Times New Roman", serif;
           color:#000;
           margin-bottom: 5rem !important;
+          margin-top: 3rem !important;
       }
       </style>
 ---
-
-# Myathropa florea
 
 ::: {.species-common-names}
 **EN** &nbsp;   Yellow-haired Sun Fly <br>
@@ -23,26 +25,22 @@ include-in-header:
 **PT** &nbsp;   Mosca-zangão amarela
 :::
 
-
-
-
-
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+```
 ## Conservation status
 ::: {.columns}
 
 ::: {.column width="50%"}
-
 ### Europe
-
-
-::: 
+:::
 
 ::: {.column width="50%"}
-
-![](images/LC.png){.iucn}
-
-
-
+![](/images/LC.png){.logo}
 :::
 
 :::
@@ -50,16 +48,10 @@ include-in-header:
 ::: {.columns}
 
 ::: {.column width="50%"}
-
-
 ### European Union (27)
-
-::: 
-
+:::
 ::: {.column width="50%"}
-
-![](images/LC.png){.iucn}
-
+![](/images/LC.png){.logo}
 :::
 
 :::
@@ -67,94 +59,55 @@ include-in-header:
 ::: {.columns}
 
 ::: {.column width="50%"}
-
-
 ### Luxembourg (preliminary)
-::: 
+:::
 
 ::: {.column width="50%"}
-
-![](images/NT.png){.iucn}
-
+![](/images/NT.png){.logo}
 :::
 
 :::
 
-
-
-![](images/batman.jpeg){.species-photo}
+![](/images/myathropa-florea.jpeg){.species-photo}
 
 ## Activity period
 
 
-
 ::: {.columns}
 
 ::: {.column width="50%"}
-# ```{r g1}
-# #| echo: false
-# #| warning: false
-# #| message: false
-# 
-# 
-# source("code/1_config.R")
-# source("code/2_LoadBorders.R")
-# source("code/3_LoadData.R")
-# source("code/6_PresenceMois.R")
-# 
-# gSource
-# ```
+```{r g-source}
+#| echo: false
+#| warning: false
+#| message: false
+plot_activite_source(params$species)
+```
 :::
 
 ::: {.column width="50%"}
-# ```{r g2}
-# #| echo: false
-# #| warning: false
-# #| message: false
-# #| results: 'hide'
-# 
-# 
-# source("code/1_config.R")
-# source("code/2_LoadBorders.R")
-# source("code/3_LoadData.R")
-# source("code/6_PresenceMois.R")
-# 
-# g2
-# ```
+```{r g-smooth}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: 'hide'
+plot_activite_smooth(params$species)
+```
 :::
 
 :::
-
-
 
 ## Description
 
 ## Habitat
-
 ### Immature
-
 ### Mature
 
-
 ## Distribution
-
 ### National
-
-
-# ```{r m3}
-# #| echo: false
-# #| warning: false
-# #| message: false
-# 
-# 
-# 
-# source("code/1_config.R")
-# source("code/utils.R")
-# source("code/2_LoadBorders.R")
-# source("code/3_LoadData.R")
-# source("code/4_MainMap.R")
-# source("code/5_SpeciesMaps.R")
-# 
-# m3@map
-# ```
-
+```{r m3}
+#| echo: false
+#| warning: false
+#| message: false
+m3 <- get_species_map(params$species)
+m3@map
+```

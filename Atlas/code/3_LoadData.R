@@ -5,15 +5,6 @@
 # Script objective : Load and clean up data
 
 
-############ Local configuration ----
-source("code/1_config.R")
-
-############ Loading libraries ----
-source("code/0_Initialisation.R")
-
-############ Loading Luxembourg borders ----
-source("code/2_LoadBorders.R")
-
 ############ Load and preprocess observations ----
 
 ###### Bycatch data (pan traps / malaise traps) ----

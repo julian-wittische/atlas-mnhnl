@@ -1,7 +1,7 @@
 ---
-title: "<<species>>"
+title: "Blera fallax"
 params:
-  species: "<<species>>"
+  species: "Blera fallax"
 include-in-header:
   - text: |
       <style>
@@ -18,11 +18,11 @@ include-in-header:
 ---
 
 ::: {.species-common-names}
-**EN** &nbsp;   Yellow-haired Sun Fly <br>
-**LB** &nbsp;   Batmanschwiefmecke<br>
-**FR** &nbsp;   Éristale des fleurs<br>
-**DE** &nbsp;   Totenkopfschwebfliege<br>
-**PT** &nbsp;   Mosca-zangão amarela
+**EN** &nbsp;   Pine Hoverfly<br>
+**LB** &nbsp;   Blera fallax<br>
+**FR** &nbsp;   Blère fallacieuse<br>
+**DE** &nbsp;   Trug-Kiefern-Schwebfliege<br>
+**PT** &nbsp;   Blera fallax
 :::
 
 ```{r setup}
@@ -32,9 +32,7 @@ include-in-header:
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
-
 ## Conservation status
-
 ::: {.columns}
 
 ::: {.column width="50%"}
@@ -52,7 +50,6 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 ::: {.column width="50%"}
 ### European Union (27)
 :::
-
 ::: {.column width="50%"}
 ![](/images/LC.png){.logo}
 :::
@@ -71,9 +68,10 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 :::
 
-![](/images/<<slug>>.jpeg){.species-photo}
+![](/images/blera-fallax.jpg){.species-photo}
 
 ## Activity period
+
 
 ::: {.columns}
 
@@ -99,12 +97,13 @@ plot_activite_smooth(params$species)
 :::
 
 ## Description
+
 ## Habitat
 ### Immature
 ### Mature
+
 ## Distribution
 ### National
-
 ```{r m3}
 #| echo: false
 #| warning: false
