@@ -17,19 +17,6 @@ include-in-header:
       </style>
 ---
 
-::: {.species-taxonomy}
-**Sous-famille**  Eristalinae &nbsp; **Tribu**  Eristalini
-:::
-
-
-::: {.species-common-names}
-**EN** &nbsp;   Yellow-haired Sun Fly <br>
-**LB** &nbsp;   Batmanschwiefmecke<br>
-**FR** &nbsp;   Éristale des fleurs<br>
-**DE** &nbsp;   Totenkopfschwebfliege<br>
-**PT** &nbsp;   Mosca-zangão amarela
-:::
-
 ```{r setup}
 #| echo: false
 #| warning: false
@@ -37,14 +24,64 @@ include-in-header:
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+
+ids <- col_synonyms(col_match(params$species)$usage_id)$label
+
+
+
+cat('<div class="dropdown" id="menu-ids">\n')
+cat('<button class="dropdown-btn" onclick="document.getElementById(\'menu-ids\').classList.toggle(\'open\')">Synonymes ▾</button>\n')
+cat('<div class="dropdown-content">\n')
+
+for (i in ids) {
+  cat(sprintf('<span>%s</span>\n', i))
+}
+cat('</div>\n</div>\n')
+```
+
+
+
+::: {.columns}
+
+::: {.column width="50%" }
+
+
+::: {.species-taxonomy}
+**Sous-famille**  Eristalinae &nbsp; **Tribu**  Eristalini
+:::
+
+
+::: {.species-taxonomy}
+**EN** &nbsp;   Yellow-haired Sun Fly <br>
+**LB** &nbsp;   Batmanschwiefmecke<br>
+**FR** &nbsp;   Éristale des fleurs<br>
+**DE** &nbsp;   Totenkopfschwebfliege<br>
+**PT** &nbsp;   Mosca-zangão amarela
+:::
+
+
+:::
+
+
+
+
+::: {.column width="50%"}
+
+
 ## Conservation status
 ::: {.columns}
 
-::: {.column width="50%"}
+::: {.column width="25%"}
 ### Europe
 :::
 
-::: {.column width="50%"}
+::: {.column width="25%"}
 ![](/images/LC.png){.logo}
 :::
 
@@ -53,7 +90,7 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 ::: {.columns}
 
 ::: {.column width="50%"}
-### European Union (27)
+### European Union<br>(27)
 :::
 ::: {.column width="50%"}
 ![](/images/LC.png){.logo}
@@ -63,43 +100,34 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 ::: {.columns}
 
-::: {.column width="50%"}
-### Luxembourg (preliminary)
+::: {.column width="25%"}
+### Luxembourg  (preliminary)
 :::
 
-::: {.column width="50%"}
+::: {.column width="25%"}
 ![](/images/NTLU.png){.logo}
 :::
 
 :::
+:::
+:::
+
+
 
 ![](/images/myathropa_florea.jpeg){.species-photo}
 
 ## Activity period
 
 
-::: {.columns}
-
-::: {.column width="50%"}
 ```{r g-source}
 #| echo: false
 #| warning: false
 #| message: false
-plot_activite_source(params$species)
+#| fig.height: 2
+#| fig.width: 9
+plot_heatmap(params$species)
 ```
-:::
 
-::: {.column width="50%"}
-```{r g-smooth}
-#| echo: false
-#| warning: false
-#| message: false
-#| results: 'hide'
-plot_activite_smooth(params$species)
-```
-:::
-
-:::
 
 ## Description
 

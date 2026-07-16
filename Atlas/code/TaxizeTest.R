@@ -12,4 +12,15 @@ sum(DB3$Certainty, na.rm=T)
 species_list <- unlist(unique(DB3[DB3$Certainty,"ID"]))
 taxon <- gna_verifier(species_list , capitalize = TRUE)
 
+# Find synonyms
+
+synonyms("Blera fallax", db ="nbn")
+gna_verifier(species_list , capitalize = TRUE)
+
+remotes::install_github("CatalogueOfLife/rcol")
+
+library(rcol)
+
+col_synonyms(col_match("Myathropa florea")$usage_id)$label
+
 

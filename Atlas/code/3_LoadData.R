@@ -86,14 +86,10 @@ DB_sf <- DB_sf %>%
   st_crop(bbox) %>%
   st_transform("EPSG:2169")
 
-# rm(BC1, BC2, BC3, BC6, BC7, HN1, HN2, HN3, HN4, HN5, BC, HN, MD)
-
-
-
-
-
-
-
+MD_identifier <- na.omit(unique(MD$Recorders))
+MD_identifier <- MD_identifier[trimws(MD_identifier) != ""]
+MD_identifier <- MD_identifier[is.na(suppressWarnings(as.numeric(MD_identifier)))]
+MD_identifier <- sort(MD_identifier)
 
 ############ Build dataset for Species Account ----
 DB2 <- rbind(BC, HN)

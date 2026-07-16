@@ -193,3 +193,4 @@ get_richness_map <- function(data = DB2) {
   
   m4
 }
+

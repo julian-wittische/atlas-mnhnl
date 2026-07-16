@@ -3,11 +3,11 @@
 
 ## Geology {.unnumbered}
 
-## Altitude {.unnumbered}
+### Altitude {.unnumbered}
 
-## Soil {.unnumbered}
+### Soil {.unnumbered}
 
 ## Land Cover {.unnumbered}
 
-## Climate change {.unnumbered}
+## Climate {.unnumbered}
 

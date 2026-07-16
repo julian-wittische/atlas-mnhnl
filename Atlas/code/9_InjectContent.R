@@ -37,44 +37,27 @@ injecter_contenu <- function(qmd_lines, sections) {
   resultat <- c()
   i <- 1
   n <- length(qmd_lines)
-  
   while (i <= n) {
-    
     ligne <- qmd_lines[i]
     resultat <- c(resultat, ligne)
-    
     if (ligne %in% names(sections)) {
-      
       i <- i + 1
-      
       # Ajouter le nouveau texte
       texte <- trimws(sections[[ligne]])
       if (nchar(texte) > 0) {
         resultat <- c(resultat, "", texte, "")
       }
-      
       # supprimer uniquement le texte jusqu'au prochain titre
       while (i <= n && !grepl("^#{1,6} ", qmd_lines[i])) {
-        
         # garder les blocs ::: et chunks R
         if (grepl("^:::|^```", qmd_lines[i])) {
-          
           debut_bloc <- i
-          
           # avancer jusqu'à la fin du bloc
           i <- i + 1
           while (i <= n && !grepl("^```$|^:::$", qmd_lines[i])) {
-            i <- i + 1
-          }
-          
-          if (i <= n) {
-            i <- i + 1
-          }
-          
-          resultat <- c(resultat, qmd_lines[debut_bloc:i-1])
-        } else {
-          i <- i + 1
-        }
+            i <- i + 1  }
+          if (i <= n) {i <- i + 1 }
+          resultat <- c(resultat, qmd_lines[debut_bloc:i-1]) } else { i <- i + 1}
       }
       
       next

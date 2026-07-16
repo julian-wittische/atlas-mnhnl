@@ -74,6 +74,40 @@ ul.sidebar-section .sidebar-item-text {
 
 /* Species */
 
+.dropdown {
+          position: relative;
+          display: inline-block;
+      }
+.dropdown-btn {
+          padding: 10px 16px;
+          cursor: pointer;
+          background: #2c3e50;
+          color: white;
+          border: none;
+          border-radius: 4px;
+      }
+.dropdown-content {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background: white;
+          min-width: 200px;
+          padding: 8px 0;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          border-radius: 4px;
+          z-index: 1000;
+      }
+.dropdown-content span {
+          display: block;
+          padding: 6px 14px;
+          font: inherit;
+          color: #333;
+      }
+.dropdown.open .dropdown-content {
+          display: block;
+      }
+
 .species-common-names {
   color: #5c635c;
   font-size: 1rem;
@@ -107,6 +141,9 @@ ul.sidebar-section .sidebar-item-text {
 
 .column {
   text-align: center;
+
+.columns > .column:first-child {
+  text-align: left;
 }
 
 .columns h3 {
@@ -115,10 +152,9 @@ ul.sidebar-section .sidebar-item-text {
 }
 
 .species-taxonomy {
-  text-align: left;
-  font-size: 1rem;
   color: $body-color;
-  margin-bottom: 2rem;
+  line-height: 1.65;
+  text-align :left;}
 
   em, i {
     font-style: italic;

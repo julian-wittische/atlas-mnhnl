@@ -95,7 +95,7 @@ plot_activite_source(params$species)
 #| warning: false
 #| message: false
 #| results: 'hide'
-plot_activite_smooth(params$species)
+plot_heatmap(params$species)
 ```
 :::
 

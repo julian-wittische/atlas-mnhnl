@@ -4,10 +4,10 @@
 # Start: Summer 2026
 # Script objective : Load geology data and create an interactive maps
 
-source("0_Initialisation.R")
+
 
 ###### Geology data ----
-
+n_niveaux <- nlevels(factor(uniteGeo$CODESTRATUNIT))
 #### Lecture des couches géologiques ----
 
 symbole  <- st_read("OAPIF:https://features.geoportail.lu/", layer = "2167/1")  # symboles stratigraphiques

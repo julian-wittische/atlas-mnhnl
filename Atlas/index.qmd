@@ -8,7 +8,7 @@ format:
             display: none;
           }
         </style>
-title: "Couverture"
+title: "Cover page"
 title-block-style: none
 ---
 
