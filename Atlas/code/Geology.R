@@ -47,22 +47,20 @@ m2@map <- m2@map %>%
   groupOptions("Labels", zoomLevels = 14:52)
 
 ###### Static Geology map ----
-plot_carte_geologique <- function(uniteGeo, failles,
-                                  widths = c(2, 1.5),
-                                  ncol_legende = 2,
-                                  cex_legende = 0.6,
-                                  x_intersp = 0.5,
-                                  y_intersp = 0.8) {
-  
+
+.preparer_legende_geo <- function(uniteGeo) {
   base_df <- uniteGeo |>
     sf::st_drop_geometry() |>
     distinct(ERE_FR, GROUPING1_FR, NOMUNIT_FR, AGE_MIN) |>
     mutate(across(c(ERE_FR, GROUPING1_FR, NOMUNIT_FR), \(x) na_if(str_squish(x), ""))) |>
     filter(!is.na(ERE_FR), !is.na(GROUPING1_FR), !is.na(NOMUNIT_FR)) |>
     arrange(AGE_MIN) |>
-    mutate(ere_change = ERE_FR != lag(ERE_FR, default = "___"),
+    mutate(
+      ere_change = ERE_FR != lag(ERE_FR, default = "___"),
       grouping_change = ere_change | GROUPING1_FR != lag(GROUPING1_FR, default = "___"),
-      row_id= row_number() )
+      row_id = row_number()
+    )
+  
   legende_df <- bind_rows(
     base_df |> dplyr::filter(ere_change, row_id > 1) |>
       dplyr::transmute(row_id, sub = 0, label = "", NOMUNIT_FR = NA_character_, type = "spacer"),
@@ -75,23 +73,49 @@ plot_carte_geologique <- function(uniteGeo, failles,
   ) |>
     dplyr::arrange(row_id, sub) |>
     dplyr::select(-row_id, -sub)
+  
   noms_uniques <- unique(legende_df$NOMUNIT_FR[legende_df$type == "unit"])
   palette_geo  <- setNames(colorRampPalette(brewer.pal(12, "Set3"))(length(noms_uniques)), noms_uniques)
-  fill_col <- ifelse(legende_df$type == "unit", palette_geo[legende_df$NOMUNIT_FR], NA_character_)
-  font_vec <- ifelse(legende_df$type %in% c("ere", "grouping"), 2L, 1L)
-  carte_geo <- ggplot() +
+  
+  list(legende_df = legende_df, palette_geo = palette_geo)
+}
+
+
+plot_carte_geologique <- function(uniteGeo, failles) {
+  prep <- .preparer_legende_geo(uniteGeo)
+  
+  ggplot() +
     geom_sf(data = uniteGeo, aes(fill = NOMUNIT_FR), color = NA) +
-    scale_fill_manual(values = palette_geo, guide = "none") +
+    scale_fill_manual(values = prep$palette_geo, guide = "none") +
     geom_sf(data = failles, color = "red", linewidth = 0.4) +
     theme_void() +
-    theme(legend.position = "none", plot.margin = margin(r = 30))
-  
-  legende_plot <- ~{
-    par(mar = c(0, 0, 0, 0), xpd = TRUE)
-    plot.new()
-    legend("center", legend = legende_df$label, fill = fill_col, border = NA, text.font = font_vec, ncol = ncol_legende, cex = cex_legende, bty = "n",x.intersp = x_intersp, y.intersp = y_intersp, text.width = max(strwidth(legende_df$label, cex = cex_legende)))}
-   carte_geo + wrap_elements(full = legende_plot) + plot_layout(widths = widths)
+    theme(legend.position = "none")
 }
+
+
+plot_legende_geologique <- function(uniteGeo,
+                                    ncol_legende = 2,
+                                    cex_legende = 0.6,
+                                    x_intersp = 0.5,
+                                    y_intersp = 0.8) {
+  prep <- .preparer_legende_geo(uniteGeo)
+  legende_df <- prep$legende_df
+  palette_geo <- prep$palette_geo
+  
+  fill_col <- ifelse(legende_df$type == "unit", palette_geo[legende_df$NOMUNIT_FR], NA_character_)
+  font_vec <- ifelse(legende_df$type %in% c("ere", "grouping"), 2L, 1L)
+  
+  # plus de function() { } ici — le code s'exécute directement
+  par(mar = c(0, 0, 0, 0), xpd = TRUE)
+  plot.new()
+  legend(
+    "center", legend = legende_df$label, fill = fill_col, border = NA,
+    text.font = font_vec, ncol = ncol_legende, cex = cex_legende, bty = "n",
+    x.intersp = x_intersp, y.intersp = y_intersp,
+    text.width = max(strwidth(legende_df$label, cex = cex_legende))
+  )
+}
+
 
 ###### Description table ----
 
@@ -101,6 +125,7 @@ tableau_unites <- uniteGeo %>%
   dplyr::distinct() %>%
   dplyr::arrange(AGE_MIN) %>%
   dplyr::filter(!is.na(DESCUNIT_FR)) %>% 
+  dplyr::filter(!is.na(CODESTRATUNIT)) %>% 
   dplyr::rename(
     "Code" = CODESTRATUNIT,
     "Unité géologique" = NOMUNIT_FR,

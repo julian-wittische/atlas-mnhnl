@@ -2,17 +2,6 @@
 title: "History of Hoverflies recording in Luxembourg"
 ---
 
-```{r}
-#| echo: false
-#| warning: false
-#| message: false
 
 
-source("code/1_config.R")
-source("code/utils.R")
-source("code/2_LoadBorders.R")
-source("code/3_LoadData.R")
-source("code/4_MainMap.R")
-
-carte1
-```
+STATIC MAP (EVELYNE C) FOCUS ON PROJECT

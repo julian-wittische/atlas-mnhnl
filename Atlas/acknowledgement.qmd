@@ -6,6 +6,7 @@ title: "Acknowledgement"
 #| echo: false
 #| warning: false
 #| message: false
+#| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
@@ -16,8 +17,15 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 ```{r}
 #| echo: false
+#| results: hide
+#| warning: false
+#| message: false
 recorders_list <- paste(sort(na.omit(unique(MD$Recorders))), sep = ", ")
 ```
 
 `r recorders_list`
+
+## Last Hoverfly recorded
+
+![](../syrphidae.jpg)
 

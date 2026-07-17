@@ -9,7 +9,11 @@ book:
   - index.qmd
   - acknowledgement.qmd
   - introduction.qmd
-  - biophysical.qmd
+  - part: Biophysical
+    chapters:
+    - biophysical/geo_topography.qmd
+    - biophysical/climate.qmd
+    - biophysical/land_use_cover.qmd
   - history.qmd
   - ecology.qmd
   - methodology.qmd

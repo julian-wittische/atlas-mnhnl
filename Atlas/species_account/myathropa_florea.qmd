@@ -61,7 +61,6 @@ cat('</div>\n</div>\n')
 **LB** &nbsp;   Batmanschwiefmecke<br>
 **FR** &nbsp;   Éristale des fleurs<br>
 **DE** &nbsp;   Totenkopfschwebfliege<br>
-**PT** &nbsp;   Mosca-zangão amarela
 :::
 
 

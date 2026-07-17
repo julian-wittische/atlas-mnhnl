@@ -57,7 +57,6 @@ cat('</div>\n</div>\n')
 **LB** &nbsp;   Blera fallax<br>
 **FR** &nbsp;   Blera fallax<br>
 **DE** &nbsp;   Hundeschnauzenschwebfliege<br>
-**PT** &nbsp;   Blera fallax
 :::
 
 :::
@@ -150,6 +149,7 @@ Localised in coniferous area, this syrphid can be found all around Luxembourg if
 m3 <- get_species_map(params$species)
 m3@map
 ```
+
 ## Notes
 
 This species was record in 2021 and was not observed since 2025 despite all the science citizens platforms. Fortunately, the Hoverfly Atlas project has boosted interest in this family and enabled the observation of new specimens in two different localities.

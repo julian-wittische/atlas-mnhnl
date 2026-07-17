@@ -18,8 +18,10 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 #| fig-width: 20
 #| fig-height: 11
 
-plot_carte_geologique(uniteGeo, failles, widths = c(2, 5), ncol_legende = 2, cex_legende = 0.9)
+plot_carte_geologique(uniteGeo, failles)
+plot_legende_geologique(uniteGeo, cex_legende = 1.25)
 ```
+
 ```{r}
 #| echo: false
 #| warning: false
