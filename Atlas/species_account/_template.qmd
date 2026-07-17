@@ -1,6 +1,6 @@
 ---
 title: "<<species>>"
-subtitle: ""
+subtitle: "<<authorship>>"
 params:
   species: "<<species>>"
 include-in-header:

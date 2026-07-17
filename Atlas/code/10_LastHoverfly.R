@@ -10,4 +10,4 @@ obs <- content(GET("https://api.inaturalist.org/v1/observations",  query = list(
 
 cat(obs$taxon$name, "-", obs$observed_on, "-", obs$uri, "\n")
 
-download.file(sub(obs$photos[[1]]$url), "syrphidae.jpg", mode = "wb")
+download.file(sub("square", "large", obs$photos[[1]]$url), "syrphidae.jpg", mode = "wb")

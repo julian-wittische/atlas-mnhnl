@@ -24,3 +24,5 @@ library(rcol)
 col_synonyms(col_match("Blera fallax")$usage_id)$label
 
 
+col_usage((col_match("Blera fallax")$usage_id))
+col_vernacular((col_match("Chrysotoxum bicinctum")$usage_id))
