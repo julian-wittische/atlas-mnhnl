@@ -1,5 +1,6 @@
 ---
 title: "Myathropa florea"
+subtitle: "(Linnaeus, 1758)"
 params:
   species: "Myathropa florea"
 include-in-header:
@@ -11,7 +12,7 @@ include-in-header:
           font-style:italic;
           font-family:Georgia, "Times New Roman", serif;
           color:#000;
-          margin-bottom: 5rem !important;
+          margin-bottom: 10rem !important;
           margin-top: 3rem !important;
       }
       </style>
@@ -21,35 +22,33 @@ include-in-header:
 #| echo: false
 #| warning: false
 #| message: false
+#| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 
-```{r}
-#| echo: false
-#| results: asis
-#| warning: false
-#| message: false
 
-ids <- col_synonyms(col_match(params$species)$usage_id)$label
-
-
-
-cat('<div class="dropdown" id="menu-ids">\n')
-cat('<button class="dropdown-btn" onclick="document.getElementById(\'menu-ids\').classList.toggle(\'open\')">Synonymes ▾</button>\n')
-cat('<div class="dropdown-content">\n')
-
-for (i in ids) {
-  cat(sprintf('<span>%s</span>\n', i))
-}
-cat('</div>\n</div>\n')
-```
 
 
 
 ::: {.columns}
 
 ::: {.column width="50%" }
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+ids <- col_synonyms(col_match(params$species)$usage_id)$label
+cat('<div class="dropdown" id="menu-ids">\n')
+cat('<button class="dropdown-btn" onclick="document.getElementById(\'menu-ids\').classList.toggle(\'open\')">Synonymes ▾</button>\n')
+cat('<div class="dropdown-content scroller">\n')
+for (i in ids) {
+  cat(sprintf('<span>%s</span>\n', i))
+}
+cat('</div>\n</div>\n')
+```
 
 
 ::: {.species-taxonomy}
@@ -74,8 +73,8 @@ cat('</div>\n</div>\n')
 ::: {.column width="50%"}
 
 
-## Conservation status
-::: {.columns}
+## Conservation status {.no-top-margin}
+::: {.columns .status-row}
 
 ::: {.column width="25%"}
 ### Europe
@@ -87,18 +86,19 @@ cat('</div>\n</div>\n')
 
 :::
 
-::: {.columns}
+::: {.columns .status-row}
 
 ::: {.column width="50%"}
 ### European Union<br>(27)
 :::
+
 ::: {.column width="50%"}
 ![](/images/LC.png){.logo}
 :::
 
 :::
 
-::: {.columns}
+::: {.columns .status-row}
 
 ::: {.column width="25%"}
 ### Luxembourg  (preliminary)
@@ -109,7 +109,9 @@ cat('</div>\n</div>\n')
 :::
 
 :::
+
 :::
+
 :::
 
 

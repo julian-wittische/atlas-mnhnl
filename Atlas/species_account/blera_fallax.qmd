@@ -1,5 +1,6 @@
 ---
 title: "Blera fallax"
+subtitle: "(Linnaeus, 1758)"
 params:
   species: "Blera fallax"
 include-in-header:
@@ -11,11 +12,41 @@ include-in-header:
           font-style:italic;
           font-family:Georgia, "Times New Roman", serif;
           color:#000;
-          margin-bottom: 5rem !important;
+          margin-bottom: 10rem !important;
           margin-top: 3rem !important;
       }
       </style>
 ---
+
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+```
+
+
+::: {.columns}
+
+::: {.column width="50%" }
+
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+ids <- col_synonyms(col_match(params$species)$usage_id)$label
+cat('<div class="dropdown" id="menu-ids">\n')
+cat('<button class="dropdown-btn" onclick="document.getElementById(\'menu-ids\').classList.toggle(\'open\')">Synonymes ▾</button>\n')
+cat('<div class="dropdown-content scroller">\n')
+for (i in ids) {
+  cat(sprintf('<span>%s</span>\n', i))
+}
+cat('</div>\n</div>\n')
+```
 
 ::: {.species-taxonomy}
 **Sous-famille** *Eristalinae* &nbsp; **Tribu** *Xylotini*
@@ -29,49 +60,52 @@ include-in-header:
 **PT** &nbsp;   Blera fallax
 :::
 
-```{r setup}
-#| echo: false
-#| warning: false
-#| message: false
-here::i_am("atlas-mnhnl.Rproj")
-source(here::here("Atlas", "code", "0_Initialisation.R"))
-```
-## Conservation status
-
-::: {.columns}
+:::
 
 ::: {.column width="50%"}
+
+## Conservation status {.no-top-margin}
+
+::: {.columns .status-row}
+
+::: {.column width="25%" .status-row}
 ### Europe
 :::
 
-::: {.column width="50%"}
+::: {.column width="25%"}
 ![](/images/LC.png){.logo}
 :::
 
 :::
 
-::: {.columns}
+::: {.columns .status-row}
 
-::: {.column width="50%"}
+::: {.column width="50%" .status-row}
 ### European Union (27)
 :::
+
 ::: {.column width="50%"}
 ![](/images/LC.png){.logo}
 :::
 
 :::
 
-::: {.columns}
+::: {.columns .status-row}
 
-::: {.column width="50%"}
+::: {.column width="25%" }
 ### Luxembourg (preliminary)
 :::
 
-::: {.column width="50%"}
+::: {.column width="25%"}
 ![](/images/NTLU.png){.logo}
 :::
 
 :::
+
+:::
+
+:::
+
 
 ![](/images/blera_fallax.jpg){.species-photo}
 
@@ -80,16 +114,6 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 ::: {.columns}
 
-::: {.column width="50%"}
-```{r g-source}
-#| echo: false
-#| warning: false
-#| message: false
-plot_activite_source(params$species)
-```
-:::
-
-::: {.column width="50%"}
 ```{r g-smooth}
 #| echo: false
 #| warning: false
@@ -99,7 +123,6 @@ plot_heatmap(params$species)
 ```
 :::
 
-:::
 
 ## Description
 

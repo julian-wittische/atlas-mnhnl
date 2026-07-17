@@ -21,6 +21,6 @@ remotes::install_github("CatalogueOfLife/rcol")
 
 library(rcol)
 
-col_synonyms(col_match("Myathropa florea")$usage_id)$label
+col_synonyms(col_match("Blera fallax")$usage_id)$label
 
 

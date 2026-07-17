@@ -7,7 +7,7 @@
 
 
 ###### Geology data ----
-n_niveaux <- nlevels(factor(uniteGeo$CODESTRATUNIT))
+
 #### Lecture des couches géologiques ----
 
 symbole  <- st_read("OAPIF:https://features.geoportail.lu/", layer = "2167/1")  # symboles stratigraphiques
@@ -21,7 +21,8 @@ contours <- st_transform(contours, crs = st_crs(lux_borders))
 failles  <- st_transform(failles,  crs = st_crs(lux_borders))
 symbole  <- st_transform(symbole,  crs = st_crs(lux_borders))
 
-###### Geology map ----
+n_niveaux <- nlevels(factor(uniteGeo$CODESTRATUNIT))
+
 
 #### Carte des unités géologiques + failles en rouge + contours 
 m2 <- mapview(uniteGeo, zcol = "CODESTRATUNIT",
@@ -44,3 +45,70 @@ m2@map <- m2@map %>%
     )
   ) %>%
   groupOptions("Labels", zoomLevels = 14:52)
+
+###### Static Geology map ----
+plot_carte_geologique <- function(uniteGeo, failles,
+                                  widths = c(2, 1.5),
+                                  ncol_legende = 2,
+                                  cex_legende = 0.6,
+                                  x_intersp = 0.5,
+                                  y_intersp = 0.8) {
+  
+  base_df <- uniteGeo |>
+    sf::st_drop_geometry() |>
+    distinct(ERE_FR, GROUPING1_FR, NOMUNIT_FR, AGE_MIN) |>
+    mutate(across(c(ERE_FR, GROUPING1_FR, NOMUNIT_FR), \(x) na_if(str_squish(x), ""))) |>
+    filter(!is.na(ERE_FR), !is.na(GROUPING1_FR), !is.na(NOMUNIT_FR)) |>
+    arrange(AGE_MIN) |>
+    mutate(ere_change = ERE_FR != lag(ERE_FR, default = "___"),
+      grouping_change = ere_change | GROUPING1_FR != lag(GROUPING1_FR, default = "___"),
+      row_id= row_number() )
+  legende_df <- bind_rows(
+    base_df |> dplyr::filter(ere_change, row_id > 1) |>
+      dplyr::transmute(row_id, sub = 0, label = "", NOMUNIT_FR = NA_character_, type = "spacer"),
+    base_df |> dplyr::filter(ere_change) |>
+      dplyr::transmute(row_id, sub = 1, label = paste0(ERE_FR, ":"), NOMUNIT_FR = NA_character_, type = "ere"),
+    base_df |> dplyr::filter(grouping_change) |>
+      dplyr::transmute(row_id, sub = 2, label = paste0("  ", GROUPING1_FR, ":"), NOMUNIT_FR = NA_character_, type = "grouping"),
+    base_df |>
+      dplyr::transmute(row_id, sub = 3, label = paste0("    ", NOMUNIT_FR), NOMUNIT_FR = NOMUNIT_FR, type = "unit")
+  ) |>
+    dplyr::arrange(row_id, sub) |>
+    dplyr::select(-row_id, -sub)
+  noms_uniques <- unique(legende_df$NOMUNIT_FR[legende_df$type == "unit"])
+  palette_geo  <- setNames(colorRampPalette(brewer.pal(12, "Set3"))(length(noms_uniques)), noms_uniques)
+  fill_col <- ifelse(legende_df$type == "unit", palette_geo[legende_df$NOMUNIT_FR], NA_character_)
+  font_vec <- ifelse(legende_df$type %in% c("ere", "grouping"), 2L, 1L)
+  carte_geo <- ggplot() +
+    geom_sf(data = uniteGeo, aes(fill = NOMUNIT_FR), color = NA) +
+    scale_fill_manual(values = palette_geo, guide = "none") +
+    geom_sf(data = failles, color = "red", linewidth = 0.4) +
+    theme_void() +
+    theme(legend.position = "none", plot.margin = margin(r = 30))
+  
+  legende_plot <- ~{
+    par(mar = c(0, 0, 0, 0), xpd = TRUE)
+    plot.new()
+    legend("center", legend = legende_df$label, fill = fill_col, border = NA, text.font = font_vec, ncol = ncol_legende, cex = cex_legende, bty = "n",x.intersp = x_intersp, y.intersp = y_intersp, text.width = max(strwidth(legende_df$label, cex = cex_legende)))}
+   carte_geo + wrap_elements(full = legende_plot) + plot_layout(widths = widths)
+}
+
+###### Description table ----
+
+tableau_unites <- uniteGeo %>%
+  st_drop_geometry() %>%
+  dplyr::select(CODESTRATUNIT, NOMUNIT_FR, DESCUNIT_FR, AGE_MIN) %>%
+  dplyr::distinct() %>%
+  dplyr::arrange(AGE_MIN) %>%
+  dplyr::filter(!is.na(DESCUNIT_FR)) %>% 
+  dplyr::rename(
+    "Code" = CODESTRATUNIT,
+    "Unité géologique" = NOMUNIT_FR,
+    "Description" = DESCUNIT_FR
+  )
+
+
+tableau_unites <- tableau_unites[, c("Code", "Unité géologique", "Description")]
+
+
+
