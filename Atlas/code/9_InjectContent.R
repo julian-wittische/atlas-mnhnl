@@ -1,80 +1,99 @@
 ######################## PROJECT: Atlas Template
-# Script objective : injecte le texte rédactionnel (species_content/) dans les fiches .qmd générées, en écrasant tout contenu déjà présent sous chaque titre
+# Author: Selene Perez
+# Request: Julian Wittische
+# Start: Summer 2026
+# Script objective : injecte le texte (species_content/) dans les fiches species account 
 
-library(here)
-here::i_am("atlas-mnhnl.Rproj")
 
 ############ Titres reconnus dans le fichier texte ----
-titres <- c("## Description", "## Habitat", "### Immature", "### Mature", "## Distribution", "## Notes")
+titres_reconnus <- c("## Description", "## Habitat", "### Immature", "### Mature",
+                     "## Distribution", "## Notes")
 
-############ Fonction : parse un fichier texte en liste titre -> contenu ----
-parse_contenu <- function(chemin_txt) {
-  lignes <- readLines(chemin_txt, encoding = "UTF-8", warn = FALSE)
-  sections <- list()
-  titre_courant <- NULL
-  buffer <- c()
+
+
+
+
+############ Sauvegarde duu texte  ----
+lire_sections_texte <- function(chemin_txt) {
+  # evite de dupliquer le code qui "clôture" la dernière section
+  lignes_source <- c(readLines(chemin_txt, encoding = "UTF-8", warn = FALSE), "## __FIN__")
   
-  for (ligne in lignes) {
-    if (ligne %in% titres) {
-      if (!is.null(titre_courant)) {
-        sections[[titre_courant]] <- paste(buffer, collapse = "\n")
-      }
-      titre_courant <- ligne
-      buffer <- c()
-    } else {
-      buffer <- c(buffer, ligne)
-    }
-  }
-  if (!is.null(titre_courant)) {
-    sections[[titre_courant]] <- paste(buffer, collapse = "\n")
-  }
-  sections
+  contenu_par_titre <- list()
+  titre_en_cours <- NULL
+  lignes_du_titre <- c()
+  
+  for (ligne_source in lignes_source) {
+    if (ligne_source %in% titres_reconnus || ligne_source == "## __FIN__") {
+      if (!is.null(titre_en_cours)) {
+        contenu_par_titre[[titre_en_cours]] <- paste(lignes_du_titre, collapse = "\n")}
+      titre_en_cours <- ligne_source
+      lignes_du_titre <- c() } 
+      else {
+      lignes_du_titre <- c(lignes_du_titre, ligne_source) }}
+  contenu_par_titre
 }
 
-############ remplace tout le contenu----
-injecter_contenu <- function(qmd_lines, sections) {
+
+
+
+
+############ Ne pas supprimer les chunk  ----
+garder_bloc <- function(lignes_qmd, i, nb_lignes) {
+  debut_bloc <- i
+  i <- i + 1
+  while (i <= nb_lignes && !grepl("^```$|^:::$", lignes_qmd[i])) {
+    i <- i + 1}
+  if (i <= nb_lignes) i <- i + 1
+  list(lignes_bloc = lignes_qmd[debut_bloc:(i - 1)], i_suivant = i)
+}
+
+
+
+
+
+############ Remplace le contenu de chaque titre dans le .qmd ----
+remplacer_sections <- function(lignes_qmd, contenu_par_titre) {
   
-  resultat <- c()
+  lignes_qmd_modifiees <- c()
   i <- 1
-  n <- length(qmd_lines)
-  while (i <= n) {
-    ligne <- qmd_lines[i]
-    resultat <- c(resultat, ligne)
-    if (ligne %in% names(sections)) {
-      i <- i + 1
-      # Ajouter le nouveau texte
-      texte <- trimws(sections[[ligne]])
-      if (nchar(texte) > 0) {
-        resultat <- c(resultat, "", texte, "")
-      }
-      # supprimer uniquement le texte jusqu'au prochain titre
-      while (i <= n && !grepl("^#{1,6} ", qmd_lines[i])) {
-        # garder les blocs ::: et chunks R
-        if (grepl("^:::|^```", qmd_lines[i])) {
-          debut_bloc <- i
-          # avancer jusqu'à la fin du bloc
-          i <- i + 1
-          while (i <= n && !grepl("^```$|^:::$", qmd_lines[i])) {
-            i <- i + 1  }
-          if (i <= n) {i <- i + 1 }
-          resultat <- c(resultat, qmd_lines[debut_bloc:i-1]) } else { i <- i + 1}
-      }
-      
-      next
-    }
-    
-    i <- i + 1
-  }
+  nb_lignes <- length(lignes_qmd)
   
-  resultat
+  while (i <= nb_lignes) {
+    ligne_actuelle <- lignes_qmd[i]
+    lignes_qmd_modifiees <- c(lignes_qmd_modifiees, ligne_actuelle)
+    
+    if (!(ligne_actuelle %in% names(contenu_par_titre))) {
+      i <- i + 1
+      next }
+    i <- i + 1
+    
+    # insertion du nouveau texte
+    texte_a_inserer <- trimws(contenu_par_titre[[ligne_actuelle]])
+    if (nchar(texte_a_inserer) > 0) {
+      lignes_qmd_modifiees <- c(lignes_qmd_modifiees, "", texte_a_inserer, "")}
+    
+    # suppression de l'ancien texte + conservation chunks et sections
+    while (i <= nb_lignes && !grepl("^#{1,6} ", lignes_qmd[i])) {
+      if (grepl("^:::|^```", lignes_qmd[i])) {
+        bloc <- garder_bloc(lignes_qmd, i, nb_lignes)
+        lignes_qmd_modifiees <- c(lignes_qmd_modifiees, bloc$lignes_bloc)
+        i <- bloc$i_suivant} 
+        else {
+        i <- i + 1}}}
+  
+  lignes_qmd_modifiees
 }
 
-# Boucle sur toutes les fiches
+
+
+
+
+############ Remplir fiches espèces ----
 fichiers_qmd <- list.files(here::here("Atlas", "species_account"), pattern = "\\.qmd$", full.names = FALSE)
 fichiers_qmd <- setdiff(fichiers_qmd, c("_template.qmd", "PLACEHOLDER.qmd"))
 
-for (f in fichiers_qmd) {
-  slug <- sub("\\.qmd$", "", f)
+for (fichier_qmd in fichiers_qmd) {
+  slug <- sub("\\.qmd$", "", fichier_qmd)
   chemin_txt <- here::here("Atlas", "species_content", paste0(slug, ".txt"))
   
   if (!file.exists(chemin_txt)) {
@@ -82,12 +101,10 @@ for (f in fichiers_qmd) {
     next
   }
   
-  chemin_qmd <- here::here("Atlas", "species_account", f)
-  qmd_lines <- readLines(chemin_qmd, encoding = "UTF-8", warn = FALSE)
-  sections <- parse_contenu(chemin_txt)
-  qmd_final <- injecter_contenu(qmd_lines, sections)
+  chemin_qmd <- here::here("Atlas", "species_account", fichier_qmd)
+  lignes_qmd <- readLines(chemin_qmd, encoding = "UTF-8", warn = FALSE)
+  contenu_par_titre <- lire_sections_texte(chemin_txt)
+  lignes_qmd_final <- remplacer_sections(lignes_qmd, contenu_par_titre)
   
-  writeLines(qmd_final, chemin_qmd)
-  cat("Contenu inséré dans :", f, "\n")
-}
+  writeLines(lignes_qmd_final, chemin_qmd)}
 

@@ -8,6 +8,7 @@
 ############ Reading files ----
 library(readxl)
 library(knitr)
+library(httr)
 
 ############ GIS ----
 library(sf)
@@ -31,6 +32,8 @@ library(ggplot2)
 library(cowplot)
 library(patchwork)
 library(RColorBrewer)
+library(ggnewscale)
+library(ggspatial)
 
 ############ Data manipulation ----
 library(tidyverse)
@@ -47,4 +50,7 @@ source(here::here("Atlas", "code", "3_LoadData.R"))
 source(here::here("Atlas", "code", "4_MainMap.R"))
 source(here::here("Atlas", "code", "5_SpeciesMaps.R"))
 source(here::here("Atlas", "code", "6_PresenceMois.R"))
+source(here::here("Atlas", "code", "10_LastHoverfly.R"))
 source(here::here("Atlas", "code", "Geology.R"))
+source(here::here("Atlas", "code", "SoilsMap.R"))
+source(here::here("Atlas", "code", "DSM.R"))

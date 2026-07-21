@@ -43,3 +43,18 @@ Atlas/data/MNS_Lidar2024.tif
 
 /.quarto/
 **/*.quarto_ipynb
+.RDataTmp*
+.Rhistory
+.RData
+Atlas/_book/
+.Rhistory
+.RData
+Atlas/_book/
+*.gdb/
+*.ppkx
+*.gml
+*.gfs
+.RDataTmp*
+.Rhistory
+.RData
+Atlas/_book/

@@ -117,7 +117,8 @@ cat('</div>\n</div>\n')
 #| echo: false
 #| warning: false
 #| message: false
-#| results: 'hide'
+#| fig.height: 2
+#| fig.width: 9
 plot_heatmap(params$species)
 ```
 :::
@@ -140,7 +141,6 @@ As the larva stage, adult affectioned spruce and pine forest with overmature tre
 
 Localised in coniferous area, this syrphid can be found all around Luxembourg if the habitat is suitable.
 
-
 ```{r m3}
 #| echo: false
 #| warning: false
@@ -149,7 +149,6 @@ Localised in coniferous area, this syrphid can be found all around Luxembourg if
 m3 <- get_species_map(params$species)
 m3@map
 ```
-
 ## Notes
 
 This species was record in 2021 and was not observed since 2025 despite all the science citizens platforms. Fortunately, the Hoverfly Atlas project has boosted interest in this family and enabled the observation of new specimens in two different localities.

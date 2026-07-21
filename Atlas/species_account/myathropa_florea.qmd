@@ -147,7 +147,6 @@ Really widespread and common, this species can be find around deciduous forest a
 
 Well distributed through the country.
 
-
 ```{r m3}
 #| echo: false
 #| warning: false

@@ -9,6 +9,7 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 
+
 ## Geology {.unnumbered}
 
 ```{r}
@@ -22,19 +23,47 @@ plot_carte_geologique(uniteGeo, failles)
 plot_legende_geologique(uniteGeo, cex_legende = 1.25)
 ```
 
+<details>
+<summary><strong> Show legend description table</strong></summary>
+
 ```{r}
 #| echo: false
 #| warning: false
 #| message: false
-tableau <- kable(tableau_unites)
+knitr::kable(tableau_unites)
 ```
-`r tableau`
 
-### Altitude {.unnumbered}
+</details>
+
+
+
+
+
+
+
+### Altitude {.unnumbered} 
+
+```{r}
+#| echo: false
+#| warning: false 
+#| message: false 
+carte_altitude(DATAPATH) 
+``` 
+
 
 ### Soil {.unnumbered}
 
-## Land Cover {.unnumbered}
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 20
+#| fig-height: 11
 
-## Climate {.unnumbered}
+plot_carte_sols(DATAPATH)
+plot_legende_sols(DATAPATH)
+```
+
+
+
 

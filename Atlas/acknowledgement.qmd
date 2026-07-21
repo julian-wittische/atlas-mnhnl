@@ -19,7 +19,6 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 #| echo: false
 #| results: hide
 #| warning: false
-#| message: false
 recorders_list <- paste(sort(na.omit(unique(MD$Recorders))), sep = ", ")
 ```
 
@@ -27,5 +26,16 @@ recorders_list <- paste(sort(na.omit(unique(MD$Recorders))), sep = ", ")
 
 ## Last Hoverfly recorded
 
-![](../syrphidae.jpg)
+![](last_syrphidae.jpg)
 
+
+```{r}
+#| echo: false
+#| results: hide
+#| warning: false
+#| message: false
+species <- obs$taxon$name
+obs <- cat("Observed the", obs$observed_on, "by", obs$user$login)
+```
+`r species`
+`r obs`

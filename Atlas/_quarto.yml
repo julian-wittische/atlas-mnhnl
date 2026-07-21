@@ -37,6 +37,7 @@ format:
       light:
       - zephyr
       - style.scss
+
 execute:
   echo: true
   warning: false
