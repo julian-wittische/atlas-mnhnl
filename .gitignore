@@ -58,3 +58,9 @@ Atlas/_book/
 .Rhistory
 .RData
 Atlas/_book/
+Atlas/data/Carte_associations_de_sols/
+Atlas/data/landcover-vector-2018-2021-2024-gdb/
+Atlas/biophysical_files/
+*.png
+Atlas/biophysical_files/
+Atlas/biophysical_files/figure-html/
