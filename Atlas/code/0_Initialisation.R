@@ -34,13 +34,18 @@ library(patchwork)
 library(RColorBrewer)
 library(ggnewscale)
 library(ggspatial)
+library(geodata)
 
 ############ Data manipulation ----
 library(tidyverse)
+library(tidyterra)
 library(dplyr)
 library(lubridate)
 library(rcol)
 library(stringr)
+library(rcol)
+library(purrr)
+library(taxize)
 
 
 source(here::here("Atlas", "code", "1_config.R"))
@@ -50,7 +55,4 @@ source(here::here("Atlas", "code", "3_LoadData.R"))
 source(here::here("Atlas", "code", "4_MainMap.R"))
 source(here::here("Atlas", "code", "5_SpeciesMaps.R"))
 source(here::here("Atlas", "code", "6_PresenceMois.R"))
-source(here::here("Atlas", "code", "10_LastHoverfly.R"))
-source(here::here("Atlas", "code", "Geology.R"))
-source(here::here("Atlas", "code", "SoilsMap.R"))
-source(here::here("Atlas", "code", "DSM.R"))
+

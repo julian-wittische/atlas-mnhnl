@@ -1,7 +1,6 @@
 carte_soils <- function(datapath) {
-  #Chargement des données spatiales
-  fichier_shp <- paste0(datapath, "carte_assoc_sol100_v2016_GEOPORTAIL.shp")
-  sols <- sf::st_read(fichier_shp, quiet = TRUE)
+  # Chargement des données spatiales
+  sols <- sf::st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)
   
   couleurs_pecode <- c(
     "1" = "#FCCD76", "2" = "#BAEE81", "3" = "#D9F375", "4" = "#73C88F",
@@ -93,15 +92,13 @@ carte_soils <- function(datapath) {
 
 
 plot_carte_sols <- function(datapath) {
-  fichier_shp <- paste0(datapath, "carte_assoc_sol100_v2016_GEOPORTAIL.shp")
-  sols <- sf::st_read(fichier_shp, quiet = TRUE)
+  sols <- sf::st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)
   
   prep <- .preparer_legende_sols(sols)
   
   ggplot2::ggplot(sols) +
     ggplot2::geom_sf(ggplot2::aes(fill = factor(PECODE)), color = "white", linewidth = 0.05) +
     ggplot2::scale_fill_manual(values = prep$couleurs, na.value = "grey80", guide = "none") +
-    ggspatial::annotation_scale(location = "bl", unit_category = "metric", style = "ticks") +
     ggplot2::theme_void() +
     ggplot2::theme(plot.background = ggplot2::element_rect(fill = "white", color = NA))
 }
@@ -109,11 +106,10 @@ plot_carte_sols <- function(datapath) {
 
 plot_legende_sols <- function(datapath,
                               ncol_legende = 1,
-                              cex_legende = 0.6,
+                              cex_legende = 1.28,
                               x_intersp = 0.5,
                               y_intersp = 0.8) {
-  fichier_shp <- paste0(datapath, "carte_assoc_sol100_v2016_GEOPORTAIL.shp")
-  sols <- sf::st_read(fichier_shp, quiet = TRUE)
+  sols <- sf::st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)
   
   prep <- .preparer_legende_sols(sols)
   
@@ -126,3 +122,4 @@ plot_legende_sols <- function(datapath,
     text.width = max(strwidth(prep$labels, cex = cex_legende))
   )
 }
+

@@ -25,6 +25,9 @@ book:
   - statistics.qmd
   - conservation.qmd
   - references.qmd
+
+  sidebar:
+    collapse-level: 2.0
 bibliography: references.bib
 format:
   html:
@@ -37,7 +40,6 @@ format:
       light:
       - zephyr
       - style.scss
-
 execute:
   echo: true
   warning: false

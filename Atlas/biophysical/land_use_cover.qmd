@@ -1,1 +1,20 @@
-# Land
+# Land Cover
+
+<!-- # ```{r setup} -->
+<!-- # #| echo: false -->
+<!-- # #| warning: false -->
+<!-- # #| message: false -->
+<!-- # #| results: hide -->
+<!-- # here::i_am("atlas-mnhnl.Rproj") -->
+<!-- # source(here::here("Atlas", "code", "0_Initialisation.R")) -->
+<!-- # source(here::here("Atlas", "code", "LandOverMap.R")) -->
+<!-- # ``` -->
+
+## Map
+
+<!-- # ```{r altitude} -->
+<!-- # #| echo: false -->
+<!-- # #| warning: false  -->
+<!-- # #| message: false  -->
+<!-- # plot_land_cover(DATAPATH)  -->
+<!-- # ```  -->

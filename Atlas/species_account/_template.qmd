@@ -48,17 +48,25 @@ cat('</div>\n</div>\n')
 ```
 
 
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+col_vernacular((col_match(params$species)$usage_id))
+```
+
+
 ::: {.species-taxonomy}
-**Sous-famille**  Eristalinae &nbsp; **Tribu**  Eristalini
+**Sous-famille**   &nbsp; **Tribu** 
 :::
 
 
 ::: {.species-taxonomy}
-**EN** &nbsp;   Yellow-haired Sun Fly <br>
-**LB** &nbsp;   Batmanschwiefmecke<br>
-**FR** &nbsp;   Éristale des fleurs<br>
-**DE** &nbsp;   Totenkopfschwebfliege<br>
-**PT** &nbsp;   Mosca-zangão amarela
+**EN** &nbsp;    <br>
+**LB** &nbsp;  <br>
+**FR** &nbsp;   <br>
+**DE** &nbsp;   
+
 :::
 
 

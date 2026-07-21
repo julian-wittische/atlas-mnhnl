@@ -7,12 +7,15 @@
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "Geology.R"))
+source(here::here("Atlas", "code", "SoilsMap.R"))
+source(here::here("Atlas", "code", "DSM.R"))
 ```
 
 
 ## Geology {.unnumbered}
 
-```{r}
+```{r geology}
 #| echo: false
 #| warning: false
 #| message: false
@@ -26,7 +29,7 @@ plot_legende_geologique(uniteGeo, cex_legende = 1.25)
 <details>
 <summary><strong> Show legend description table</strong></summary>
 
-```{r}
+```{r geology description }
 #| echo: false
 #| warning: false
 #| message: false
@@ -43,7 +46,7 @@ knitr::kable(tableau_unites)
 
 ### Altitude {.unnumbered} 
 
-```{r}
+```{r altitude}
 #| echo: false
 #| warning: false 
 #| message: false 
@@ -53,7 +56,7 @@ carte_altitude(DATAPATH)
 
 ### Soil {.unnumbered}
 
-```{r}
+```{r soil}
 #| echo: false
 #| warning: false
 #| message: false

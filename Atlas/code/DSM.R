@@ -33,13 +33,12 @@ carte_altitude <- function(datapath, fact_aggregation = 100) {
     ggplot2::scale_fill_gradient(low = "black", high = "white", guide = "none") +
     ggnewscale::new_scale_fill() +
     ggplot2::geom_raster(data = alt_df, ggplot2::aes(x, y, fill = classe), alpha = 0.6) +
-    ggspatial::annotation_scale(location = "bl", unit_category = "metric", style = "ticks") +
     ggplot2::scale_fill_manual(name = "Altitude (m)", values = stats::setNames(couleurs, etiquettes), na.translate = FALSE) +
     ggplot2::coord_equal() +
     ggplot2::theme_void() +
     ggplot2::theme(
       plot.background = ggplot2::element_rect(fill = "white", color = NA),
-      legend.position = c(0.85, 0.75)
+      legend.position = c(0.85, 0.80), legend.title = ggplot2::element_text(size = 8),legend.text = ggplot2::element_text(size = 7),legend.key.size = ggplot2::unit(0.4, "cm")
     )
   
   return(carte)

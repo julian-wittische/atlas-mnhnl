@@ -59,15 +59,18 @@ cat('</div>\n</div>\n')
 **DE** &nbsp;   Hundeschnauzenschwebfliege<br>
 :::
 
+
+
 :::
+
 
 ::: {.column width="50%"}
 
-## Conservation status {.no-top-margin}
 
+## Conservation status {.no-top-margin}
 ::: {.columns .status-row}
 
-::: {.column width="25%" .status-row}
+::: {.column width="25%"}
 ### Europe
 :::
 
@@ -79,8 +82,8 @@ cat('</div>\n</div>\n')
 
 ::: {.columns .status-row}
 
-::: {.column width="50%" .status-row}
-### European Union (27)
+::: {.column width="50%"}
+### European Union<br>(27)
 :::
 
 ::: {.column width="50%"}
@@ -91,8 +94,8 @@ cat('</div>\n</div>\n')
 
 ::: {.columns .status-row}
 
-::: {.column width="25%" }
-### Luxembourg (preliminary)
+::: {.column width="25%"}
+### Luxembourg  (preliminary)
 :::
 
 ::: {.column width="25%"}
@@ -106,14 +109,12 @@ cat('</div>\n</div>\n')
 :::
 
 
-![](/images/blera_fallax.jpg){.species-photo}
+![](/images/blera_fallax.jpg){.species_photo}
 
 ## Activity period
 
 
-::: {.columns}
-
-```{r g-smooth}
+```{r g-source}
 #| echo: false
 #| warning: false
 #| message: false
@@ -121,7 +122,6 @@ cat('</div>\n</div>\n')
 #| fig.width: 9
 plot_heatmap(params$species)
 ```
-:::
 
 
 ## Description
@@ -145,9 +145,7 @@ Localised in coniferous area, this syrphid can be found all around Luxembourg if
 #| echo: false
 #| warning: false
 #| message: false
-
-m3 <- get_species_map(params$species)
-m3@map
+get_species_map(params$species, data = DB4, rtp = rtp, base_map = base_map)
 ```
 ## Notes
 

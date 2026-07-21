@@ -1,1 +1,34 @@
 # Climate
+
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "Climate_Maps.R"))
+```
+
+
+## Annual Mean Temperature
+
+```{r temp}
+#| echo: false
+#| warning: false
+#| message: false
+plot_bio1_map(bioclim_lux, lux_borders)
+```
+
+## Annual Precipitation
+
+```{r pluv}
+#| echo: false
+#| warning: false
+#| message: false
+plot_bio12_map(bioclim_lux, lux_borders)
+```
+
+
+
+

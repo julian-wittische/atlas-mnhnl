@@ -9,3 +9,6 @@ data/DB3.rds
 chapters/species/*.qmd
 !chapters/species/_template.qmd
 !chapters/species/PLACEHOLDER.qmd
+last_syrphidae.jpg
+Atlas/biophysical.rmarkdown
+biophysical.rmarkdown

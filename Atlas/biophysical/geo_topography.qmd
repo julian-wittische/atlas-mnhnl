@@ -1,4 +1,4 @@
-# Geographic topography
+# Geo and topography
 
 ```{r setup}
 #| echo: false
@@ -7,11 +7,15 @@
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "Geology.R"))
+source(here::here("Atlas", "code", "SoilsMap.R"))
+source(here::here("Atlas", "code", "DSM.R"))
 ```
+
 
 ## Geology {.unnumbered}
 
-```{r}
+```{r geology}
 #| echo: false
 #| warning: false
 #| message: false
@@ -19,20 +23,50 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 #| fig-height: 11
 
 plot_carte_geologique(uniteGeo, failles)
-plot_legende_geologique(uniteGeo, cex_legende = 1.25)
+plot_legende_geologique(uniteGeo, cex_legende = 1.28)
 ```
 
-```{r}
+<details>
+<summary><strong> Show legend description table</strong></summary>
+
+```{r geology description }
 #| echo: false
 #| warning: false
 #| message: false
-tableau <- kable(tableau_unites)
+knitr::kable(tableau_unites)
 ```
-`r tableau`
 
-### Altitude {.unnumbered}
+</details>
 
-### Soil {.unnumbered}
+
+::: {.spacer}
+:::
+
+
+
+## Altitude {.unnumbered} 
+
+<!-- # ```{r altitude} -->
+<!-- # #| echo: false -->
+<!-- # #| warning: false  -->
+<!-- # #| message: false  -->
+<!-- # carte_altitude(DATAPATH)  -->
+<!-- # ```  -->
+
+
+## Soil {.unnumbered}
+
+```{r soil}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 20
+#| fig-height: 11
+
+plot_carte_sols(DATAPATH)
+plot_legende_sols(DATAPATH)
+```
+
 
 
 

@@ -1,6 +1,10 @@
 ---
 title: "Acknowledgement"
+execute:
+  freeze: false
 ---
+
+
 
 ```{r setup}
 #| echo: false
@@ -9,6 +13,7 @@ title: "Acknowledgement"
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "9_LastHoverfly.R"))
 ```
 
 
@@ -17,25 +22,28 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 
 ```{r}
 #| echo: false
-#| results: hide
+#| results: asis
 #| warning: false
-recorders_list <- paste(sort(na.omit(unique(MD$Recorders))), sep = ", ")
+
+recorder_counts <- sort(table(MD$Recorders), decreasing = TRUE)
+top50 <- names(head(recorder_counts, 50))
+
+all_recorders <- sort(na.omit(unique(MD$Recorders)))
+
+formatted <- ifelse(all_recorders %in% top50,
+                     paste0("**", all_recorders, "**"),
+                     all_recorders)
+
+cat(paste(formatted, collapse = ", "))
 ```
 
-`r recorders_list`
+
 
 ## Last Hoverfly recorded
 
 ![](last_syrphidae.jpg)
 
+`r species` <br>
+`r obs`  <br>
+[Voir l'observation](`r obs_url`)
 
-```{r}
-#| echo: false
-#| results: hide
-#| warning: false
-#| message: false
-species <- obs$taxon$name
-obs <- cat("Observed the", obs$observed_on, "by", obs$user$login)
-```
-`r species`
-`r obs`

@@ -151,8 +151,7 @@ Well distributed through the country.
 #| echo: false
 #| warning: false
 #| message: false
-m3 <- get_species_map(params$species)
-m3@map
+get_species_map(params$species, data = DB4, rtp = rtp, base_map = base_map)
 ```
 ## Notes
 
