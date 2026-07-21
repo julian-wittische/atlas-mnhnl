@@ -5,76 +5,132 @@
 # Script objective : génération automatique des fiches espèces (.qmd) depuis DB3 à partir de _template.qmd
 
 
-library(dplyr)
-library(stringr)
+
+library(tidyverse)
 library(here)
-library(yaml)
 
-here::i_am("atlas-mnhnl.Rproj")
+# ---- 0. Chemins ------------------------------------------------------
+species_dir   <- here("Atlas", "species_account")
+template_path <- here("Atlas", "species_account", "_template.qmd")
+yml_path      <- here("Atlas", "_quarto.yml")
 
-############ 1. Préparation et tri des espèces ----
-# Ordre : Sous-famille, Tribu, Genre, épithète -> détermine l'ordre des
-# fiches à l'intérieur de "Species accounts"
-species_df <- DB_taxo %>%
-  filter(!is.na(Subfamily), !is.na(Tribe)) %>%
-  arrange(Subfamily, Tribe, Genus, name) %>%
+# ---- 1. Slug + ordre de tri (alphabetique pur par nom d'espece) --------
+
+make_slug <- function(verbatim_name) {
+  verbatim_name %>%
+    str_trim() %>%
+    str_to_lower() %>%
+    str_replace_all("[^a-z0-9]+", "_") %>%
+    str_remove("^_+") %>%
+    str_remove("_+$")
+}
+
+DB_taxo <- DB_taxo %>%
   mutate(
-    slug        = tolower(str_replace_all(name, "[^A-Za-z0-9]+", "_")),
-    fichier_qmd = paste0(slug, ".qmd")
-  )
+    slug = make_slug(verbatim_name),
+    qmd  = paste0(slug, ".qmd")
+  ) %>%
+  arrange(verbatim_name)
 
-############ 2. Génération d'une fiche .qmd par espèce depuis le template ----
-chemin_template  <- here("Atlas", "species_account", "_template.qmd")
-lignes_template  <- readLines(chemin_template, encoding = "UTF-8", warn = FALSE)
+# ---- 2. Noms vernaculaires ---------------------------------------------
 
-for (i in seq_len(nrow(species_df))) {
-  sp <- species_df[i, ]
-  chemin_sortie <- here("Atlas", "species_account", sp$fichier_qmd)
+lang_codes <- c(EN = "eng", LB = "ltz", FR = "fra", DE = "deu")
+
+get_vernacular <- function(species_name) {
+  empty <- set_names(rep("", length(lang_codes)), names(lang_codes))
+  usage_id <- tryCatch(col_match(species_name)$usage_id, error = function(e) NA)
+  if (is.null(usage_id) || length(usage_id) == 0 || is.na(usage_id)) return(empty)
+  vern <- tryCatch(col_vernacular(usage_id), error = function(e) NULL)
+  if (is.null(vern) || nrow(vern) == 0) return(empty)
+  out <- empty
+  for (lbl in names(lang_codes)) {
+    hit <- vern %>% filter(language == lang_codes[[lbl]])
+    if (nrow(hit) > 0) out[[lbl]] <- hit$name[1]
+  }
+  out
+}
+
+# ---- 3. Generation des fichiers qmd manquants ---------------------------
+template_txt <- read_file(template_path)
+
+fill_template <- function(row, vern) {
+  txt <- template_txt
+  txt <- str_replace_all(txt, fixed("<<species>>"),    row$verbatim_name)
+  txt <- str_replace_all(txt, fixed("<<authorship>>"), row$authorship)
+  txt <- str_replace_all(txt, fixed("<<slug>>"),       row$slug)
+  txt <- str_replace_all(txt, fixed("<<subfamily>>"),  row$Subfamily)
+  txt <- str_replace_all(txt, fixed("<<tribe>>"),      row$Tribe)
+  txt <- str_replace_all(txt, fixed("<<en>>"), vern[["EN"]])
+  txt <- str_replace_all(txt, fixed("<<lb>>"), vern[["LB"]])
+  txt <- str_replace_all(txt, fixed("<<fr>>"), vern[["FR"]])
+  txt <- str_replace_all(txt, fixed("<<de>>"), vern[["DE"]])
+  txt
+}
+
+new_files <- character(0)
+
+for (i in seq_len(nrow(DB_taxo))) {
+  row <- DB_taxo[i, ]
+  out_path <- file.path(species_dir, row$qmd)
+  if (file.exists(out_path)) next   # on ne touche jamais un fichier existant
+  tryCatch({
+    vern <- get_vernacular(row$verbatim_name)
+    writeLines(fill_template(row, vern), out_path, useBytes = TRUE)
+    new_files <- c(new_files, row$qmd)
+    message("Cree : ", row$qmd)
+  }, error = function(e) {
+    warning("Echec pour '", row$verbatim_name, "' (fichier vise : ", row$qmd, ") : ",
+            conditionMessage(e), call. = FALSE)
+  })
+}
+
+if (length(new_files) == 0) {
+  message("Aucune nouvelle espece a generer (tous les fichiers existent deja).")
+}
+
+# ---- 4. Mise a jour de _quarto.yml ---------------------------------------
+# Repere le bloc `part: Species accounts`, releve l'indentation de ses
+# items `chapters:`, puis reecrit la liste complete (existants + nouveaux)
+# triee par ordre alphabetique pur du nom d'espece.
+update_quarto_yml <- function(yml_path, species_dir, DB_taxo) {
+  lines <- readLines(yml_path, encoding = "UTF-8")
   
-  # Idempotence : si la fiche existe déjà (ex. déjà remplie par le script
-  # d'injection de texte species_content/), on ne l'écrase pas
-  if (file.exists(chemin_sortie)) {
-    cat("Fiche déjà existante, non écrasée :", sp$fichier_qmd, "\n")
-    next
+  part_line <- which(str_detect(lines, "part:\\s*Species accounts"))
+  if (length(part_line) != 1) {
+    stop("Impossible de localiser un unique bloc 'part: Species accounts' dans _quarto.yml. ",
+         "Verifie l'intitule exact du part dans le fichier.")
+  }
+  chapters_offset <- which(str_detect(lines[(part_line + 1):length(lines)], "chapters:"))[1]
+  chapters_line <- part_line + chapters_offset
+  
+  first_item_idx <- chapters_line + 1
+  indent <- str_extract(lines[first_item_idx], "^\\s*")
+  item_pat <- paste0("^", indent, "- ")
+  
+  end_idx <- chapters_line
+  j <- first_item_idx
+  while (j <= length(lines) && str_detect(lines[j], item_pat)) {
+    end_idx <- j
+    j <- j + 1
   }
   
-  lignes_fiche <- lignes_template
-  lignes_fiche <- str_replace_all(lignes_fiche, fixed("<<species>>"), sp$name)
-  lignes_fiche <- str_replace_all(lignes_fiche, fixed("<<authorship>>"), sp$authorship)
-  lignes_fiche <- str_replace_all(lignes_fiche, fixed("<<slug>>"), sp$slug)
-  lignes_fiche <- str_replace_all(lignes_fiche, fixed("<<subfamily>>"), sp$Subfamily)
-  lignes_fiche <- str_replace_all(lignes_fiche, fixed("<<tribe>>"), sp$Tribe)
+  existing_qmds <- DB_taxo$qmd[file.exists(file.path(species_dir, DB_taxo$qmd))]
+  new_chapter_lines <- paste0(indent, "- ", file.path(basename(species_dir), existing_qmds))
   
-  writeLines(lignes_fiche, chemin_sortie)
-}
-
-cat(nrow(species_df), "espèces traitées (fiches déjà existantes préservées).\n")
-
-############ 3. Liste ordonnée des chemins de fiches espèces ----
-chemins_especes <- as.list(file.path("species_account", species_df$fichier_qmd))
-
-############ 4. Mise à jour de _quarto.yml (bloc "part: Species accounts") ----
-chemin_yml  <- here("Atlas", "_quarto.yml")
-quarto_yml  <- yaml::read_yaml(chemin_yml)
-
-idx_part_especes <- which(vapply(
-  quarto_yml$book$chapters,
-  function(ch) is.list(ch) && identical(ch$part, "Species accounts"),
-  logical(1)
-))
-
-if (length(idx_part_especes) != 1) {
-  stop(
-    "Impossible de trouver un unique bloc 'part: Species accounts' dans ",
-    "_quarto.yml (trouvé : ", length(idx_part_especes), " occurrence(s)). ",
-    "Vérifie la structure du fichier avant de continuer."
+  lines <- c(
+    lines[seq_len(chapters_line)],
+    new_chapter_lines,
+    lines[(end_idx + 1):length(lines)]
   )
+  
+  writeLines(lines, yml_path, useBytes = TRUE)
 }
 
-quarto_yml$book$chapters[[idx_part_especes]]$chapters <- chemins_especes
+if (length(new_files) > 0) {
+  update_quarto_yml(yml_path, species_dir, DB_taxo)
+  message(length(new_files), " page(s) ajoutee(s) a _quarto.yml.")
+}
 
-yaml::write_yaml(
-  quarto_yml,
-  chemin_yml,
-  handlers = list(logical = yaml::verbatim_logical)  
-)
+# ---- 5. Injection du contenu texte -----------------------------------------
+source(here("Atlas", "code", "8_InjectContent.R"))
+

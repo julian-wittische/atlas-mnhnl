@@ -55,18 +55,14 @@ cat('</div>\n</div>\n')
 col_vernacular((col_match(params$species)$usage_id))
 ```
 
-
 ::: {.species-taxonomy}
-**Sous-famille**   &nbsp; **Tribu** 
+**Sous-famille** <<subfamily>>   &nbsp; **Tribu** <<tribe>>
 :::
-
-
 ::: {.species-taxonomy}
-**EN** &nbsp;    <br>
-**LB** &nbsp;  <br>
-**FR** &nbsp;   <br>
-**DE** &nbsp;   
-
+**EN** <<en>> <br>
+**LB** <<lb>> <br>
+**FR** <<fr>> <br>
+**DE** <<de>>
 :::
 
 

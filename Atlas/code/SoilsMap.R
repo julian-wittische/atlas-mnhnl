@@ -1,39 +1,8 @@
-carte_soils <- function(datapath) {
-  # Chargement des données spatiales
-  sols <- sf::st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)
-  
-  couleurs_pecode <- c(
-    "1" = "#FCCD76", "2" = "#BAEE81", "3" = "#D9F375", "4" = "#73C88F",
-    "5" = "#FCA284", "6" = "#FDC5C3", "7" = "#E58391", "8" = "#A28C92",
-    "9" = "#BDCDD5", "10" = "#FC8474", "11" = "#F8E2A9", "12" = "#CCA275",
-    "13" = "#FEFB6F", "14" = "#FBDE0C", "15" = "#C3A8C9", "16" = "#FEA739",
-    "17" = "#FA8D42", "18" = "#B78D7C", "19" = "#C78F5B", "20" = "#C57871",
-    "21" = "#9EE0A9", "22" = "#A5E2FC", "23" = "#AFD788", "24" = "#E2ADE6",
-    "25" = "#82B7D4", "27" = "#85A3BB", "26" = "white", "32" = "#E58374", "30" = "grey"
-  )
-  carte <- ggplot2::ggplot(sols) +
-    ggplot2::geom_sf(ggplot2::aes(fill = factor(PECODE)), color = "white", linewidth = 0.05) +
-    ggplot2::scale_fill_manual(
-      values = couleurs_pecode,
-      na.value = "grey80",
-      name = "Type de sol",
-      guide = ggplot2::guide_legend(
-        override.aes = list(size = 3),
-        ncol = 2
-      )
-    ) +
-    ggspatial::annotation_scale(location = "bl", unit_category = "metric", style = "ticks") +
-    ggplot2::theme_void() +
-    ggplot2::theme(
-      plot.background = ggplot2::element_rect(fill = "white", color = NA),
-      legend.position = "right",
-      legend.title = ggplot2::element_text(size = 9, face = "bold"),
-      legend.text = ggplot2::element_text(size = 7),
-      legend.key.size = ggplot2::unit(0.4, "cm")
-    )
-  return(carte)
-}
-
+######################## PROJECT: Atlas Template
+# Author: Selene Perez
+# Request: Julian Wittische
+# Start: Summer 2026
+# Script objective : Soils map
 
 
 ###### Static Soils map ----

@@ -52,7 +52,7 @@ plot_bio12_map <- function(bioclim_lux, lux_borders) {
   ggplot() +
     geom_spatraster(data = bio12_lux) +
     scale_fill_gradientn(
-      colours = c("lightyellow", "#2295EA", "darkblue"),
+      colours = c("lightyellow", "#99F0FA", "#200DBA"),
       name = "mm",
       na.value = NA
     ) +

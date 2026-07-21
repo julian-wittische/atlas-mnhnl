@@ -8,7 +8,7 @@
 
 build_master_dataset <- function(datapath, rtp) {
   
-  ## --- Bycatch (pan traps / malaise traps) ---
+  ## Bycatch ---
   bycatch_pan1     <- read_xlsx(paste0(datapath, "ID_Bycatch sorting_20260611.xlsx"), sheet = 3)
   bycatch_pan2     <- read_xlsx(paste0(datapath, "ID_Bycatch sorting_20260611.xlsx"), sheet = 7)
   bycatch_malaise1 <- read_xlsx(paste0(datapath, "ID_Bycatch sorting_20260611.xlsx"), sheet = 8)
@@ -35,10 +35,10 @@ build_master_dataset <- function(datapath, rtp) {
   bycatch$URL         <- NA_character_
   colnames(bycatch)[colnames(bycatch) == "Année"] <- "Year"
   
-  ## --- Hand netting ---
+  ## Hand netting ---
   handnet1 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 1)
   handnet2 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 2)
-  handnet3 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 3) # non utilisé dans le rbind (comme dans le script d'origine)
+  handnet3 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 3) 
   handnet4 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 4)
   handnet5 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 5)
   
@@ -55,7 +55,7 @@ build_master_dataset <- function(datapath, rtp) {
   handnetting$URL         <- NA_character_
   colnames(handnetting)[colnames(handnetting) == "Année"] <- "Year"
   
-  ## --- MNHNL (Mdata.csv) ---
+  ## MNHNL---
   mnhnl <- read.csv(paste0(datapath, "Mdata.csv"), header = TRUE, encoding = "latin1")
   colnames(mnhnl)[17] <- "Source"
   mnhnl$Year <- format(as.Date(mnhnl$date_start, format = "%d/%m/%Y"), "%Y")
@@ -65,41 +65,33 @@ build_master_dataset <- function(datapath, rtp) {
   mnhnl$Observateur <- mnhnl$Recorders
   mnhnl$Identifieur <- mnhnl$Determiner
   
-  # Origin basé sur le préfixe de Observation_Key (plus fiable que Survey)
+  #  Observation_Key 
   mnhnl$Origin <- ifelse(
     startsWith(mnhnl$Observation_Key, "INAT_"), "Inaturalist",
-    ifelse(startsWith(mnhnl$Observation_Key, "oOrg_"), "Observation.org", "MNHNL")
-  )
+    ifelse(startsWith(mnhnl$Observation_Key, "oOrg_"), "Observation.org", "MNHNL"))
   
-  # Lien externe : iNaturalist et Observation.org, chacun avec son format d'URL confirmé
+  # Inat ou obv
   mnhnl$URL <- ifelse(
     mnhnl$Origin == "Inaturalist",
     paste0("https://www.inaturalist.org/observations/", sub("^INAT_", "", mnhnl$Observation_Key)),
     ifelse(
       mnhnl$Origin == "Observation.org",
       paste0("https://observation.org/observation/", sub("^oOrg_", "", mnhnl$Observation_Key), "/"),
-      NA_character_
-    )
-  )
+      NA_character_ )  )
   
-  ## --- Assemblage ---
+  ## Assemblage ---
   cols_keep <- c("Latitude", "Longitude", "ID", "Source", "Origin", "Year", "Date", "Observateur", "Identifieur", "URL")
   
-  master_data <- rbind(
-    bycatch[, cols_keep],
-    handnetting[, cols_keep]
-  )
+  master_data <- rbind( bycatch[, cols_keep],handnetting[, cols_keep])
   colnames(master_data)[1:2] <- c("Lat", "Long")
-  
   mnhnl_subset <- mnhnl[, c("Lat", "Long", "ID", "Source", "Origin", "Year", "Date", "Observateur", "Identifieur", "URL")]
-  
   master_data <- rbind(master_data, mnhnl_subset)
   
   # recodage Source final
   master_data[(master_data$Origin %in% c("Inaturalist", "Observation.org")), "Source"] <- "Citizen science"
   master_data[!(master_data$Source %in% c("Citizen science", "Hand netting", "Malaise traps", "Pan traps")), "Source"] <- "MNHNL"
   
-  master_data <- master_data[c(-517), ] # problematic WBA's sample — TODO: fragile si les données source changent
+  master_data <- master_data[c(-517), ] # problematic WBA sample 
   
   master_data$Long <- as.numeric(master_data$Long)
   master_data$Lat  <- as.numeric(master_data$Lat)
@@ -107,13 +99,12 @@ build_master_dataset <- function(datapath, rtp) {
   
   master_data <- master_data[complete.cases(master_data[, c("Long", "Lat", "Year")]), ]
   
-  ## --- Ajout de la cellule de grille ---
+  ## la grille ---
   master_sf <- st_as_sf(master_data, coords = c("Long", "Lat"), crs = 4326, remove = FALSE)
   rtp_sf    <- st_as_sf(rtp)
   rtp_sf    <- st_transform(rtp_sf, st_crs(master_sf))
   master_sf <- st_join(master_sf, rtp_sf)
   master_data$Cell <- master_sf$layer
-  
   master_data
 }
 
@@ -206,7 +197,6 @@ get_species_map <- function(species_name, data, rtp, base_map) {
         "<strong>Source : </strong>", species_obs$Source, "<br>",
         "<strong>Date : </strong>", format(species_obs$Date, "%d/%m/%Y"), "<br>",
         "<strong>Observateur : </strong>", ifelse(is.na(species_obs$Observateur), "Inconnu", species_obs$Observateur), "<br>",
-        "<strong>Identifieur : </strong>", ifelse(is.na(species_obs$Identifieur), "Inconnu", species_obs$Identifieur),
         ifelse(
           species_obs$Origin == "Inaturalist" & !is.na(species_obs$URL),
           paste0("<br><a href='", species_obs$URL, "' target='_blank'>Voir sur iNaturalist</a>"),
