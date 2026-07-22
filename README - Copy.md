@@ -26,7 +26,7 @@ Situées dans `Atlas/`
 ### `acknowledgement.qmd`
 
 - **Description** : page de remerciements pour les sciences participatives.
-- **Rôle** : liste tous les observateurs, et affiche la dernière observation enregistrée
+- **Rôle** : liste tous les observateurs, les separent en 2 classes : inat+obs.org vs autres sources, et affiche la dernière observation enregistrée
 
 ### `biophysical/geo_topography.qmd`
 
@@ -171,6 +171,12 @@ Situées dans `Atlas/`
 
 - **Description** : script de construction de la table de référence taxonomique.
 - **Rôle** : Construit `DB_taxo` (`verbatim_name`, `name`, `authorship`, `Subfamily`, `Tribe`, `Genus`) en filtrant les espèces valides, en interrogeant le Catalogue of Life (`col_match_checklist`) et en extrayant la sous-famille et la tribu.
+
+### `PhylogeneticGraph.R`
+
+- **Description** : script de conception d un graphe interactif avec les taxon
+- **Rôle** : Voir les differents rang taxonomique de facon interactive
+
 
 ### `utils.R`
 

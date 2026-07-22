@@ -25,18 +25,28 @@ source(here::here("Atlas", "code", "9_LastHoverfly.R"))
 #| results: asis
 #| warning: false
 
+MD$Origin <- ifelse(
+  startsWith(as.character(MD$Observation_Key), "INAT_") | startsWith(as.character(MD$Observation_Key), "oOrg_"),
+  "Citizen science", "Other"
+)
+
 recorder_counts <- sort(table(MD$Recorders), decreasing = TRUE)
 top50 <- names(head(recorder_counts, 50))
 
-all_recorders <- sort(na.omit(unique(MD$Recorders)))
+print_recorder_list <- function(data) {
+  all_recorders <- sort(na.omit(unique(data$Recorders)))
+  formatted <- ifelse(all_recorders %in% top50,
+                       paste0("**", all_recorders, "**"),
+                       all_recorders)
+  cat(paste(formatted, collapse = ", "))
+}
 
-formatted <- ifelse(all_recorders %in% top50,
-                     paste0("**", all_recorders, "**"),
-                     all_recorders)
+cat("### Citizen science (iNaturalist & Observation.org)\n\n")
+print_recorder_list(MD[MD$Origin == "Citizen science", ])
 
-cat(paste(formatted, collapse = ", "))
+cat("\n\n### Other sources\n\n")
+print_recorder_list(MD[MD$Origin == "Other", ])
 ```
-
 
 
 ## Last Hoverfly recorded
@@ -45,5 +55,5 @@ cat(paste(formatted, collapse = ", "))
 
 `r species` <br>
 `r obs`  <br>
-[Voir l'observation](`r obs_url`)
+[View observation](`r obs_url`)
 

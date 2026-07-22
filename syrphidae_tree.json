@@ -1,0 +1,46 @@
+{
+  "name": "Syrphidae",
+  "children": [
+    {
+      "name": "Eristalinae",
+      "children": [
+        {
+          "name": "Eristalini",
+          "children": [
+            {
+              "name": "Eristalis",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Volucellini",
+          "children": [
+            {
+              "name": "Volucella",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Syrphinae",
+      "children": [
+        {
+          "name": "Syrphini",
+          "children": [
+            {
+              "name": "Episyrphus",
+              "children": []
+            },
+            {
+              "name": "Syrphus",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
