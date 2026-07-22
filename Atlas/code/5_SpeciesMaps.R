@@ -6,92 +6,51 @@
 
 ###### Données ----
 
-build_master_dataset <- function(datapath, rtp) {
+build_master_dataset <- function(BC, HN, MD, rtp) {
   
-  ## Bycatch ---
-  bycatch_pan1     <- read_xlsx(paste0(datapath, "ID_Bycatch sorting_20260611.xlsx"), sheet = 3)
-  bycatch_pan2     <- read_xlsx(paste0(datapath, "ID_Bycatch sorting_20260611.xlsx"), sheet = 7)
-  bycatch_malaise1 <- read_xlsx(paste0(datapath, "ID_Bycatch sorting_20260611.xlsx"), sheet = 8)
-  bycatch_malaise2 <- read_xlsx(paste0(datapath, "ID_Bycatch sorting_20260611.xlsx"), sheet = 11)
-  bycatch_pan3     <- read_xlsx(paste0(datapath, "ID_Bycatch sorting_20260611.xlsx"), sheet = 12)
-  
-  bycatch_pan1$Source     <- "Pan traps"
-  bycatch_pan2$Source     <- "Pan traps"
-  bycatch_malaise1$Source <- "Malaise traps"
-  bycatch_malaise2$Source <- "Malaise traps"
-  bycatch_pan3$Source     <- "Pan traps"
-  
-  bycatch <- rbind(bycatch_pan1, bycatch_pan2)
-  bycatch <- rbind(bycatch, bycatch_malaise1)
-  bycatch <- rbind(bycatch, bycatch_malaise2)
-  bycatch <- rbind(bycatch, bycatch_pan3)
-  
-  bycatch$Longitude[bycatch$Longitude == 2723371] <- 5.98
-  bycatch$Date <- dmy(date_5chiffres(bycatch$Date_out))
-  
+  ## Bycatch (deja charge par 3_LoadData.R, pas de re-lecture) ---
+  bycatch <- BC
   bycatch$Observateur <- bycatch$Collecteur
   bycatch$Identifieur <- bycatch$IDENTIFIER
   bycatch$Origin      <- bycatch$Source
   bycatch$URL         <- NA_character_
   colnames(bycatch)[colnames(bycatch) == "Année"] <- "Year"
   
-  ## Hand netting ---
-  handnet1 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 1)
-  handnet2 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 2)
-  handnet3 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 3) 
-  handnet4 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 4)
-  handnet5 <- read_xlsx(paste0(datapath, "ID_Hand netting atlas_20260611.xlsx"), sheet = 5)
-  
-  handnetting <- rbind(handnet1, handnet2)
-  handnetting <- rbind(handnetting, handnet4)
-  handnetting <- rbind(handnetting, handnet5)
-  
-  handnetting$Source <- "Hand netting"
-  handnetting$Date   <- dmy(date_5chiffres(handnetting$Date_out))
-  
+  ## Hand netting (deja charge) ---
+  handnetting <- HN
   handnetting$Observateur <- handnetting$Collecteur
   handnetting$Identifieur <- handnetting$IDENTIFIER
   handnetting$Origin      <- handnetting$Source
   handnetting$URL         <- NA_character_
   colnames(handnetting)[colnames(handnetting) == "Année"] <- "Year"
   
-  ## MNHNL---
-  mnhnl <- read.csv(paste0(datapath, "Mdata.csv"), header = TRUE, encoding = "latin1")
-  colnames(mnhnl)[17] <- "Source"
-  mnhnl$Year <- format(as.Date(mnhnl$date_start, format = "%d/%m/%Y"), "%Y")
-  mnhnl$Date <- as.Date(mnhnl$date_start, format = "%d/%m/%Y")
-  mnhnl$ID   <- mnhnl$preferred
-  
+  ## MNHNL (deja charge) ---
+  mnhnl <- MD
+  mnhnl$ID          <- mnhnl$preferred
   mnhnl$Observateur <- mnhnl$Recorders
   mnhnl$Identifieur <- mnhnl$Determiner
-  
-  #  Observation_Key 
   mnhnl$Origin <- ifelse(
     startsWith(mnhnl$Observation_Key, "INAT_"), "Inaturalist",
     ifelse(startsWith(mnhnl$Observation_Key, "oOrg_"), "Observation.org", "MNHNL"))
-  
-  # Inat ou obv
   mnhnl$URL <- ifelse(
     mnhnl$Origin == "Inaturalist",
     paste0("https://www.inaturalist.org/observations/", sub("^INAT_", "", mnhnl$Observation_Key)),
     ifelse(
       mnhnl$Origin == "Observation.org",
       paste0("https://observation.org/observation/", sub("^oOrg_", "", mnhnl$Observation_Key), "/"),
-      NA_character_ )  )
+      NA_character_))
   
-  ## Assemblage ---
+  ## Assemblage (identique a avant) ---
   cols_keep <- c("Latitude", "Longitude", "ID", "Source", "Origin", "Year", "Date", "Observateur", "Identifieur", "URL")
-  
-  master_data <- rbind( bycatch[, cols_keep],handnetting[, cols_keep])
+  master_data <- rbind(bycatch[, cols_keep], handnetting[, cols_keep])
   colnames(master_data)[1:2] <- c("Lat", "Long")
   mnhnl_subset <- mnhnl[, c("Lat", "Long", "ID", "Source", "Origin", "Year", "Date", "Observateur", "Identifieur", "URL")]
   master_data <- rbind(master_data, mnhnl_subset)
   
-  # recodage Source final
   master_data[(master_data$Origin %in% c("Inaturalist", "Observation.org")), "Source"] <- "Citizen science"
   master_data[!(master_data$Source %in% c("Citizen science", "Hand netting", "Malaise traps", "Pan traps")), "Source"] <- "MNHNL"
   
-  master_data <- master_data[c(-517), ] # problematic WBA sample 
+  master_data <- master_data[c(-517), ] # problematic WBA sample
   
   master_data$Long <- as.numeric(master_data$Long)
   master_data$Lat  <- as.numeric(master_data$Lat)
@@ -108,7 +67,7 @@ build_master_dataset <- function(datapath, rtp) {
   master_data
 }
 
-DB4 <- build_master_dataset(DATAPATH, rtp)
+DB4 <- build_master_dataset(BC, HN, MD, rtp)
 
 
 

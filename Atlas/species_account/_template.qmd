@@ -22,6 +22,7 @@ include-in-header:
 #| echo: false
 #| warning: false
 #| message: false
+#| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
@@ -48,16 +49,10 @@ cat('</div>\n</div>\n')
 ```
 
 
-```{r}
-#| echo: false
-#| warning: false
-#| message: false
-col_vernacular((col_match(params$species)$usage_id))
-```
-
 ::: {.species-taxonomy}
 **Sous-famille** <<subfamily>>   &nbsp; **Tribu** <<tribe>>
 :::
+
 ::: {.species-taxonomy}
 **EN** <<en>> <br>
 **LB** <<lb>> <br>
@@ -114,7 +109,7 @@ col_vernacular((col_match(params$species)$usage_id))
 :::
 
 
-![](/images/<<slug>>.jpeg){.species_photo}
+![](/images/<<name>>.jpeg){.species_photo}
 
 ## Activity period
 
@@ -141,8 +136,7 @@ plot_heatmap(params$species)
 #| echo: false
 #| warning: false
 #| message: false
-m3 <- get_species_map(params$species)
-m3@map
+get_species_map(params$species, data = DB4, rtp = rtp, base_map = base_map)
 ```
 
 ## Notes

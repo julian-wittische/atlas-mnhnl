@@ -3,6 +3,9 @@
 
 taxon <- "Hoverflies"
 
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+
 ############ Titres dynamiques ----
 
 titre_book <- paste0("Atlas of ", taxon, " in Luxembourg")
