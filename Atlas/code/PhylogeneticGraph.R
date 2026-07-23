@@ -35,15 +35,13 @@ extract_rank <- function(id, rank) {
 # création table arbre
 tree_data <- matches %>%
   filter(!is.na(usage_id)) %>%
-  mutate(Genus = word(str_replace(verbatim_name, "_", " "), 1),
-         Subfamily = map_chr(usage_id, extract_rank, "subfamily"),
-         Tribe = map_chr(usage_id, extract_rank, "tribe") ) %>%
+  mutate(Genus = word(str_replace(verbatim_name, "_", " "), 1),Subfamily = map_chr(usage_id, extract_rank, "subfamily"), Tribe = map_chr(usage_id, extract_rank, "tribe") ) %>%
   select(Subfamily,Tribe, Genus, name) %>%
   mutate(across(everything(), ~replace_na(as.character(.), "Unknown")) ) %>%
   distinct()
 
 
 # Arbre
-collapsibleTree(tree_data,hierarchy = c("Subfamily", "Tribe", "Genus", "name"),root = "Syrphidae",collapsed = TRUE,
-  zoomable = TRUE,height = 1500, width = "100%", fontSize = 12,linkLength = 400
+collapsibleTree(tree_data,hierarchy = c("Subfamily", "Tribe", "Genus", "name"),root = "Syrphidae",collapsed = TRUE,zoomable = TRUE,height = 1500, width = "100%", fontSize = 12,linkLength = 400
 )
+

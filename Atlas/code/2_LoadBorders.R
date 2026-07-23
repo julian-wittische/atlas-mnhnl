@@ -9,6 +9,8 @@
 bbox <- st_bbox(c(xmin = 5.7, xmax = 6.55, ymax = 50.2, ymin = 49.4),
                 crs = st_crs(4326))
 
+bbox_2169 <- st_bbox(st_transform(st_as_sfc(bbox),c(xmin = 5.7, xmax = 6.55, ymax = 50.2, ymin = 49.4), crs = 2169))
+
 ############ Greater Region borders
 invisible(capture.output(GRborders <- st_read(paste0(DATAPATH, "GRborders.gpkg"), quiet = TRUE)))
 
@@ -23,6 +25,10 @@ lux_borders <- gb_get_adm0("Luxembourg")
 lux_borders <- st_transform(lux_borders, crs = "EPSG:2169")
 lux_borders <- as(lux_borders, "Spatial")  # rasterize() attend un objet sp, pas sf
 
+lux_borders_sf <- gb_get_adm0("Luxembourg")
+lux_borders_sf <- st_transform(lux_borders_sf, crs = "EPSG:2169")
+lux_borders <- as(lux_borders_sf, "Spatial")
+
 ############ Rasterisation de la frontière sur la grille 5 km
 lux_raster <- rasterize(lux_borders, lux5km, mask = TRUE, getCover = TRUE)
 lux_raster[lux_raster == 0] <- NA  # on retire les cellules sans recouvrement
@@ -33,3 +39,14 @@ cell_number_lux[!is.na(cell_number_lux)] <- 1:length(cell_number_lux[!is.na(cell
 
 ############ Conversion du raster numéroté en polygone
 rtp <- rasterToPolygons(cell_number_lux, digits = 20)
+
+GR2169_c <- GRborders %>%
+  st_crop(bbox) %>%
+  st_transform("EPSG:2169")
+
+############ Labels des pays voisins
+country_labels <- data.frame(
+  name = c("FRANCE", "BELGIUM", "GERMANY"),
+  x = c(58000, 55000, 90000),   # à ajuster selon ta bbox
+  y = c(55000, 133000, 120000)    # à ajuster selon ta bbox
+)

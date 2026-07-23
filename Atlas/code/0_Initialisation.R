@@ -43,7 +43,6 @@ library(dplyr)
 library(lubridate)
 library(rcol)
 library(stringr)
-library(rcol)
 library(purrr)
 library(taxize)
 

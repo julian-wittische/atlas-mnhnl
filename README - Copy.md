@@ -142,6 +142,11 @@ Situées dans `Atlas/`
 - **Description** : script de récupération de la dernière observation
 - **Rôle** : interroge l'API iNaturalist pour récupérer l'id taxonomique de la famille choisie. Télécharge la photo dans `Atlas/last_syrphidae.jpg`, utilisée par `acknowledgement.qmd`.
 
+### `10_PieChart.R`
+
+- **Description** : génération de 2 pie chart taxonomique
+- **Rôle** : voir la dispersion des tribus (couleur par sous-famille) et sous-familles
+
 ### `ConfigTEMPLATE.txt`
 
 - **Description** : exemple de fichier de config

@@ -52,7 +52,7 @@ cat('</div>\n</div>\n')
 
 
 ::: {.species-taxonomy}
-**Sous-famille**  Eristalinae &nbsp; **Tribu**  Eristalini
+**Subfamily**  Eristalinae &nbsp; **Tribe**  Eristalini
 :::
 
 

@@ -49,7 +49,7 @@ cat('</div>\n</div>\n')
 ```
 
 ::: {.species-taxonomy}
-**Sous-famille** *Eristalinae* &nbsp; **Tribu** *Xylotini*
+**Subfamily** *Eristalinae* &nbsp; **Tribe** *Milesiini*
 :::
 
 ::: {.species-common-names}

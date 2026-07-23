@@ -17,6 +17,8 @@ source(here::here("Atlas", "code", "Climate_Maps.R"))
 #| echo: false
 #| warning: false
 #| message: false
+#| fig.height: 14
+#| fig.width: 14
 plot_bio1_map(bioclim_lux, lux_borders)
 ```
 
@@ -26,9 +28,52 @@ plot_bio1_map(bioclim_lux, lux_borders)
 #| echo: false
 #| warning: false
 #| message: false
+#| fig.height: 14
+#| fig.width: 14
 plot_bio12_map(bioclim_lux, lux_borders)
 ```
 
 
+## Map of your choice
 
+```{=html}
+<select id="bio-select" onchange="showBioMap(this.value)" class="bio-select"></select>
+```
 
+```{r build-maps}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: asis
+#| fig.height: 14
+#| fig.width: 14
+for (i in seq_len(nrow(bio_vars))) {
+  n <- bio_vars$num[i]
+  titre <- bio_vars$title[i]
+  cat(sprintf('<div id="map-%d" class="bio-map" data-title="%s">\n', n, titre))
+  print(plot_bio_map(bioclim_lux, lux_borders, var_num = n))
+  cat('</div>\n\n')
+}
+```
+
+```{=html}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var maps = document.querySelectorAll(".bio-map");
+  var select = document.getElementById("bio-select");
+  maps.forEach(function(el, i) {
+    var opt = document.createElement("option");
+    opt.value = el.id;
+    opt.text = el.dataset.title;
+    select.appendChild(opt);
+    el.style.display = i === 0 ? "block" : "none";
+  });
+});
+function showBioMap(id) {
+  document.querySelectorAll(".bio-map").forEach(function(el) {
+    el.style.display = "none";
+  });
+  document.getElementById(id).style.display = "block";
+}
+</script>
+```

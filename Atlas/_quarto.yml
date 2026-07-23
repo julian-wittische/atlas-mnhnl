@@ -22,7 +22,7 @@ book:
     chapters:
     - species_account/blera_fallax.qmd
     - species_account/myathropa_florea.qmd
-  - statistics.qmd
+  - spatial.qmd
   - conservation.qmd
   - references.qmd
 

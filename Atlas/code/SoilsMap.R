@@ -61,21 +61,32 @@
 
 
 plot_carte_sols <- function(datapath) {
-  sols <- sf::st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)
+  sols <- st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)
+
+  sols_lux <- st_intersection(sols, st_geometry(lux_borders_sf))
   
-  prep <- .preparer_legende_sols(sols)
-  
-  ggplot2::ggplot(sols) +
-    ggplot2::geom_sf(ggplot2::aes(fill = factor(PECODE)), color = "white", linewidth = 0.05) +
-    ggplot2::scale_fill_manual(values = prep$couleurs, na.value = "grey80", guide = "none") +
-    ggplot2::theme_void() +
-    ggplot2::theme(plot.background = ggplot2::element_rect(fill = "white", color = NA))
+  prep <- .preparer_legende_sols(sols_lux)
+  ggplot() +
+    geom_sf(data = sols_lux, aes(fill = factor(PECODE)), color = "white", linewidth = 0.05) +
+    scale_fill_manual(values = prep$couleurs, na.value = "grey80", guide = "none") +
+    geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
+    geom_text(data = country_labels, aes(x = x, y = y, label = name),
+              size = 6, color = "grey40", fontface = "italic") +
+    theme_void() +
+    theme(
+      plot.background = element_rect(fill = "white", color = NA),
+      plot.margin = margin(0, 0, 0, 0, "cm") 
+    ) +
+    coord_sf(crs = "EPSG:2169",
+             xlim = c(bbox_2169["xmin"], bbox_2169["xmax"]),
+             ylim = c(bbox_2169["ymin"], bbox_2169["ymax"]),
+             expand = FALSE)
 }
 
 
 plot_legende_sols <- function(datapath,
                               ncol_legende = 1,
-                              cex_legende = 1.28,
+                              cex_legende = 1.5,
                               x_intersp = 0.5,
                               y_intersp = 0.8) {
   sols <- sf::st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)

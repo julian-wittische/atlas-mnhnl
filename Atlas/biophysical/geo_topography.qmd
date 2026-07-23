@@ -9,7 +9,7 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 source(here::here("Atlas", "code", "Geology.R"))
 source(here::here("Atlas", "code", "SoilsMap.R"))
-source(here::here("Atlas", "code", "DSM.R"))
+# source(here::here("Atlas", "code", "DSM.R"))
 ```
 
 
@@ -20,16 +20,37 @@ source(here::here("Atlas", "code", "DSM.R"))
 #| warning: false
 #| message: false
 #| fig-width: 20
-#| fig-height: 11
+#| fig-height: 20
 
 plot_carte_geologique(uniteGeo, failles)
+```
+
+```{r geology LEGENDE}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 20
+#| fig-height: 12
+
 plot_legende_geologique(uniteGeo, cex_legende = 1.28)
 ```
 
 <details>
-<summary><strong> Show legend description table</strong></summary>
+<summary><strong> Show french legend description table</strong></summary>
 
-```{r geology description }
+```{r geology description fr}
+#| echo: false
+#| warning: false
+#| message: false
+knitr::kable(tableau_unites)
+```
+
+</details>
+
+<details>
+<summary><strong> Show german legend description table</strong></summary>
+
+```{r geology description de}
 #| echo: false
 #| warning: false
 #| message: false
@@ -48,10 +69,10 @@ knitr::kable(tableau_unites)
 
 <!-- # ```{r altitude} -->
 <!-- # #| echo: false -->
-<!-- # #| warning: false  -->
-<!-- # #| message: false  -->
-<!-- # carte_altitude(DATAPATH)  -->
-<!-- # ```  -->
+<!-- # #| warning: false -->
+<!-- # #| message: false -->
+<!-- # carte_altitude(DATAPATH) -->
+<!-- # ``` -->
 
 
 ## Soil {.unnumbered}
@@ -61,12 +82,21 @@ knitr::kable(tableau_unites)
 #| warning: false
 #| message: false
 #| fig-width: 20
-#| fig-height: 11
+#| fig-height: 20
 
 plot_carte_sols(DATAPATH)
-plot_legende_sols(DATAPATH)
 ```
 
+```{r soil LEGENDE}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 20
+#| fig-height: 15
+
+
+plot_legende_sols(DATAPATH)
+```
 
 
 

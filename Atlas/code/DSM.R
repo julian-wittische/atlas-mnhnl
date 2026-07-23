@@ -1,49 +1,64 @@
+######################## PROJECT: Atlas Template
+# Author: Selene Perez
+# Request: Julian Wittische
+# Start: Summer 2026
+# Script objective : Create and a static and an interactive geology map 
+
+
 
 carte_altitude <- function(datapath, fact_aggregation = 100) {
   fichier_tif <- paste0(datapath, "MNS_Lidar2024.tif")
-  dsm <- terra::rast(fichier_tif)
+  dsm <- rast(fichier_tif)
   
-
-  dsm_agg <- terra::aggregate(dsm, fact = fact_aggregation, fun = "mean")
+  dsm_agg <- aggregate(dsm, fact = fact_aggregation, fun = "mean")
   
-
+  lux_borders_vect_dsm <- vect(st_transform(lux_borders_sf, crs(dsm_agg)))
+  dsm_agg <- mask(crop(dsm_agg, lux_borders_vect_dsm), lux_borders_vect_dsm)
+  
   breaks <- c(-Inf, 150, 250, 350, 450, 550, Inf)
   etiquettes <- c("< 150", "150-250", "250-350", "350-450", "450-550", "> 550")
   couleurs <- c("#6AA85B", "#9DB84A", "#dbcc46", "#c9973a", "#a87334", "#704B29")
   
-
-  slope <- terra::terrain(dsm_agg, "slope", unit = "radians")
-  aspect <- terra::terrain(dsm_agg, "aspect", unit = "radians")
+  slope <- terrain(dsm_agg, "slope", unit = "radians")
+  aspect <- terrain(dsm_agg, "aspect", unit = "radians")
   
-  hillshade_df <- terra::shade(slope, aspect, angle = 45, direction = 315) |>
+  hillshade_df <- shade(slope, aspect, angle = 45, direction = 315) |>
     as.data.frame(xy = TRUE) |> 
-    dplyr::rename(shade = 3)
+    rename(shade = 3)
   
-
   matrice_reclass <- matrix(c(breaks[-7], breaks[-1], 1:6), ncol = 3)
   
-  alt_df <- terra::classify(dsm_agg, rcl = matrice_reclass) |>
+  alt_df <- classify(dsm_agg, rcl = matrice_reclass) |>
     as.data.frame(xy = TRUE) |> 
-    dplyr::rename(classe = 3) |>
-    dplyr::mutate(classe = factor(classe, levels = 1:6, labels = etiquettes))
+    rename(classe = 3) |>
+    mutate(classe = factor(classe, levels = 1:6, labels = etiquettes))
   
-
-  carte <- ggplot2::ggplot() +
-    ggplot2::geom_raster(data = hillshade_df, ggplot2::aes(x, y, fill = shade), show.legend = FALSE) +
-    ggplot2::scale_fill_gradient(low = "black", high = "white", guide = "none") +
-    ggnewscale::new_scale_fill() +
-    ggplot2::geom_raster(data = alt_df, ggplot2::aes(x, y, fill = classe), alpha = 0.6) +
-    ggplot2::scale_fill_manual(name = "Altitude (m)", values = stats::setNames(couleurs, etiquettes), na.translate = FALSE) +
-    ggplot2::coord_equal() +
-    ggplot2::theme_void() +
-    ggplot2::theme(
-      plot.background = ggplot2::element_rect(fill = "white", color = NA),
-      legend.position = c(0.85, 0.80), legend.title = ggplot2::element_text(size = 8),legend.text = ggplot2::element_text(size = 7),legend.key.size = ggplot2::unit(0.4, "cm")
-    )
+  zone_totale <- st_as_sfc(bbox_2169)
+  masque_hors_lux <- st_difference(zone_totale, st_union(lux_borders_sf))
+  
+  carte <- ggplot() +
+    geom_raster(data = hillshade_df, aes(x, y, fill = shade), show.legend = FALSE) +
+    scale_fill_gradient(low = "black", high = "white", guide = "none") +
+    new_scale_fill() +
+    geom_raster(data = alt_df, aes(x, y, fill = classe), alpha = 0.6) +
+    scale_fill_manual(name = "Altitude (m)", values = setNames(couleurs, etiquettes), na.translate = FALSE) +
+    geom_sf(data = masque_hors_lux, fill = "white", color = NA) +
+    geom_sf(data = lux_borders_sf, fill = NA, color = "black", linewidth = 0.4) +
+    geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
+    geom_text(data = country_labels, aes(x = x, y = y, label = name),
+              size = 3, color = "grey40", fontface = "italic") +
+    coord_sf(crs = "EPSG:2169",
+             xlim = c(bbox_2169["xmin"], bbox_2169["xmax"]),
+             ylim = c(bbox_2169["ymin"], bbox_2169["ymax"]),
+             expand = FALSE) +
+    theme_void() +
+    theme(
+      plot.background = element_rect(fill = "white", color = NA), legend.position = c(0.85, 0.80), 
+      legend.title = element_text(size = 8), legend.text = element_text(size = 7), legend.key.size = unit(0.4, "cm"),
+      plot.margin = margin(0, 0, 0, 0, "cm"))
   
   return(carte)
 }
-
 
 # 
 # 

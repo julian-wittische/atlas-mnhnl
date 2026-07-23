@@ -2,7 +2,7 @@
 # Author: Selene Perez
 # Request: Julian Wittische
 # Start: Summer 2026
-# Script objective : Load geology data and create an interactive maps
+# Script objective : Load geology data and create a static and an interactive map
 
 
 
@@ -83,15 +83,22 @@ m2@map <- m2@map %>%
 
 plot_carte_geologique <- function(uniteGeo, failles) {
   prep <- .preparer_legende_geo(uniteGeo)
-  
   ggplot() +
     geom_sf(data = uniteGeo, aes(fill = NOMUNIT_FR), color = NA) +
     scale_fill_manual(values = prep$palette_geo, guide = "none") +
     geom_sf(data = failles, color = "red", linewidth = 0.4) +
+    geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
+    geom_text(data = country_labels, aes(x = x, y = y, label = name),
+              size = 6, color = "grey40", fontface = "italic") +
     theme_void() +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          plot.margin = margin(0, 0, 0, 0, "cm"))
 }
 
+uniteGeo_lux <- st_intersection(uniteGeo, st_geometry(lux_borders_sf))
+failles_lux  <- st_intersection(failles, st_geometry(lux_borders_sf))
+
+plot_carte_geologique(uniteGeo_lux, failles_lux)
 
 plot_legende_geologique <- function(uniteGeo,
                                     ncol_legende = 2,
@@ -104,16 +111,12 @@ plot_legende_geologique <- function(uniteGeo,
   
   fill_col <- ifelse(legende_df$type == "unit", palette_geo[legende_df$NOMUNIT_FR], NA_character_)
   font_vec <- ifelse(legende_df$type %in% c("ere", "grouping"), 2L, 1L)
-  
-  # plus de function() { } ici — le code s'exécute directement
+
   par(mar = c(0, 0, 0, 0), xpd = TRUE)
   plot.new()
-  legend(
-    "center", legend = legende_df$label, fill = fill_col, border = NA,
-    text.font = font_vec, ncol = ncol_legende, cex = cex_legende, bty = "n",
-    x.intersp = x_intersp, y.intersp = y_intersp,
-    text.width = max(strwidth(legende_df$label, cex = cex_legende))
-  )
+  legend( "center", legend = legende_df$label, fill = fill_col, border = NA,
+    text.font = font_vec, ncol = ncol_legende, cex = cex_legende, bty = "n",  x.intersp = x_intersp, y.intersp = y_intersp,
+    text.width = max(strwidth(legende_df$label, cex = cex_legende)) )
 }
 
 
@@ -126,12 +129,7 @@ tableau_unites <- uniteGeo %>%
   dplyr::arrange(AGE_MIN) %>%
   dplyr::filter(!is.na(DESCUNIT_FR)) %>% 
   dplyr::filter(!is.na(CODESTRATUNIT)) %>% 
-  dplyr::rename(
-    "Code" = CODESTRATUNIT,
-    "Unité géologique" = NOMUNIT_FR,
-    "Description" = DESCUNIT_FR
-  )
-
+  dplyr::rename( "Code" = CODESTRATUNIT,"Unité géologique" = NOMUNIT_FR,"Description" = DESCUNIT_FR)
 
 tableau_unites <- tableau_unites[, c("Code", "Unité géologique", "Description")]
 

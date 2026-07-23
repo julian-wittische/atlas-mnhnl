@@ -156,6 +156,7 @@ get_species_map <- function(species_name, data, rtp, base_map) {
         "<strong>Source : </strong>", species_obs$Source, "<br>",
         "<strong>Date : </strong>", format(species_obs$Date, "%d/%m/%Y"), "<br>",
         "<strong>Observateur : </strong>", ifelse(is.na(species_obs$Observateur), "Inconnu", species_obs$Observateur), "<br>",
+        "<strong>Identifier : </strong>", ifelse(is.na(species_obs$Identifieur), "Inconnu", species_obs$Observateur), "<br>",
         ifelse(
           species_obs$Origin == "Inaturalist" & !is.na(species_obs$URL),
           paste0("<br><a href='", species_obs$URL, "' target='_blank'>Voir sur iNaturalist</a>"),
