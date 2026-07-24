@@ -96,18 +96,7 @@ ul.sidebar-section .sidebar-item-text {
           border: none;
           border-radius: 4px;
       }
-.dropdown-content {
-          display: none;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          background: white;
-          min-width: 200px;
-          padding: 8px 0;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-          border-radius: 4px;
-          z-index: 1000;
-      }
+
 .dropdown-content span {
           display: block;
           padding: 6px 14px;
@@ -208,14 +197,8 @@ h2.no-top-margin {
   line-height: 1.65;
   text-align :left;}
 
-  em, i {
-    font-style: italic;
-  }
-
-  strong {
-    font-weight: 700;
-    color: $headings-color;
-  }
+.species-taxonomy em, .species-taxonomy i { font-style: italic; }
+.species-taxonomy strong { font-weight: 700; color: $headings-color; }
 
 .spacer {
   height: 2rem;
