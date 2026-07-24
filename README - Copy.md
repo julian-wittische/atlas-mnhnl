@@ -147,6 +147,8 @@ Situées dans `Atlas/`
 - **Description** : génération de 2 pie chart taxonomique
 - **Rôle** : voir la dispersion des tribus (couleur par sous-famille) et sous-familles
 
+
+
 ### `ConfigTEMPLATE.txt`
 
 - **Description** : exemple de fichier de config
@@ -181,7 +183,6 @@ Situées dans `Atlas/`
 
 - **Description** : script de conception d un graphe interactif avec les taxon
 - **Rôle** : Voir les differents rang taxonomique de facon interactive
-
 
 ### `utils.R`
 

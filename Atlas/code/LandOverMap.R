@@ -1,8 +1,7 @@
 plot_land_cover <- function(datapath,
                             annee = 2024,
                             layer_land_cover = "LandCover_Luxembourg_status_2024") {
-  
-  fichier_gdb <- file.path(datapath, "LandCover_Luxembourg_2018_2021_2024.gdb")
+
   
   
   land_cover_colors <- c(
@@ -33,39 +32,33 @@ plot_land_cover <- function(datapath,
   
 
   land_cover <- land_cover %>%
-    mutate( LC_chr = as.character(.data[[col_annee]]), LC_chr = factor(LC_chr, levels = names(land_cover_colors)))
+    mutate( COL = as.character(.data[[col_annee]]), COL = factor(COL, levels = names(land_cover_colors)))
   
   
   ggplot() +
-    geom_sf(data = land_cover, aes(fill = LC_chr), color = NA) +
-    scale_fill_manual(
-      values = land_cover_colors,
-      labels = land_cover_labels[levels(land_cover$LC_chr)],
+    geom_sf(data = land_cover, aes(fill = COL), color = NA) +
+    scale_fill_manual( values = land_cover_colors,
+      labels = land_cover_labels[levels(land_cover$COL)],
       name = "Land Cover",
-      na.translate = FALSE
-    ) +
-    geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
-    geom_text(data = country_labels, aes(x = x, y = y, label = name),
-              size = 3, color = "grey40", fontface = "italic") +
-    annotation_scale(
-      location = "br",
+      na.translate = FALSE ) +
+    # geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
+    # geom_text(data = country_labels, aes(x = x, y = y, label = name),
+    #           size = 3, color = "grey40", fontface = "italic") +
+    annotation_scale( location = "br",
       width_hint = 0.25,
       style = "bar",
-      text_cex = 0.7
-    ) +
+      text_cex = 0.7 ) +
     coord_sf(crs = "EPSG:2169",
              xlim = c(bbox_2169["xmin"], bbox_2169["xmax"]),
              ylim = c(bbox_2169["ymin"], bbox_2169["ymax"]),
              expand = FALSE) +
     theme_void() +
-    theme(
-      panel.background = element_rect(fill = "white", color = NA),
+    theme(  panel.background = element_rect(fill = "white", color = NA),
       plot.background  = element_rect(fill = "white", color = NA),
       legend.position = c(0.98, 0.98),
       legend.justification = c("right", "top"),
       legend.background = element_rect(fill = alpha("white", 0.8), color = "grey70"),
       legend.title = element_text(face = "bold", size = 10),
       legend.text = element_text(size = 8),
-      legend.key.size = unit(0.4, "cm")
-    )
+      legend.key.size = unit(0.4, "cm"))
 }

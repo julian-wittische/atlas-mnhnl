@@ -23,3 +23,9 @@ plot_activite_smooth <- function(species_name, data = DB3) {
       panel.grid.major = element_blank()
     )
 }
+
+install.packages("rredlist")
+library(rredlist)
+rredlist::rl_use_iucn()
+rl_species_latest(genus = "Eristalis", species = "tenax")
+<
