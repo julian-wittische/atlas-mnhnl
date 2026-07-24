@@ -2,6 +2,7 @@ project:
   type: book
   execute-dir: project
 book:
+  bread-crumbs: false
   title: Atlas of Hoverflies in Luxembourg
   reader-mode: true
   repo-url: https://github.com/julian-wittische/atlas-mnhnl

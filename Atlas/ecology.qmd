@@ -2,8 +2,41 @@
 title: "Ecology of Luxembourg Hoverflies"
 ---
 
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "Taxonomie.R"))
+source(here::here("Atlas", "code", "10_Piechart.R"))
+```
 
 
+# Tribes dispersion
+
+&nbsp; Colored by subfamily
+
+```{r Tribes}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig.height: 11
+#| fig.width: 11
+plot_tribe_pie(DB_taxo)
+```
+
+# Subfamilies dispersion
+
+```{r Subfamily}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig.height: 11
+#| fig.width: 11
+plot_subfamily_pie(DB_taxo)
+```
 
 
 

@@ -46,11 +46,17 @@ carte_altitude <- function(datapath, fact_aggregation = 100) {
     geom_sf(data = lux_borders_sf, fill = NA, color = "black", linewidth = 0.4) +
     geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
     geom_text(data = country_labels, aes(x = x, y = y, label = name),
-              size = 3, color = "grey40", fontface = "italic") +
-    coord_sf(crs = "EPSG:2169",
-             xlim = c(bbox_2169["xmin"], bbox_2169["xmax"]),
-             ylim = c(bbox_2169["ymin"], bbox_2169["ymax"]),
-             expand = FALSE) +
+              size = 6, color = "grey40", fontface = "italic") +
+    coord_sf(crs = "EPSG:2169", xlim = c(bbox_2169["xmin"], bbox_2169["xmax"]),
+             ylim = c(bbox_2169["ymin"], bbox_2169["ymax"]),  expand = FALSE) +
+    annotation_scale(location = "bl", width_hint = 0.2,
+                     style = "ticks", text_cex = 0.7,
+                     line_width = 1, height = unit(0.5, "cm"),
+                     pad_x = unit(0.7, "cm"), pad_y = unit(0.8, "cm")) +
+    annotation_north_arrow(location = "tr", which_north = "true",
+                           style = north_arrow_fancy_orienteering(),
+                           height = unit(1.8, "cm"), width = unit(1.8, "cm"),
+                           pad_x = unit(1.5, "cm"), pad_y = unit(1, "cm")) +
     theme_void() +
     theme(
       plot.background = element_rect(fill = "white", color = NA), legend.position = c(0.85, 0.80), 

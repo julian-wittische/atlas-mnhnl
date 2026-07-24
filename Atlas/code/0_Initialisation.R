@@ -27,11 +27,12 @@ library(htmlwidgets)
 
 ############ Plotting ----
 library(RColorBrewer)
+library(colorspace)
 library(rayshader)
 library(ggplot2)
+library(ggrepel)
 library(cowplot)
 library(patchwork)
-library(RColorBrewer)
 library(ggnewscale)
 library(ggspatial)
 library(geodata)
@@ -45,6 +46,7 @@ library(rcol)
 library(stringr)
 library(purrr)
 library(taxize)
+library(scales)
 
 
 source(here::here("Atlas", "code", "1_config.R"))

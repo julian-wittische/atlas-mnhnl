@@ -13,16 +13,16 @@ source(here::here("Atlas", "code", "SoilsMap.R"))
 ```
 
 
-## Geology {.unnumbered}
+## Geology 
 
 ```{r geology}
 #| echo: false
 #| warning: false
 #| message: false
 #| fig-width: 20
-#| fig-height: 20
+#| fig-height: 15
 
-plot_carte_geologique(uniteGeo, failles)
+plot_carte_geologique(uniteGeo_lux, failles_lux)
 ```
 
 ```{r geology LEGENDE}
@@ -30,7 +30,7 @@ plot_carte_geologique(uniteGeo, failles)
 #| warning: false
 #| message: false
 #| fig-width: 20
-#| fig-height: 12
+#| fig-height: 11
 
 plot_legende_geologique(uniteGeo, cex_legende = 1.28)
 ```
@@ -42,6 +42,11 @@ plot_legende_geologique(uniteGeo, cex_legende = 1.28)
 #| echo: false
 #| warning: false
 #| message: false
+
+tableau_unites[] <- lapply(tableau_unites, function(x) {
+  if (is.character(x)) gsub("[\r\n]+", " ", x) else x
+})
+
 knitr::kable(tableau_unites)
 ```
 
@@ -82,7 +87,7 @@ knitr::kable(tableau_unites)
 #| warning: false
 #| message: false
 #| fig-width: 20
-#| fig-height: 20
+#| fig-height: 15
 
 plot_carte_sols(DATAPATH)
 ```
@@ -92,7 +97,7 @@ plot_carte_sols(DATAPATH)
 #| warning: false
 #| message: false
 #| fig-width: 20
-#| fig-height: 15
+#| fig-height: 11
 
 
 plot_legende_sols(DATAPATH)

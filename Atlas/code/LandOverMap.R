@@ -1,13 +1,9 @@
 plot_land_cover <- function(datapath,
                             annee = 2024,
-                            layer_land_cover = "LandCover_Luxembourg_status_2024",
-                            layer_legend = "LandCover_legend",
-                            frac_echantillon = 0.05) {
+                            layer_land_cover = "LandCover_Luxembourg_status_2024") {
   
   fichier_gdb <- file.path(datapath, "LandCover_Luxembourg_2018_2021_2024.gdb")
   
-  land_cover <- st_read(fichier_gdb, layer = layer_land_cover, quiet = TRUE)
-  legend <- st_read(fichier_gdb, layer = layer_legend, quiet = TRUE)
   
   land_cover_colors <- c(
     "10" = "#E40102",  # Buildings
@@ -35,22 +31,16 @@ plot_land_cover <- function(datapath,
   
   col_annee <- paste0("LC", annee)
   
-  land_cover_lux <- st_intersection(land_cover, st_geometry(lux_borders_sf))
 
-  land_cover_lux <- land_cover_lux %>%
-    mutate(
-      LC_chr = as.character(.data[[col_annee]]),
-      LC_chr = factor(LC_chr, levels = names(land_cover_colors))
-    )
+  land_cover <- land_cover %>%
+    mutate( LC_chr = as.character(.data[[col_annee]]), LC_chr = factor(LC_chr, levels = names(land_cover_colors)))
   
-  land_cover_sample <- land_cover_lux %>%
-    sample_frac(frac_echantillon)
   
   ggplot() +
-    geom_sf(data = land_cover_sample, aes(fill = LC_chr), color = NA) +
+    geom_sf(data = land_cover, aes(fill = LC_chr), color = NA) +
     scale_fill_manual(
       values = land_cover_colors,
-      labels = land_cover_labels[levels(land_cover_sample$LC_chr)],
+      labels = land_cover_labels[levels(land_cover$LC_chr)],
       name = "Land Cover",
       na.translate = FALSE
     ) +

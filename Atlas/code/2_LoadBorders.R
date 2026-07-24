@@ -47,6 +47,6 @@ GR2169_c <- GRborders %>%
 ############ Labels des pays voisins
 country_labels <- data.frame(
   name = c("FRANCE", "BELGIUM", "GERMANY"),
-  x = c(58000, 55000, 90000),   # à ajuster selon ta bbox
-  y = c(55000, 133000, 120000)    # à ajuster selon ta bbox
+  x = c(59000, 55000, 90000), 
+  y = c(60000, 133000, 120000)   
 )

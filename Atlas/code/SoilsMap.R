@@ -72,16 +72,26 @@ plot_carte_sols <- function(datapath) {
     geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
     geom_text(data = country_labels, aes(x = x, y = y, label = name),
               size = 6, color = "grey40", fontface = "italic") +
+    
+    annotation_scale(location = "bl", width_hint = 0.2,
+                     style = "ticks", text_cex = 1,
+                     line_width = 1, height = unit(0.5, "cm"),
+                     pad_x = unit(0.7, "cm"), pad_y = unit(0.8, "cm")) +
+    annotation_north_arrow(location = "tr", which_north = "true",
+                           style = north_arrow_fancy_orienteering(),
+                           height = unit(1.8, "cm"), width = unit(1.8, "cm"),
+                           pad_x = unit(1.5, "cm"), pad_y = unit(1, "cm")) +
     theme_void() +
     theme(
-      plot.background = element_rect(fill = "white", color = NA),
-      plot.margin = margin(0, 0, 0, 0, "cm") 
+      plot.background = element_rect(fill = "white", color = NA)
     ) +
     coord_sf(crs = "EPSG:2169",
              xlim = c(bbox_2169["xmin"], bbox_2169["xmax"]),
              ylim = c(bbox_2169["ymin"], bbox_2169["ymax"]),
              expand = FALSE)
 }
+
+plot_carte_sols(DATAPATH)
 
 
 plot_legende_sols <- function(datapath,

@@ -18,16 +18,11 @@ base_map <- leaflet() %>%
 ############ Superposition de la grille sur la carte
 
 m <- mapView(rtp,
-             method = "ngb",
-             na.color = rgb(0, 0, 255, max = 255, alpha = 0),
+             method = "ngb", na.color = rgb(0, 0, 255, max = 255, alpha = 0),
              query.type = "click",
-             trim = TRUE,
-             legend = FALSE,
-             map = base_map,
-             alpha.regions = 0,
-             alpha = 0.3,
-             lwd = 2,
-             color = "red")
+             trim = TRUE,legend = FALSE,
+             map = base_map,alpha.regions = 0,
+             alpha = 0.3, lwd = 2, color = "red")
 
 ###### Données d'observation ----
 
