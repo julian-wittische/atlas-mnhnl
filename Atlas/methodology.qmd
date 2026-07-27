@@ -1,5 +1,7 @@
 # Methodology
 
+### Author {.author}
+
 ## Data sources
 
 specimen small table data source

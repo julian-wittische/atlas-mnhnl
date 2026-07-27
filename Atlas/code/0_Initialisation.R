@@ -9,6 +9,7 @@
 library(readxl)
 library(knitr)
 library(httr)
+library(openxlsx)
 
 ############ GIS ----
 library(sf)
@@ -47,6 +48,7 @@ library(stringr)
 library(purrr)
 library(taxize)
 library(scales)
+library(bib2df)
 
 
 source(here::here("Atlas", "code", "1_config.R"))

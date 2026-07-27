@@ -48,12 +48,20 @@ m2@map <- m2@map %>%
 
 ###### Static Geology map ----
 
-.preparer_legende_geo <- function(uniteGeo) {
+df_excel <- read.xlsx(file.path(DATAPATH, "GEO_stratunit.xlsx"), sheet = 2)
+df_excel$couleur <- rgb(df_excel$R255, df_excel$G255, df_excel$B255, maxColorValue = 255)
+
+# 2. Fonction de préparation de la légende
+.preparer_legende_geo <- function(uniteGeo, ref_excel) {
+  
+  # Extraction des attributs uniques de la carte et injection des couleurs du Excel
   base_df <- uniteGeo |>
     sf::st_drop_geometry() |>
-    distinct(ERE_FR, GROUPING1_FR, NOMUNIT_FR, AGE_MIN) |>
+    distinct(ERE_FR, GROUPING1_FR, NOMUNIT_FR, AGE_MIN, CODESTRATUNIT) |>
     mutate(across(c(ERE_FR, GROUPING1_FR, NOMUNIT_FR), \(x) na_if(str_squish(x), ""))) |>
     filter(!is.na(ERE_FR), !is.na(GROUPING1_FR), !is.na(NOMUNIT_FR)) |>
+    # Jointure pour récupérer la colonne "couleur" créée à partir du Excel via le CODESTRATUNIT
+    left_join(distinct(ref_excel, CODESTRATUNIT, couleur), by = "CODESTRATUNIT") |>
     arrange(AGE_MIN) |>
     mutate(
       ere_change = ERE_FR != lag(ERE_FR, default = "___"),
@@ -63,31 +71,29 @@ m2@map <- m2@map %>%
   
   legende_df <- bind_rows(
     base_df |> dplyr::filter(ere_change, row_id > 1) |>
-      dplyr::transmute(row_id, sub = 0, label = "", NOMUNIT_FR = NA_character_, type = "spacer"),
+      dplyr::transmute(row_id, sub = 0, label = "", CODESTRATUNIT = NA_character_, type = "spacer"),
     base_df |> dplyr::filter(ere_change) |>
-      dplyr::transmute(row_id, sub = 1, label = paste0(ERE_FR, ":"), NOMUNIT_FR = NA_character_, type = "ere"),
+      dplyr::transmute(row_id, sub = 1, label = paste0(ERE_FR, ":"), CODESTRATUNIT = NA_character_, type = "ere"),
     base_df |> dplyr::filter(grouping_change) |>
-      dplyr::transmute(row_id, sub = 2, label = paste0("  ", GROUPING1_FR, ":"), NOMUNIT_FR = NA_character_, type = "grouping"),
+      dplyr::transmute(row_id, sub = 2, label = paste0("  ", GROUPING1_FR, ":"), CODESTRATUNIT = NA_character_, type = "grouping"),
     base_df |>
-      dplyr::transmute(row_id, sub = 3, label = paste0("    ", NOMUNIT_FR), NOMUNIT_FR = NOMUNIT_FR, type = "unit")
+      dplyr::transmute(row_id, sub = 3, label = paste0("    ", NOMUNIT_FR), CODESTRATUNIT = CODESTRATUNIT, type = "unit")
   ) |>
     dplyr::arrange(row_id, sub) |>
     dplyr::select(-row_id, -sub)
   
-  noms_uniques <- unique(legende_df$NOMUNIT_FR[legende_df$type == "unit"])
-  palette_geo  <- setNames(colorRampPalette(brewer.pal(12, "Set3"))(length(noms_uniques)), noms_uniques)
+  # Création du vecteur de couleurs nommé (Map CODESTRATUNIT -> couleur)
+  palette_geo <- setNames(base_df$couleur, base_df$CODESTRATUNIT)
   
   list(legende_df = legende_df, palette_geo = palette_geo)
 }
 
-
-uniteGeo_lux <- st_intersection(uniteGeo, st_geometry(lux_borders_sf))
-failles_lux  <- st_intersection(failles, st_geometry(lux_borders_sf))
-
-plot_carte_geologique <- function(uniteGeo, failles) {
-  prep <- .preparer_legende_geo(uniteGeo)
+# 3. Fonction de cartographie
+plot_carte_geologique <- function(uniteGeo, failles, ref_excel) {
+  prep <- .preparer_legende_geo(uniteGeo, ref_excel)
+  
   ggplot() +
-    geom_sf(data = uniteGeo, aes(fill = NOMUNIT_FR), color = NA) +
+    geom_sf(data = uniteGeo, aes(fill = CODESTRATUNIT), color = NA) +
     scale_fill_manual(values = prep$palette_geo, guide = "none") +
     geom_sf(data = failles, color = "red", linewidth = 0.4) +
     geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
@@ -109,28 +115,60 @@ plot_carte_geologique <- function(uniteGeo, failles) {
              expand = FALSE)
 }
 
-
-
-plot_carte_geologique(uniteGeo_lux, failles_lux)
+# 4.légende 
 
 plot_legende_geologique <- function(uniteGeo,
+                                    ref_excel,
                                     ncol_legende = 2,
-                                    cex_legende = 0.6,
+                                    cex_legende = 1.28,
                                     x_intersp = 0.5,
                                     y_intersp = 0.8) {
-  prep <- .preparer_legende_geo(uniteGeo)
+  prep <- .preparer_legende_geo(uniteGeo, ref_excel)
   legende_df <- prep$legende_df
   palette_geo <- prep$palette_geo
   
-  fill_col <- ifelse(legende_df$type == "unit", palette_geo[legende_df$NOMUNIT_FR], NA_character_)
+  fill_col <- ifelse(legende_df$type == "unit", palette_geo[legende_df$CODESTRATUNIT], NA_character_)
   font_vec <- ifelse(legende_df$type %in% c("ere", "grouping"), 2L, 1L)
-
+  
+  # Condition pour mettre une bordure noire uniquement là où il y a une couleur
+  border_col <- ifelse(!is.na(fill_col), "black", NA_character_)
+  
   par(mar = c(0, 0, 0, 0), xpd = TRUE)
   plot.new()
-  legend( "center", legend = legende_df$label, fill = fill_col, border = NA,
-    text.font = font_vec, ncol = ncol_legende, cex = cex_legende, bty = "n",  x.intersp = x_intersp, y.intersp = y_intersp,
-    text.width = max(strwidth(legende_df$label, cex = cex_legende)) )
+  legend("center", legend = legende_df$label, fill = fill_col, border = border_col,
+         text.font = font_vec, ncol = ncol_legende, cex = cex_legende, bty = "n",  
+         x.intersp = x_intersp, y.intersp = y_intersp, pt_cex = 1.5,
+         text.width = max(strwidth(legende_df$label, cex = cex_legende)))
 }
+plot_legende_geologique <- function(uniteGeo,
+                                    ref_excel,
+                                    ncol_legende = 2,
+                                    cex_legende = 1.28,
+                                    x_intersp = 0.5,
+                                    y_intersp = 0.8) {
+  prep <- .preparer_legende_geo(uniteGeo, ref_excel)
+  legende_df <- prep$legende_df
+  palette_geo <- prep$palette_geo
+  
+  fill_col <- ifelse(legende_df$type == "unit", palette_geo[legende_df$CODESTRATUNIT], NA_character_)
+  font_vec <- ifelse(legende_df$type %in% c("ere", "grouping"), 2L, 1L)
+  
+  border_col <- ifelse(!is.na(fill_col), "black", NA_character_)
+  
+  par(mar = c(0, 0, 0, 0), xpd = TRUE)
+  plot.new()
+  # Correction : pt_cex devient pt.cex
+  legend("center", legend = legende_df$label, fill = fill_col, border = border_col,
+         text.font = font_vec, ncol = ncol_legende, cex = cex_legende, bty = "n",  
+         x.intersp = x_intersp, y.intersp = y_intersp, pt.cex = 1.5,
+         text.width = max(strwidth(legende_df$label, cex = cex_legende)))
+}
+
+
+uniteGeo_lux <- st_intersection(uniteGeo, st_geometry(lux_borders_sf))
+failles_lux  <- st_intersection(failles, st_geometry(lux_borders_sf))
+
+
 
 
 ###### Description table ----
@@ -146,5 +184,8 @@ tableau_unites <- uniteGeo %>%
 
 tableau_unites <- tableau_unites[, c("Code", "Unité géologique", "Description")]
 
+st_read(file.path(DATAPATH, "GEO25K50K.GDB"), quiet = TRUE)
+
+st_layers(file.path(DATAPATH, "GEO25K50K.GDB"))
 
 

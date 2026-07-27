@@ -27,6 +27,9 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 
+### Author {.author-species}
+
+Hinatea Ariey
 
 ::: {.columns}
 
@@ -47,20 +50,15 @@ for (i in ids) {
 }
 cat('</div>\n</div>\n')
 ```
-
 ::: {.species-taxonomy}
 **Subfamily** *Eristalinae* &nbsp; **Tribe** *Milesiini*
 :::
-
 ::: {.species-common-names}
 **EN** &nbsp;   Pine Hoverfly<br>
 **LB** &nbsp;   Blera fallax<br>
 **FR** &nbsp;   Blera fallax<br>
 **DE** &nbsp;   Hundeschnauzenschwebfliege<br>
 :::
-
-
-
 :::
 
 
@@ -73,11 +71,9 @@ cat('</div>\n</div>\n')
 ::: {.column width="25%"}
 ### Europe
 :::
-
 ::: {.column width="25%"}
 ![](/images/LC.png){.logo}
 :::
-
 :::
 
 ::: {.columns .status-row}
@@ -85,11 +81,9 @@ cat('</div>\n</div>\n')
 ::: {.column width="50%"}
 ### European Union<br>(27)
 :::
-
 ::: {.column width="50%"}
 ![](/images/LC.png){.logo}
 :::
-
 :::
 
 ::: {.columns .status-row}
@@ -97,19 +91,16 @@ cat('</div>\n</div>\n')
 ::: {.column width="25%"}
 ### Luxembourg  (preliminary)
 :::
-
 ::: {.column width="25%"}
 ![](/images/NTLU.png){.logo}
 :::
-
 :::
 
 :::
-
 :::
 
 
-![](/images/blera_fallax.jpg){.species_photo}
+![](/images/blera_fallax.jpg){.species-photo}
 
 ## Activity period
 
@@ -122,20 +113,18 @@ cat('</div>\n</div>\n')
 #| fig.width: 9
 plot_heatmap(params$species)
 ```
-
-
 ## Description
 
-A medium hoverfly with an unmistakable pattern of coloration. Head, thorax and the upper part of abdomen black, the rest of the body is orange. Proportion of the orange part may varies depending on the sex, it should be bigger and clearer in males. Antenna on a protrusion of the front, face yellow (Bot & Van de Meutter, 2023).
+A medium hoverfly with an unmistakable pattern of coloration. Head, thorax and the upper part of abdomen black, the rest of the body is orange. Proportion of the orange part may varies depending on the sex, it should be bigger and clearer in males. Antenna on a protrusion of the front, face yellow [@bot2019].
 
 ## Habitat
 ### Immature
 
-Larva can be found in cavities in coniferous trees (Bot & Van de Meutter, 2023).
+Larva can be found in cavities in coniferous trees [@bot2019].
 
 ### Mature
 
-As the larva stage, adult affectioned spruce and pine forest with overmature trees but can also be observed in mixed forest (Speight, 2017; Bot & Van de Meutter, 2023).
+As the larva stage, adult affectioned spruce and pine forest with overmature trees but can also be observed in mixed forest [@speight2017; @bot2019].
 
 ## Distribution
 

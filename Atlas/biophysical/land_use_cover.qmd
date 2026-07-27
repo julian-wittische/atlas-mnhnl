@@ -10,6 +10,8 @@
 <!-- # source(here::here("Atlas", "code", "LandOverMap.R")) -->
 <!-- # ``` -->
 
+### Author {.author}
+
 ## Map
 
 <!-- # ```{r altitude} -->

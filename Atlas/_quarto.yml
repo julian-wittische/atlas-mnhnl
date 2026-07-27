@@ -33,14 +33,17 @@ bibliography: references.bib
 format:
   html:
     number-sections: false
-    toc: true
-    toc-depth: 3
+    toc: false
     smooth-scroll: true
     html-math-method: katex
     theme:
       light:
       - zephyr
       - style.scss
+  pdf:
+    toc: true
+    number-sections: true
+    documentclass: scrreprt
 execute:
   echo: true
   warning: false

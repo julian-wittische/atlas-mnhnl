@@ -12,6 +12,7 @@ source(here::here("Atlas", "code", "SoilsMap.R"))
 # source(here::here("Atlas", "code", "DSM.R"))
 ```
 
+### Author {.author}
 
 ## Geology 
 
@@ -22,7 +23,7 @@ source(here::here("Atlas", "code", "SoilsMap.R"))
 #| fig-width: 20
 #| fig-height: 15
 
-plot_carte_geologique(uniteGeo_lux, failles_lux)
+plot_carte_geologique(uniteGeo_lux, failles_lux, df_excel)
 ```
 
 ```{r geology LEGENDE}
@@ -32,7 +33,7 @@ plot_carte_geologique(uniteGeo_lux, failles_lux)
 #| fig-width: 20
 #| fig-height: 11
 
-plot_legende_geologique(uniteGeo, cex_legende = 1.28)
+plot_legende_geologique(uniteGeo_lux, df_excel, cex_legende = 1.28)
 ```
 
 <details>
@@ -64,6 +65,7 @@ knitr::kable(tableau_unites)
 
 </details>
 
+English nomenclature was unavailable
 
 ::: {.spacer}
 :::

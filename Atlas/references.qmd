@@ -1,9 +1,8 @@
 ---
-nocite: |
-  @*
+bibliography: references.bib
 ---
 
-# References {.unnumbered}
+# References
 
 ::: {#refs}
 :::

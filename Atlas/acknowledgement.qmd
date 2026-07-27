@@ -17,7 +17,6 @@ source(here::here("Atlas", "code", "9_LastHoverfly.R"))
 ```
 
 
-
 ## Observer names
 
 ```{r}

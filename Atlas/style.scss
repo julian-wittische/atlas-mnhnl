@@ -52,6 +52,7 @@ h3 {
 
 /* Sidebar / Table of contents */
 
+
 .sidebar-title {
   color: $headings-color;
   font-weight: 600;
@@ -81,8 +82,32 @@ ul.sidebar-section .sidebar-item-text {
   font-weight: 400;
 }
 
+h3.author{
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: #555;
+}
+
 
 /* Species */
+
+
+h3.author-species {
+  margin-top: -2rem !important;
+  margin-bottom: 0.2rem !important;
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: #555;
+  text-align: left;
+}
+
+h3.author-species + p {
+  margin-top: 0 !important;
+  text-align: auto;
+   margin-bottom: 5rem !important;
+}
 
 .dropdown {
           position: relative;
@@ -146,6 +171,8 @@ ul.sidebar-section .sidebar-item-text {
   margin: 3.5rem auto 6.5rem auto;
   border: 1px solid #e2e2e2;
   border-radius: 4px;
+  margin-top: 3rem;
+  margin-bottom: auto;
 }
 
 .logo {

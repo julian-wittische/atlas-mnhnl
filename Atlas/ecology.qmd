@@ -1,5 +1,6 @@
 ---
 title: "Ecology of Luxembourg Hoverflies"
+bibliography: references.bib
 ---
 
 ```{r setup}
@@ -13,10 +14,11 @@ source(here::here("Atlas", "code", "Taxonomie.R"))
 source(here::here("Atlas", "code", "10_Piechart.R"))
 ```
 
+### Author {.author}
 
 # Tribes dispersion
 
-&nbsp; Colored by subfamily
+  Colored by subfamily
 
 ```{r Tribes}
 #| echo: false
@@ -37,6 +39,3 @@ plot_tribe_pie(DB_taxo)
 #| fig.width: 11
 plot_subfamily_pie(DB_taxo)
 ```
-
-
-

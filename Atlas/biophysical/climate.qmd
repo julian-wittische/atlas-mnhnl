@@ -10,6 +10,8 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 source(here::here("Atlas", "code", "Climate_Maps.R"))
 ```
 
+### Author {.author}
+
 ## Annual Mean Temperature
 
 ```{r temp}
