@@ -93,7 +93,7 @@ cat('</div>\n</div>\n')
 ::::::::::::
 ::::::::::::::::
 
-![](/images/myathropa_florea.jpeg){.species-photo}
+![](/images/myathropa_florea.png){.species-photo}
 
 ## Activity period
 

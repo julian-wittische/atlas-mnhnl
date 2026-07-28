@@ -77,3 +77,77 @@ source_filter <- filter_checkboxSP(
 ############ Carte + slider + filtre empilés
 carte1 <- bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
 
+
+
+
+
+lux_borders_sf <- st_as_sf(lux_borders)
+
+
+
+first_cs_year <- DB_sf %>%
+  filter(Source == "Citizen science") %>%
+  pull(Year) %>%
+  min(na.rm = TRUE)
+
+
+DB_pre_cs <- DB_2169 %>%
+  filter(Year < first_cs_year)
+
+p <- ggplot() +
+  geom_sf(data = lux_borders_sf, fill = "white", color = "black", linewidth = 0.3) +
+  geom_sf(data = DB_pre_cs, aes(color = Source), size = 1, alpha = 0.7) +
+  ggtitle(paste("Avant", first_cs_year)) +
+  theme_void() +
+  annotation_scale(location = "bl", width_hint = 0.2,
+                   style = "ticks", text_cex = 0.6,
+                   line_width = 0.5, height = unit(0.2, "cm"),
+                   pad_x = unit(0.8, "cm"), pad_y = unit(1, "cm")) +
+  annotation_north_arrow(location = "tr", which_north = "true",
+                         style = north_arrow_fancy_orienteering(),
+                         height = unit(1, "cm"), width = unit(1, "cm"),
+                         pad_x = unit(1, "cm"), pad_y = unit(1, "cm")) +
+  geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
+  geom_text(data = country_labels, aes(x = x, y = y, label = name),
+            size = 3, color = "grey40", fontface = "italic") +
+  theme_void() +
+  theme(legend.position = c(0.7, 0.85),
+        legend.background = element_blank(),
+        legend.title = element_text(size = 7),
+        legend.text = element_text(size = 6),
+        legend.key.size = unit(0.35, "cm"),
+        legend.spacing.y = unit(0.05, "cm"))
+p
+
+
+
+
+
+
+MD_carrieres <- MD %>%
+  filter(Recorders == "Evelyne Carrières")
+
+MD_carrieres_sf <- st_as_sf(MD_carrieres, coords = c("Long", "Lat"), crs = 4326) %>%
+  st_transform(crs = 2169)
+
+
+p_carrieres <- ggplot() +
+  geom_sf(data = lux_borders_sf, fill = "white", color = "black", linewidth = 0.3) +
+  geom_sf(data = MD_carrieres_sf, color = "darkred", size = 1, alpha = 0.7) +
+  ggtitle("Evelyne Carrières (Before 2016)") +
+  theme_void() +
+  annotation_scale(location = "bl", width_hint = 0.2,
+                   style = "ticks", text_cex = 0.6,
+                   line_width = 0.5, height = unit(0.2, "cm"),
+                   pad_x = unit(0.8, "cm"), pad_y = unit(1, "cm")) +
+  annotation_north_arrow(location = "tr", which_north = "true",
+                         style = north_arrow_fancy_orienteering(),
+                         height = unit(1, "cm"), width = unit(1, "cm"),
+                         pad_x = unit(1, "cm"), pad_y = unit(1, "cm")) +
+  geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
+  geom_text(data = country_labels, aes(x = x, y = y, label = name),
+            size = 3, color = "grey40", fontface = "italic") +
+  theme(legend.position = c(0.7, 0.85))
+p_carrieres
+
+

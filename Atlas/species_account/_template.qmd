@@ -27,7 +27,7 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 
-### Author### Author {.author-species}
+### Author {.author-species}
 
 ::: {.columns}
 
@@ -109,7 +109,7 @@ cat('</div>\n</div>\n')
 :::
 
 
-![](/images/<<name>>.jpeg){.species-photo}
+![](/images/<<name>>.png){.species-photo}
 
 ## Activity period
 
