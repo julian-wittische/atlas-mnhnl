@@ -11,10 +11,25 @@ format:
 title: "Cover page"
 title-block-style: none
 ---
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\newgeometry{margin=0pt}
+\begin{titlepage}
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight]{images/cover.png}
+\end{titlepage}
+\restoregeometry
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\tableofcontents
+```
+:::
 
-
+::: {.content-visible when-format="html"}
 ::: {.column-screen}
 ![](images/cover.png){style="display: block; margin: 0 auto; max-width: 100%;"}
 :::
+:::
+
 
 

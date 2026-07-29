@@ -12,8 +12,8 @@ source(here::here("Atlas", "code", "Climate_Maps.R"))
 
 ### Author {.author}
 
-## Annual Mean Temperature
 
+## Annual Mean Temperature
 ```{r temp}
 #| echo: false
 #| warning: false
@@ -34,9 +34,7 @@ plot_bio1_map(bioclim_lux, lux_borders)
 plot_bio12_map(bioclim_lux, lux_borders)
 ```
 
-
-## Choose a BIOCLIM variable
-
+## `r if (knitr::pandoc_to("html")) "Choose a BIOCLIM variable" else "Precipitation Seasonality"`
 ```{r build-maps}
 #| echo: false
 #| warning: false
@@ -44,18 +42,27 @@ plot_bio12_map(bioclim_lux, lux_borders)
 #| results: asis
 #| fig.height: 14
 #| fig.width: 14
-cat('<select id="bio-select" class="bio-select" onchange="document.querySelectorAll(\'.bio-map\').forEach(m=>m.style.display=\'none\');document.getElementById(this.value).style.display=\'block\';">\n')
-for (i in seq_len(nrow(bio_vars))) {
-  selected <- if (bio_vars$num[i] == 15) ' selected' else ''
-  cat(sprintf('<option value="map-%d"%s>%s</option>\n', bio_vars$num[i], selected, bio_vars$title[i]))
-}
-cat('</select>\n\n')
-for (i in seq_len(nrow(bio_vars))) {
-  n <- bio_vars$num[i]
-  cat(sprintf('<div id="map-%d" class="bio-map" style="display:%s;">\n', n, if (n == 15) "block" else "none"))
-  print(plot_bio_map(bioclim_lux, lux_borders, var_num = n))
-  cat('</div>\n\n')
+
+if (knitr::pandoc_to("html")) {
+
+  cat('<select id="bio-select" class="bio-select" onchange="document.querySelectorAll(\'.bio-map\').forEach(m=>m.style.display=\'none\');document.getElementById(this.value).style.display=\'block\';">\n')
+  for (i in seq_len(nrow(bio_vars))) {
+    selected <- if (bio_vars$num[i] == 15) ' selected' else ''
+    cat(sprintf('<option value="map-%d"%s>%s</option>\n', bio_vars$num[i], selected, bio_vars$title[i]))
+  }
+  cat('</select>\n\n')
+
+  for (i in seq_len(nrow(bio_vars))) {
+    n <- bio_vars$num[i]
+    cat(sprintf('<div id="map-%d" class="bio-map" style="display:%s;">\n', n, if (n == 15) "block" else "none"))
+    print(plot_bio_map(bioclim_lux, lux_borders, var_num = n))
+    cat('</div>\n\n')
+  }
+
+} else {
+
+  # PDF (ou tout format non-HTML) : uniquement la variable par défaut
+  print(plot_bio_map(bioclim_lux, lux_borders, var_num = 15))
+
 }
 ```
-
-

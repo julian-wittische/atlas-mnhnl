@@ -1,10 +1,4 @@
----
-title: "Acknowledgement"
-execute:
-  freeze: false
----
-
-
+# Acknowledgements {-}
 
 ```{r setup}
 #| echo: false
@@ -16,22 +10,18 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 source(here::here("Atlas", "code", "9_LastHoverfly.R"))
 ```
 
-
 ## Observer names
 
 ```{r}
 #| echo: false
 #| results: asis
 #| warning: false
-
 MD$Origin <- ifelse(
   startsWith(as.character(MD$Observation_Key), "INAT_") | startsWith(as.character(MD$Observation_Key), "oOrg_"),
   "Citizen science", "Other"
 )
-
 recorder_counts <- sort(table(MD$Recorders), decreasing = TRUE)
 top50 <- names(head(recorder_counts, 50))
-
 print_recorder_list <- function(data) {
   all_recorders <- sort(na.omit(unique(data$Recorders)))
   formatted <- ifelse(all_recorders %in% top50,
@@ -39,20 +29,16 @@ print_recorder_list <- function(data) {
                        all_recorders)
   cat(paste(formatted, collapse = ", "))
 }
-
 cat("### Citizen science (iNaturalist & Observation.org)\n\n")
 print_recorder_list(MD[MD$Origin == "Citizen science", ])
-
 cat("\n\n### Other sources\n\n")
 print_recorder_list(MD[MD$Origin == "Other", ])
 ```
 
-
 ## Last Hoverfly recorded (iNaturalist)
 
-![](last_syrphidae.jpg)
+![](last_syrphidae.jpg){fig-pos="H"}
+`r species`\
+`r obs`\
 
-`r species` <br>
-`r obs`  <br>
 [View observation](`r obs_url`)
-

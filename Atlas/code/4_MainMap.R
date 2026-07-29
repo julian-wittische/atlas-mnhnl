@@ -83,12 +83,11 @@ carte1 <- bscols(widths = c(12, 12, 12), slider, source_filter, m@map)
 
 lux_borders_sf <- st_as_sf(lux_borders)
 
-
-
 first_cs_year <- DB_sf %>%
   filter(Source == "Citizen science") %>%
   pull(Year) %>%
   min(na.rm = TRUE)
+DB_2169 <- st_transform(DB_sf, crs = 2169)
 
 
 DB_pre_cs <- DB_2169 %>%

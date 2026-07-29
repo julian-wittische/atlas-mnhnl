@@ -1,10 +1,3 @@
----
-
-editor_options: 
-  markdown: 
-    wrap: sentence
----
-
 # Atlas des Syrphes (Hoverflies) du Luxembourg — Documentation du template
 
 ## Vue d'ensemble
@@ -56,7 +49,6 @@ Atlas/
     ├── Climate_Maps.R / Geology.R / SoilsMap.R / LandOverMap.R / DSM.R
     ├── pre-render.R         → script lancé avant le render du book, pour integrer dynamiquement les noms de chapitre
     └── InsertCitation.R (vide)
-
 ```
 
 ## `_quarto.yml`
@@ -125,9 +117,7 @@ plot_bio1_map(bioclim_lux, lux_borders)
 \`\`\`
 ```
 
-Éléments : - `# Climate` : titre principal du chapitre. 
-           - Bloc `setup` : présent dans presque des pages, il charge `0_Initialisation.R` (qui charge lui-même l'ensemble des librairies et scripts utiles). 
-Une page peut charger en complément un script spécifique à son sujet (ici `Climate_Maps.R`). - `## Annual Mean Temperature` : Titre de niveau 2 (h2). - Bloc de code suivant : appelle une fonction déjà définie dans `code/` (`plot_bio1_map`) ; le résultat s'affiche directement dans la page. - `#| echo: false` : masque le code R dans le rendu final, seul le résultat est affiché. `#| fig.height` / `#| fig.width` : dimensions de la figure générée. Principe général : une page `.qmd` n'effectue quasiment aucun calcul directement ; elle appelle des fonctions déjà écrites dans `code/`.
+Éléments : - `# Climate` : titre principal du chapitre. - Bloc `setup` : présent dans presque des pages, il charge `0_Initialisation.R` (qui charge lui-même l'ensemble des librairies et scripts utiles). Une page peut charger en complément un script spécifique à son sujet (ici `Climate_Maps.R`). - `## Annual Mean Temperature` : Titre de niveau 2 (h2). - Bloc de code suivant : appelle une fonction déjà définie dans `code/` (`plot_bio1_map`) ; le résultat s'affiche directement dans la page. - `#| echo: false` : masque le code R dans le rendu final, seul le résultat est affiché. `#| fig.height` / `#| fig.width` : dimensions de la figure générée. Principe général : une page `.qmd` n'effectue quasiment aucun calcul directement ; elle appelle des fonctions déjà écrites dans `code/`.
 
 ## Scripts (`code/`)
 
@@ -149,8 +139,8 @@ source("6_PresenceMois.R")
 | `1_config.R` | Définit `DATAPATH`, le chemin vers le dossier de données. |
 | `utils.R` | Fonctions réutilisées ailleurs dans le projet, par exemple `filter_checkboxSP` (cases à cocher personnalisées des cartes interactives) |
 | `2_LoadBorders.R` | Construit la grille de 5 km sur le Luxembourg (`rtp`), les frontières nationales (`lux_borders`) et régionales (`GRborders`). |
-| `3_LoadData.R` | Charge et nettoie les  données brutes |
-| `4_MainMap.R` | Carte interactive principale :  grille, points d'observation, curseur par année, filtre par source. |
+| `3_LoadData.R` | Charge et nettoie les données brutes |
+| `4_MainMap.R` | Carte interactive principale : grille, points d'observation, curseur par année, filtre par source. |
 | `5_SpeciesMaps.R` | Construit la fonction `get_species_map()` (carte de répartition par espèce) et `get_richness_map()` (carte de richesse spécifique par cellule). |
 | `6_PresenceMois.R` | Fonctions de graphique de période d'activité par mois (`plot_heatmap`), utilisées dans les fiches espèces. |
 | `7_GenerateSpeciesPages.R` | Génère automatiquement un fichier `.qmd` par espèce dans `species_account/` à partir de `_template.qmd` et de `DB_taxo`, puis met à jour `_quarto.yml`. |
@@ -163,86 +153,94 @@ source("6_PresenceMois.R")
 | `pre-render.R` | Exécution prévue avant chaque rendu du livre ; modifie certains titres dynamiquement selon le taxon concerné. |
 | `InsertCitation.R` | Vide |
 
-
 ## Fiches espèces
- 
+
 1.  **Modèle** : `species_account/_template.qmd`, contenant des placeholders `<<species>>`, `<<authorship>>`, `<<name>>`, `<<subfamily>>`, `<<tribe>>`, `<<en>>`, `<<lb>>`, `<<fr>>`, `<<de>>`.
 2.  **Remplissage taxonomique** : `7_GenerateSpeciesPages.R` remplit ces placeholders à partir de `DB_taxo` (nom, sous-famille, tribu) pour chaque espèce sans fichier existant.
-3.  **Injection du texte** : `8_InjectContent.R` insère ensuite le contenu de `species_content/nom_espece.txt` dans les sections correspondantes (`## Description`, `## Habitat`, `### Immature`, `### Mature`, `## Distribution`, `## Notes`)
-**Procédure d'ajout d'une nouvelle espèce** :
-1. Vérification de la présence de l'espèce dans les données sources (relance de `Taxonomie.R` pour mettre à jour `DB_taxo`).
-2. Exécution de `7_GenerateSpeciesPages.R` → création automatique du fichier `.qmd`, sans texte.
-3. Rédaction du texte dans `species_content/nom_espece.txt`, avec les titres attendus (il appelle `8_InjectContent.R`) → insertion du texte dans la fiche.
-> **Note — nom de l'auteur dans les fichiers `.txt`** : comme indiqué dans les templates, le nom de l'auteur du texte doit être écrit à chaque fois en tout début du fichier `species_content/nom_espece.txt`, avant les sections `Description`, `Habitat`, etc. Cela garantit que chaque fiche espèce affiche correctement son auteur (section `### Author {.author}` du template), au même titre que pour les autres chapitres du livre qui suivent la même convention.
- 
+3.  **Injection du texte** : `8_InjectContent.R` insère ensuite le contenu de `species_content/nom_espece.txt` dans les sections correspondantes (`## Description`, `## Habitat`, `### Immature`, `### Mature`, `## Distribution`, `## Notes`) **Procédure d'ajout d'une nouvelle espèce** :
+4.  Vérification de la présence de l'espèce dans les données sources (relance de `Taxonomie.R` pour mettre à jour `DB_taxo`).
+5.  Exécution de `7_GenerateSpeciesPages.R` → création automatique du fichier `.qmd`, sans texte.
+6.  Rédaction du texte dans `species_content/nom_espece.txt`, avec les titres attendus (il appelle `8_InjectContent.R`) → insertion du texte dans la fiche. \> **Note — nom de l'auteur dans les fichiers `.txt`** : comme indiqué dans les templates, le nom de l'auteur du texte doit être écrit à chaque fois en tout début du fichier `species_content/nom_espece.txt`, avant les sections `Description`, `Habitat`, etc. Cela garantit que chaque fiche espèce affiche correctement son auteur (section `### Author {.author}` du template), au même titre que pour les autres chapitres du livre qui suivent la même convention.
+
 Variables de couleur définies en tête de fichier :
- 
+
 ``` scss
-$primary: #5f7132 !default;        // couleur principale : liens, soulignés de titres
+$primary: #5f7132 !default;        // couleur principale
 $body-color: #263126 !default;     // couleur du texte
 $body-bg: #ffffff !default;        // couleur de fond
 $headings-color: #16200f !default; // couleur des titres
 $link-color: #52662d !default;     // couleur des liens
 ```
- 
+
 **Modification de la couleur principale** : changement de la valeur de `$primary`, par exemple :
- 
+
 ``` scss
 $primary: #2c5f8a !default;
 ```
- 
-Cette variable est réutilisée dans plusieurs règles du fichier (soulignement des `h2`, éléments actifs du menu).
- 
+
 **Modification de la taille de la photo d'espèce** : règle `.species-photo` plus bas dans le même fichier :
- 
+
 ``` scss
 .species-photo {
   max-width: 70%;
 }
 ```
- 
+
 Une valeur de `50%` réduit la taille de la photo sur chaque fiche.
- 
+
 **Modification de la police du titre d'une fiche espèce** : définie directement dans `_template.qmd` (dupliquée dans chaque fiche déjà générée) :
- 
+
 ``` css
 #title-block-header .title{
     font-family:Georgia, "Times New Roman", serif;
     font-size:3rem;
 }
 ```
- 
+
 Un changement de police doit être appliqué dans `_template.qmd` avant génération de nouvelles fiches ; les fiches déjà générées nécessitent une modification manuelle.
- 
+
+### Comprendre la carte et le graphique d'une fiche espèce
+
+- **La carte interactive** La carte affiche trois couches superposées, activables ou désactivables via le menu en haut à droite de la carte :
+- **Grid :** la grille de cellules de 5 km utilisée pour découper le territoire luxembourgeois. Elle est toujours visible en fond, avec un contour rouge fin.
+- **Cells :** les cellules de la grille où l'espèce a été observée au moins une fois, colorées en rouge. Un clic sur une cellule ouvre une fenêtre indiquant le nombre total d'observations dans cette cellule et le détail par méthode/source de collecte.
+- **Points :** les observations individuelles, affichées comme des points rouges à partir d un certain zoom. Un clic sur un point affiche le détail de cette observation précise : la méthode de collecte (Source), la date, l'observateur, l'identificateur, et un lien direct vers la fiche iNaturalist ou Observation.org si l'observation vient de l'une de ces plateformes.
+
+Le passage d'une couche à l'autre est automatique selon le niveau de zoom : à faible zoom (vue d'ensemble du pays), seules les cellules colorées (Cells) sont visibles. En zoomant (à partir du niveau 12), les cellules disparaissent et les points individuels apparaisent.
+
+**Le graphique d'activité (heatmap)**
+
+Le graphique est une bande horizontale divisée en 48 segments (4 segments par mois, un par quart de mois : jours 1-7, 8-14, 15-21, et 22-fin de mois). Chaque segment est coloré selon le nombre d'observations enregistrées durant cette période de l'année, toutes années confondues :
+
+- **Blanc :** aucune observation enregistrée durant ce quart de mois.
+- **Vert de plus en plus foncé :** le nombre d'observations augmente.
+
+Ce graphique permet donc de voir en un coup d'œil la période de l'année où l'espèce est le plus souvent observée.
 
 ## Images
- 
+
 Toutes les images du projet sont stockées dans le dossier `images/`.
- 
+
 **Image de couverture** : le fichier doit impérativement se nommer `cover.png`. Il est appelé dans `index.qmd` (page de couverture du livre).
- 
+
 **Images d'espèces** : le nom de fichier doit être le nom scientifique de l'espèce, en minuscules, avec un underscore `_` entre le genre et l'espèce, par exemple :
- 
-```
+
+```         
 images/blera_fallax.png
 images/myathropa_florea.png
 ```
- 
+
 Ce nom correspond au même format que celui utilisé pour les fichiers `.qmd` générés dans `species_account/` (voir section *Fiches espèces*), ce qui permet de faire correspondre automatiquement chaque fiche à son image via le slug de l'espèce.
- 
 
+## Autres chapitres
 
-
-
-## Autres chapitres 
-
-- `conservation.qmd` : 
+- `conservation.qmd` :
 
 - `history.qmd` :
 
 - `glossary.qmd` : titre seul, pas de contenu.
 
-- `introduction.qmd` : 
+- `introduction.qmd` :
 
 - `spatial.qmd` : analyse statistique
 
@@ -255,4 +253,3 @@ Ce nom correspond au même format que celui utilisé pour les fichiers `.qmd` g�
 - `1_config.R` contient un chemin local codé en dur : `C:/Users/CAG569/Desktop/Quarto/atlas-mnhnl/Atlas/data/`. Ce chemin est spécifique à un poste de travail.
 
 - `pre-render.R` automatisation des titres avec le noms de la famille
-
