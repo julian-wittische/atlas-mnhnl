@@ -7,7 +7,7 @@
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
-source(here::here("Atlas", "code", "Climate_Maps.R"))
+source(here::here("Atlas", "code", "14_Climate_Maps.R"))
 ```
 
 ### Author {.author}

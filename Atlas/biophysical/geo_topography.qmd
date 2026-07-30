@@ -7,9 +7,9 @@
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
-source(here::here("Atlas", "code", "Geology.R"))
-source(here::here("Atlas", "code", "SoilsMap.R"))
-# source(here::here("Atlas", "code", "DSM.R"))
+source(here::here("Atlas", "code", "11_Geology.R"))
+source(here::here("Atlas", "code", "12_SoilsMap.R"))
+# source(here::here("Atlas", "code", "13_DSM.R"))
 ```
 
 ### Author {.author}

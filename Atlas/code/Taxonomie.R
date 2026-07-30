@@ -2,41 +2,106 @@
 # Author: Selene Perez
 # Request: Julian Wittische
 # Start: Summer 2026
-# Script objective : Crée une DB pour avoir la sous famille-tribu-genre de l'espece
+# Script objective : Crée / met à jour une DB de sous-famille - tribu - genre par espèce,
+#                     sans refaire les appels Catalogue of Life pour les espèces déjà connues.
 
-############ Filtrage  ----
+library(dplyr)
+library(purrr)
+library(stringr)
+
+############ Filtrage ----
 DB3$Certainty <- !grepl("\\?", DB3$ID)
 sum(DB3$Certainty, na.rm = TRUE)
 
-############ espèces à traiter ----
-species_list <- unlist(unique(DB3[DB3$Certainty, "ID"]))
-# une ligne par espèce
-DB_taxo <- tibble(ID = species_list)
+############ espèces à traiter (données sources) ----
+# Extraction stricte sous forme de vecteur de caractères
+species_list <- DB3 %>% 
+  filter(Certainty) %>% 
+  pull(ID) %>% 
+  unique() %>% 
+  as.character()
 
-############ Catalogue of Life ----
-matches <- col_match_checklist(species_list)
-# Test exploratoire
-test_classif <- rcol::col_classification(matches$usage_id[1])
-str(test_classif)
-
-############ extraction d'un rang taxonomique donné ----
-extract_rank <- function(usage_id, target_rank) {
-  if (is.na(usage_id)) return(NA_character_)
-  classif <- tryCatch(rcol::col_classification(usage_id), error = function(e) NULL)
-  if (is.null(classif) || !is.data.frame(classif) || !"rank" %in% names(classif)) {
-    return(NA_character_)
-  }
-  row <- classif %>% filter(tolower(rank) == target_rank)
-  if (nrow(row) == 0) return(NA_character_)
-  row$name[1]
+############ Cache existant ----
+chemin_cache <- here::here("Atlas", "data", "DB_taxo.rds")
+if (file.exists(chemin_cache)) {
+  DB_taxo <- readRDS(chemin_cache)
+} else {
+  DB_taxo <- tibble(
+    verbatim_name = character(),
+    name          = character(),
+    authorship    = character(),
+    Subfamily     = character(),
+    Tribe         = character(),
+    Genus         = character()
+  )
 }
 
-############ DB_taxo ----
-DB_taxo <- matches %>%
-  filter(!is.na(usage_id)) %>%
-  mutate(
-    Genus     = word(verbatim_name, 1),
-    Subfamily = map_chr(usage_id, extract_rank, target_rank = "subfamily"),
-    Tribe     = map_chr(usage_id, extract_rank, target_rank = "tribe")
-  ) %>%
-  select(verbatim_name, name, authorship, Subfamily, Tribe, Genus)
+############ Espèces déjà connues vs nouvelles ----
+# Nettoyage préventif des valeurs manquantes ou vides
+species_list <- species_list[!is.na(species_list) & species_list != ""]
+species_manquantes <- setdiff(species_list, DB_taxo$verbatim_name)
+
+message(length(species_manquantes), " nouvelle(s) espèce(s) à interroger sur Catalogue of Life (",
+        length(species_list) - length(species_manquantes), " déjà en cache).")
+
+############ Catalogue of Life : uniquement pour les nouvelles espèces ----
+if (length(species_manquantes) > 0) {
+  
+  # Remplacement de col_match_checklist par une boucle robuste sur col_match
+  message("Interrogation de l'API Catalogue of Life...")
+  matches <- purrr::map_dfr(species_manquantes, function(sp) {
+    res <- rcol::col_match(sp)
+    res$verbatim_name <- sp  # Alignement manuel sécurisé du nom d'origine
+    return(res)
+  })
+  
+  ############ extraction d'un rang taxonomique donné, SANS appel réseau ----
+  extract_rank_local <- function(classif, target_rank) {
+    if (is.null(classif) || !is.data.frame(classif) || !"rank" %in% names(classif)) {
+      return(NA_character_)
+    }
+    row <- classif %>% filter(tolower(rank) == tolower(target_rank))
+    if (nrow(row) == 0) return(NA_character_)
+    row$name[1]
+  }
+  
+  ############ Nouvelles lignes DB_taxo ----
+  nouvelles_lignes <- matches %>%
+    filter(!is.na(usage_id)) %>%
+    mutate(
+      Genus     = stringr::word(verbatim_name, 1),
+      Subfamily = map_chr(classification, extract_rank_local, target_rank = "subfamily"),
+      Tribe     = map_chr(classification, extract_rank_local, target_rank = "tribe")
+    ) %>%
+    select(verbatim_name, name, authorship, Subfamily, Tribe, Genus)
+  
+  # Suivi des espèces non résolues (fautes de frappe)
+  non_resolues <- setdiff(species_manquantes, nouvelles_lignes$verbatim_name)
+  if (length(non_resolues) > 0) {
+    warning(
+      "Espèce(s) non résolue(s) par Catalogue of Life (vérifier l'orthographe) : \n",
+      paste(paste0("- ", non_resolues), collapse = "\n")
+    )
+    
+    # Stockage des échecs en cache pour éviter de re-solliciter l'API inutilement au prochain run
+    lignes_manquees <- tibble(
+      verbatim_name = non_resolues,
+      name          = NA_character_,
+      authorship    = NA_character_,
+      Subfamily     = NA_character_,
+      Tribe         = NA_character_,
+      Genus         = stringr::word(non_resolues, 1)
+    )
+    nouvelles_lignes <- bind_rows(nouvelles_lignes, lignes_manquees)
+  }
+  
+  ############ Fusion + sauvegarde du cache ----
+  DB_taxo <- bind_rows(DB_taxo, nouvelles_lignes) %>% 
+    distinct(verbatim_name, .keep_all = TRUE)
+  
+  saveRDS(DB_taxo, chemin_cache)
+  message("Cache mis à jour avec succès.")
+  
+} else {
+  message("Aucune nouvelle espèce.")
+}

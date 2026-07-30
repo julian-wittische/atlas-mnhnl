@@ -124,7 +124,7 @@ p
 
 
 MD_carrieres <- MD %>%
-  filter(Recorders == "Evelyne Carrières")
+  filter(Recorders == "Evelyne Carrières", Year < 2016)
 
 MD_carrieres_sf <- st_as_sf(MD_carrieres, coords = c("Long", "Lat"), crs = 4326) %>%
   st_transform(crs = 2169)
@@ -138,15 +138,14 @@ p_carrieres <- ggplot() +
   annotation_scale(location = "bl", width_hint = 0.2,
                    style = "ticks", text_cex = 0.6,
                    line_width = 0.5, height = unit(0.2, "cm"),
-                   pad_x = unit(0.8, "cm"), pad_y = unit(1, "cm")) +
+                   pad_x = unit(1.2, "cm"), pad_y = unit(1.2, "cm")) +
   annotation_north_arrow(location = "tr", which_north = "true",
                          style = north_arrow_fancy_orienteering(),
                          height = unit(1, "cm"), width = unit(1, "cm"),
-                         pad_x = unit(1, "cm"), pad_y = unit(1, "cm")) +
+                         pad_x = unit(1.4, "cm"), pad_y = unit(1.4, "cm")) +
   geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
   geom_text(data = country_labels, aes(x = x, y = y, label = name),
-            size = 3, color = "grey40", fontface = "italic") +
-  theme(legend.position = c(0.7, 0.85))
+            size = 3, color = "grey40", fontface = "italic") 
 p_carrieres
 
 

@@ -1,10 +1,12 @@
 ###### PRE-RENDER SCRIPT ----
-# Généré automatiquement à chaque rendu du livre
+# Genere automatiquement a chaque rendu du livre
 
 taxon <- "Hoverflies"
 
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "Taxonomie.R"))  
+source(here::here("Atlas", "code", "7_GenerateSpeciesPages.R"))
 
 ############ Titres dynamiques ----
 
@@ -28,17 +30,3 @@ contenu3 <- readLines("conservation.qmd")
 contenu3 <- gsub('title: ".*"', paste0('title: "', titre_conservation, '"'), contenu3)
 writeLines(contenu3, "conservation.qmd")
 
-contenu_yml <- readLines("_quarto.yml")
-part_line <- grep("part: species\\.qmd", contenu_yml)
-chapters_line <- part_line + 1
-next_lines <- (chapters_line + 1):length(contenu_yml)
-end_offset <- which(!grepl("^        - ", contenu_yml[next_lines]))[1]
-block_end <- chapters_line + end_offset - 1
-qmd_paths <- paste0("        - chapters/species/", species_slugs, ".qmd")
-
-contenu_yml <- c(
-  contenu_yml[1:chapters_line],
-  qmd_paths,
-  contenu_yml[block_end:length(contenu_yml)]
-)
-writeLines(contenu_yml, "_quarto.yml")
