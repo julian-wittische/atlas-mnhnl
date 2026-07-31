@@ -70,6 +70,16 @@ build_master_dataset <- function(BC, HN, MD, rtp) {
 DB4 <- build_master_dataset(BC, HN, MD, rtp)
 
 
+###### liste des identificateurs avec plus de 30 identifications ----
+top_identifieurs <- DB4 %>%
+  filter(!is.na(Identifieur)) %>%
+  count(Identifieur, name = "nb_id") %>%
+  filter(n_identifications > 30) %>%
+  arrange(desc(n_identifications))
+
+top_identifieurs
+
+
 
 ######  carte par espèce ----
 get_species_map <- function(species_name, data, rtp, base_map) {
@@ -250,4 +260,72 @@ get_richness_map <- function(data = DB2) {
   
   m4
 }
+
+
+##### carte staique
+
+
+
+get_species_map_static <- function(species_name, data, rtp, lux_borders, GR2169_c) {
+  
+  ## Frontière LU en EPSG:2169 ---
+  lux_sf <- st_transform(st_as_sf(lux_borders), 2169)
+  
+  ## Grille complète reprojetée en EPSG:2169 ---
+  rtp_sf <- st_transform(st_as_sf(rtp), 2169)
+  
+  ## Sélection des observations de l'espèce ---
+  species_obs <- data[which(data$ID == species_name), ]
+  species_obs <- species_obs[species_obs$Long >= 5 & species_obs$Long <= 7 &
+                               species_obs$Lat >= 49 & species_obs$Lat <= 51, ]
+  
+  if (nrow(species_obs) == 0) {
+    warning(paste0("Aucune observation trouvée pour : ", species_name))
+    return(invisible(NULL))
+  }
+  
+  ## Cellules où l'espèce a été observée au moins une fois ---
+  presence_cells <- unique(species_obs$Cell)
+  rtp_presence   <- subset(rtp_sf, layer %in% presence_cells)
+  
+  ## Observations ponctuelles en objet sf, reprojetées en EPSG:2169 ---
+  species_sf <- st_as_sf(species_obs, coords = c("Long", "Lat"), crs = 4326)
+  species_sf <- st_transform(species_sf, 2169)
+  
+  ## Construction de la carte statique ---
+  species_map_static <- ggplot() +
+    geom_sf(data = rtp_sf, fill = NA, color = "grey70", linewidth = 0.25) +
+    geom_sf(data = rtp_presence, fill = "red", alpha = 0.35,
+            color = "red", linewidth = 0.5) +
+    geom_sf(data = species_sf, color = "red", size = 1.6) +
+    
+    geom_sf(data = lux_sf, fill = NA, color = "black", linewidth = 0.5) +
+    geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
+    geom_text(data = country_labels,aes(x, y, label = name), size = 5,
+              color = "grey40",  fontface = "italic") +
+    annotation_scale(location = "bl", width_hint = 0.2,
+                     style = "ticks",
+                     text_col = "black",
+                     line_col = "black",
+                     text_cex = 0.6,
+                     height = unit(0.2, "cm"),
+                     pad_x = unit(1 ,"cm"), pad_y = unit(1.5, "cm"))+
+    
+    annotation_north_arrow(location = "tr", which_north = "true",
+                           style = north_arrow_fancy_orienteering(),
+                           height = unit(1.2, "cm"), width = unit(1.5, "cm"),
+                           line_width = 1,
+                           pad_x = unit(1.1, "cm"), pad_y = unit(1.2, "cm"))+
+    theme_void() +
+    theme(
+      plot.background  = element_rect(fill = "white", color = NA),
+      panel.background = element_rect(fill = "white", color = NA)
+    )
+  
+  species_map_static
+}
+
+
+
+
 
