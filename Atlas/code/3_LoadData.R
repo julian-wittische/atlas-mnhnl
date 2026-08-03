@@ -246,8 +246,6 @@ DB3 <- DB3[complete.cases(DB3$Date), ]
 
 ###### Make DB3 spatial ----
 DB_sf <- st_as_sf(DB3, coords = c("Long", "Lat"), crs = st_crs(4326))
-DB_sf <- DB_sf %>%
-  st_crop(bbox) %>%
-  st_transform("EPSG:2169")
+
 
 

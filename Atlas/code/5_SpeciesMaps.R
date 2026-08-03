@@ -74,8 +74,8 @@ DB4 <- build_master_dataset(BC, HN, MD, rtp)
 top_identifieurs <- DB4 %>%
   filter(!is.na(Identifieur)) %>%
   count(Identifieur, name = "nb_id") %>%
-  filter(n_identifications > 30) %>%
-  arrange(desc(n_identifications))
+  filter(nb_id > 30) %>%
+  arrange(desc(nb_id))
 
 top_identifieurs
 
@@ -133,8 +133,7 @@ get_species_map <- function(species_name, data, rtp, base_map) {
     alpha = 0.3,
     lwd = 2,
     color = "red",
-    layer.name = "Grid"
-  ) +
+    layer.name = "Grid") +
     
     mapView(
       rtp_presence,
@@ -146,10 +145,7 @@ get_species_map <- function(species_name, data, rtp, base_map) {
       legend = FALSE,
       popup = paste0(
         rtp_presence$Observation, " records<br>", "<br>",
-        rtp_presence$Source_summary
-      ),
-      layer.name = "Cells"
-    ) +
+        rtp_presence$Source_summary),layer.name = "Cells") +
     
     mapView(
       species_sf,
@@ -164,18 +160,12 @@ get_species_map <- function(species_name, data, rtp, base_map) {
         "<strong>Date : </strong>", format(species_obs$Date, "%d/%m/%Y"), "<br>",
         "<strong>Observer : </strong>", ifelse(is.na(species_obs$Observateur), "Inconnu", species_obs$Observateur), "<br>",
         "<strong>Identifier : </strong>", ifelse(is.na(species_obs$Identifieur), "Inconnu", species_obs$Observateur), 
-        ifelse(
-          species_obs$Origin == "Inaturalist" & !is.na(species_obs$URL),
+        ifelse( species_obs$Origin == "Inaturalist" & !is.na(species_obs$URL),
           paste0("<br><a href='", species_obs$URL, "' target='_blank'>Voir sur iNaturalist</a>"),
-          ""
-        ),
-        ifelse(
-          species_obs$Origin == "Observation.org" & !is.na(species_obs$URL),
+          "" ),
+        ifelse(  species_obs$Origin == "Observation.org" & !is.na(species_obs$URL),
           paste0("<br><a href='", species_obs$URL, "' target='_blank'>Voir sur Observation.org</a>"),
-          ""
-        )
-      )
-    )
+          "" )) )
   
   # Affichage par zoom 
   species_map@map <- species_map@map %>%
@@ -295,7 +285,7 @@ get_species_map_static <- function(species_name, data, rtp, lux_borders, GR2169_
   ## Construction de la carte statique ---
   species_map_static <- ggplot() +
     geom_sf(data = rtp_sf, fill = NA, color = "grey70", linewidth = 0.25) +
-    geom_sf(data = rtp_presence, fill = "red", alpha = 0.35,
+    geom_sf(data = rtp_presence, alpha = 0.35, fill = NA,
             color = "red", linewidth = 0.5) +
     geom_sf(data = species_sf, color = "red", size = 1.6) +
     
@@ -314,7 +304,6 @@ get_species_map_static <- function(species_name, data, rtp, lux_borders, GR2169_
     annotation_north_arrow(location = "tr", which_north = "true",
                            style = north_arrow_fancy_orienteering(),
                            height = unit(1.2, "cm"), width = unit(1.5, "cm"),
-                           line_width = 1,
                            pad_x = unit(1.1, "cm"), pad_y = unit(1.2, "cm"))+
     theme_void() +
     theme(

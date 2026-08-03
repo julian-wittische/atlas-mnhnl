@@ -30,57 +30,101 @@
 #     labs(x="Forb Cover", y="Graminoid Cover", z="Shrub Cover", colour = "Plot Richness") +
 #     scale_colour_viridis(option = "plasma", begin = 0, end = 0.95) + theme_bw() + 
 #     theme(legend.title = element_text(size = 26), legend.text=element_text(size = 20), 
-#           tern.axis.text.T = element_text(size =22), tern.axis.text.L = element_text(size =22), 
-#           tern.axis.text.R = element_text(size =22), tern.axis.title.T = element_text(size =28), 
-#           tern.axis.title.L = element_text(size =28), tern.axis.title.R = element_text(size =28)))
+#           tern.axis.text.T = element_text(size=22), tern.axis.text.L = element_text(size =22), 
+#           tern.axis.text.R = element_text(size=22), tern.axis.title.T = element_text(size =28), 
+#           tern.axis.title.L = element_text(size=28), tern.axis.title.R = element_text(size =28)))
 # 
 # ggsave(tern.plot, filename = "figures/Figure_1c.png", 
 #        width = 25, height = 25, units = "cm")
 
+
+DB3_sf <- st_transform(DB3_sf, st_crs(rtp_sf))
+
+library(tidyverse)
+library(sf)
+library(raster)
 library(ggtern)
 library(viridis)
-library(dplyr)
 
-## ---- Simulation des données de couverture d'habitat par cellule ----
-set.seed(42)
-n_cells <- nrow(rtp)  # une ligne simulée par cellule de ta grille existante
 
-sim_raw <- data.frame(
-  Habitat_A = runif(n_cells, 0, 1),
-  Habitat_B = runif(n_cells, 0, 1),
-  Habitat_C = runif(n_cells, 0, 1)
-)
-sim_raw <- sim_raw / rowSums(sim_raw) * 100  # normalisation à 100% par ligne
 
-# Richesse simulée par cellule (nombre d'espèces), avec un léger gradient
-richness_sim <- round(5 + sim_raw$Habitat_B * 0.25 + rnorm(n_cells, 0, 3))
-richness_sim[richness_sim < 1] <- 1
+#  Refaire le join
+richness_par_cellule <- DB3_sf %>%
+  st_join(rtp_sf, join = st_within) %>%
+  st_drop_geometry() %>%
+  filter(!is.na(layer)) %>%
+  group_by(layer) %>%
+  summarise(Richness = n_distinct(ID)) %>%
+  rename(CellID = layer)
 
-habitat_triangle_data <- data.frame(
-  Cell      = rtp$layer,
-  Habitat_A = sim_raw$Habitat_A,
-  Habitat_B = sim_raw$Habitat_B,
-  Habitat_C = sim_raw$Habitat_C,
-  Richness  = richness_sim
-)
 
-## ---- Graphique ternaire (Habitat triangle) ----
-(tern.plot <- ggtern(data = habitat_triangle_data,
-                     aes(x = Habitat_A, y = Habitat_B, z = Habitat_C)) +
-   geom_point(size = 3, alpha = 0.5, aes(colour = Richness)) +
-   labs(x = "Habitat A cover", y = "Habitat B cover", z = "Habitat C cover",
-        colour = "Plot richness") +
-   scale_colour_viridis(option = "plasma", begin = 0, end = 0.95) +
-   theme_bw() +
-   theme_showarrows() +
-   theme(
-     tern.axis.title.T = element_blank(),  #
-     tern.axis.title.L = element_blank(),  
-     tern.axis.title.R = element_blank(), 
-     tern.axis.arrow   = element_blank(),  
-     legend.title = element_text(size = 12),
-     legend.text  = element_text(size = 10),
-     tern.axis.arrow.text.T = element_text(size = 10),
-     tern.axis.arrow.text.L = element_text(size = 10),
-     tern.axis.arrow.text.R = element_text(size = 10)
-   ))
+
+n_cells <- nrow(rtp)
+sim_raw <- data.frame( Habitat_A = runif(n_cells, 0, 1), Habitat_B = runif(n_cells, 0, 1), Habitat_C = runif(n_cells, 0, 1))
+
+sim_raw <- sim_raw / rowSums(sim_raw) * 100
+
+habitat_richness <- data.frame(CellID = rtp$layer, sim_raw) %>%
+  left_join(richness_par_cellule, by = "CellID")
+
+## Graphique
+(habitat.plot <- ggtern(data = habitat_richness,
+                             aes(x = Habitat_A, y = Habitat_B, z = Habitat_C)) +
+    geom_point(size = 3, alpha = 0.5, aes(colour = Richness)) +
+    labs(x = "Habitat A", y = "Habitat B", z = "Habitat C",
+         colour = "Plot richness") +
+    scale_colour_viridis(option = "plasma", begin = 0, end = 0.95) +
+    theme_bw()+
+    theme_showarrows() +
+    theme(tern.axis.title.T = element_blank(), tern.axis.title.L = element_blank(), tern.axis.title.R = element_blank(), tern.axis.arrow = element_blank(),  
+      legend.title = element_text(size = 12), legend.text = element_text(size = 10),tern.axis.arrow.text.T = element_text(size = 10), tern.axis.arrow.text.L = element_text(size = 10),
+      tern.axis.arrow.text.R = element_text(size = 10))
+  )
+
+
+
+library(terra)
+
+grassland <- rast("Atlas/data/Grassland/20240101/CLMS_HRLVLCC_GRA_LU_0.tif")
+forest <- rast("Atlas/data/ForestType/20240101/CLMS_HRLVLCC_FTY_LU_0.tif")
+
+grassland
+forest
+
+
+freq(grassland)
+freq(forest)
+
+forest_binary <- forest > 0 
+
+grassland_2169 <- project(grassland, "EPSG:2169", method = "near")  
+forest_2169 <- project(forest_binary, "EPSG:2169", method = "near")
+
+rtp_vect <- vect(rtp)
+
+# proportion de forest et prairies par cellules
+
+grassland_pct <- terra::extract(grassland_2169, rtp_vect, fun = mean, na.rm = TRUE)
+forest_pct <- terra::extract(forest_2169, rtp_vect, fun = mean, na.rm = TRUE)
+ 
+
+
+# other = ce qui n est pas foret et prairie / pourcentage
+
+habitat_richness <- data.frame(CellID = rtp$layer,  Grassland = pmin(grassland_pct[, 2] * 100, 100), Forest = pmin(forest_pct[, 2] * 100, 100)) %>%
+  mutate(Other = pmax(100 - Grassland - Forest, 0),
+          total = Grassland + Forest + Other, Habitat_A = Grassland / total * 100,
+          Habitat_B = Forest / total * 100,   Habitat_C = Other / total * 100) %>%
+  select(CellID, Habitat_A, Habitat_B, Habitat_C) %>%
+  left_join(richness_par_cellule, by = "CellID")
+
+
+ggtern(data = habitat_richness, aes(x = Habitat_A, y = Habitat_B, z = Habitat_C)) +
+  geom_point(size = 3, alpha = 0.5, aes(colour = Richness)) +
+  labs(x = "Grassland (%)", y = "Forest (%)", z = "Other (%)", colour = "Species richness") +
+  scale_colour_viridis(option = "plasma", begin = 0, end = 0.95) +
+  theme_bw() + theme_showarrows() +
+  theme(tern.axis.title.T = element_blank(), tern.axis.title.L = element_blank(),tern.axis.title.R = element_blank(),
+    tern.axis.arrow = element_blank(),legend.title = element_text(size = 12),legend.text = element_text(size = 10), tern.axis.arrow.text.T = element_text(size = 10),
+    tern.axis.arrow.text.L = element_text(size = 10), tern.axis.arrow.text.R = element_text(size = 10)
+  )
