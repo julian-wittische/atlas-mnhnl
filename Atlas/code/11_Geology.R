@@ -130,29 +130,6 @@ plot_legende_geologique <- function(uniteGeo,
   fill_col <- ifelse(legende_df$type == "unit", palette_geo[legende_df$CODESTRATUNIT], NA_character_)
   font_vec <- ifelse(legende_df$type %in% c("ere", "grouping"), 2L, 1L)
   
-  # Condition pour mettre une bordure noire uniquement là où il y a une couleur
-  border_col <- ifelse(!is.na(fill_col), "black", NA_character_)
-  
-  par(mar = c(0, 0, 0, 0), xpd = TRUE)
-  plot.new()
-  legend("center", legend = legende_df$label, fill = fill_col, border = border_col,
-         text.font = font_vec, ncol = ncol_legende, cex = cex_legende, bty = "n",  
-         x.intersp = x_intersp, y.intersp = y_intersp, pt_cex = 1.5,
-         text.width = max(strwidth(legende_df$label, cex = cex_legende)))
-}
-plot_legende_geologique <- function(uniteGeo,
-                                    ref_excel,
-                                    ncol_legende = 2,
-                                    cex_legende = 1.28,
-                                    x_intersp = 0.5,
-                                    y_intersp = 0.8) {
-  prep <- .preparer_legende_geo(uniteGeo, ref_excel)
-  legende_df <- prep$legende_df
-  palette_geo <- prep$palette_geo
-  
-  fill_col <- ifelse(legende_df$type == "unit", palette_geo[legende_df$CODESTRATUNIT], NA_character_)
-  font_vec <- ifelse(legende_df$type %in% c("ere", "grouping"), 2L, 1L)
-  
   border_col <- ifelse(!is.na(fill_col), "black", NA_character_)
   
   par(mar = c(0, 0, 0, 0), xpd = TRUE)

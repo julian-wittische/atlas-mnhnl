@@ -232,6 +232,24 @@ h2.no-top-margin {
   height: 2rem;
 }
 
+.obs-count{
+    text-align:center;
+    color:#333;
+    font-size:0.85rem;
+    margin-top:0.5rem;
+    margin-bottom:0.3rem;
+}
+.obs-warning{
+    color:#333;
+    border-radius:6px;
+    padding:0.6rem 1rem;
+    margin:0 auto 4rem auto;
+    max-width:600px;
+    text-align:center;
+    font-weight:bold;
+    font-size:0.85rem;
+}
+
 /* Map */
 
 .map-distribution {

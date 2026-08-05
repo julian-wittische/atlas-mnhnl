@@ -86,7 +86,7 @@ habitat_richness <- data.frame(CellID = rtp$layer, sim_raw) %>%
 library(terra)
 
 grassland <- rast("Atlas/data/Grassland/20240101/CLMS_HRLVLCC_GRA_LU_0.tif")
-forest <- rast("Atlas/data/ForestType/20240101/CLMS_HRLVLCC_FTY_LU_0.tif")
+forest <- rast("Atlas/data/TreeCover/20240101/CLMS_HRLVLCC_TCD_LU_0.tif")
 
 grassland
 forest

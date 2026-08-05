@@ -48,11 +48,9 @@ for (i in ids) {
 }
 cat('</div>\n</div>\n')
 ```
-
 ::: species-taxonomy
 **Subfamily** Eristalinae   **Tribe** Eristalini
 :::
-
 ::: species-taxonomy
 **EN**   Yellow-haired Sun Fly <br> **LB**   Batmanschwiefmecke<br> **FR**   Éristale des fleurs<br> **DE**   Totenkopfschwebfliege<br>
 :::
@@ -65,7 +63,6 @@ cat('</div>\n</div>\n')
 ::: {.column width="25%"}
 ### Europe
 :::
-
 ::: {.column width="25%"}
 ![](/images/LC.png){.logo}
 :::
@@ -75,7 +72,6 @@ cat('</div>\n</div>\n')
 ::: {.column width="50%"}
 ### European Union<br>(27)
 :::
-
 ::: {.column width="50%"}
 ![](/images/LC.png){.logo}
 :::
@@ -85,7 +81,6 @@ cat('</div>\n</div>\n')
 ::: {.column width="25%"}
 ### Luxembourg (preliminary)
 :::
-
 ::: {.column width="25%"}
 ![](/images/NTLU.png){.logo}
 :::
@@ -105,20 +100,18 @@ cat('</div>\n</div>\n')
 #| fig.width: 9
 plot_heatmap(params$species)
 ```
-
 ## Description
 
-A medium hoverfly with a bright yellow-orangish coloration. Very particular black-colour pattern on the thorax representing a bat or a skull, giving it the surname of “common batman fly” [@bot2019]. This pattern could be reduced.
+A medium hoverfly with a bright yellow-orangish coloration. Very particular black-colour pattern on the thorax representing a bat or a skull, giving it the surname of “common batman fly” (Bot & Van de Meutter, 2023). This pattern could be reduced.
 
 ## Habitat
-
 ### Immature
 
-Larva is a typical rat-tailed maggot and lives in rot-holes trees or standing water [@liczner2024] even in stagnant water at the bottom of tires or cow troughs [@bot2019].
+Larva is a typical rat-tailed maggot and lives in rot-holes trees or standing water (Speight, 2017) even in stagnant water at the bottom of tires or cow troughs (Bot & Van de Meutter, 2023).
 
 ### Mature
 
-Really widespread and common, this species can be find around deciduous forest and open habitat. This species like to sunbath on leaves and can be noticed through transparency when standing on leaves. The male is territorial and will fight in the air other insects [@bot2019].
+Really widespread and common, this species can be find around deciduous forest and open habitat. This species like to sunbath on leaves and can be noticed through transparency when standing on leaves. The male is territorial and will fight in the air other insects (Bot & Van de Meutter, 2023).
 
 ## Distribution
 
@@ -130,7 +123,7 @@ Well distributed through the country.
 #| message: false
 get_species_map(params$species, data = DB4, rtp = rtp, base_map = base_map)
 ```
-
 ## Notes
 
-Microsatellite analysis has shown that the population is genetically homogeneous across Luxembourg as far as Cologne, despite significant urbanisation [@wittische2024]. However, two morphs are occurring at the same period and could transform this species in a species complex of two species in Europe if DNA evidence supports this theory.
+Microsatellite analysis has shown that the population is genetically homogeneous across Luxembourg as far as Cologne, despite significant urbanisation (Wittische et al., 2024). However, two morphs are occurring at the same period and could transform this species in a species complex of two species in Europe if DNA evidence supports this theory.
+

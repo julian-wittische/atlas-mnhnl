@@ -46,6 +46,9 @@ forest_2169[cells[,2]]
 sizeN <- 7 # /!\ WARNING: MUST BE ODD
 ifelse(sizeN  %% 2 == 1, print("Okkk"), print("MUST BE ODD"))
 
+
+sizeN
+
 direN <- rep(1,sizeN^2)
 direN[trunc((sizeN^2)/2)+1] <- 0
 neigh <- matrix(direN, sizeN)
@@ -81,11 +84,7 @@ DB2_habitat_adj <- DB2 %>%
    )
 
 
-plot_habitat_espece("Volucella zonaria", data = DB2_habitat)
-plot_habitat_espece("Volucella zonaria", data = DB2_habitat_adj)
 
-plot_habitat_espece("Episyrphus balteatus", data = DB2_habitat)
-plot_habitat_espece("Helophilus hybridus", data = DB2_habitat_adj)
 
 
 mean(DB2_habitat_adj$Grassland_pct, na.rm=TRUE)
@@ -144,7 +143,11 @@ plot_habitat_espece <- function(espece, data = DB2_habitat) {
 }
 
 
+plot_habitat_espece("Volucella zonaria", data = DB2_habitat)
+plot_habitat_espece("Volucella zonaria", data = DB2_habitat_adj)
 
+plot_habitat_espece("Episyrphus balteatus", data = DB2_habitat)
+plot_habitat_espece("Helophilus hybridus", data = DB2_habitat_adj)
 
 
 DB2_habitat <- DB2[DB2$Source == "Hand netting",] %>%
@@ -152,9 +155,22 @@ DB2_habitat <- DB2[DB2$Source == "Hand netting",] %>%
             by = c("Cell" = "CellID"))
 
 
+### test 
 
 
+r <- 16
+n <- 2 * r + 1
+c <- r + 1
+grille <- expand.grid(row = 1:n, col = 1:n)
+grille$dist <- abs(grille$row - c) + abs(grille$col - c)
+grille$type <- ifelse(grille$dist == 0, "centre", ifelse(grille$dist <= r, "x", "h"))
 
+ggplot(grille, aes(col, -row, fill = type)) +
+  geom_tile(color = "grey70") +
+  scale_fill_manual(values = c(centre = "black", x = "grey60", h = "white")) +
+  coord_fixed() +
+  theme_void() +
+  theme(legend.position = "none")
 
 
 

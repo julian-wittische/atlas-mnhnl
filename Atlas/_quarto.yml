@@ -38,9 +38,7 @@ format:
       - margin=2.5cm
     toc: false 
     number-sections: true
-    include-in-header:
-      text: |
-        \let\maketitle\relax
+
   html:
     number-sections: false
     toc: false

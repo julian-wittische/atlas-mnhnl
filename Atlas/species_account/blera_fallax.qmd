@@ -27,10 +27,41 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 
+
+::: {.columns}
+
+::: {.column width="50%" }
+
 ### Author {.author-species}
 
 Hinatea Ariey
 
+:::
+
+::: {.column width="50%" }
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+
+seuil_obs <- 30  
+
+n_obs <- DB4 %>% filter(ID == params$species) %>% nrow()
+
+cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
+
+if (n_obs < seuil_obs) {
+  cat(sprintf(
+    '<div class="obs-warning"> ⚠ Low number of records (&lt; %d).</div>\n',
+    seuil_obs
+  ))
+}
+```
+:::
+
+:::
 ::: {.columns}
 
 ::: {.column width="50%" }
@@ -115,16 +146,16 @@ plot_heatmap(params$species)
 ```
 ## Description
 
-A medium hoverfly with an unmistakable pattern of coloration. Head, thorax and the upper part of abdomen black, the rest of the body is orange. Proportion of the orange part may varies depending on the sex, it should be bigger and clearer in males. Antenna on a protrusion of the front, face yellow [@bot2019].
+A medium hoverfly with an unmistakable pattern of coloration. Head, thorax and the upper part of abdomen black, the rest of the body is orange. Proportion of the orange part may varies depending on the sex, it should be bigger and clearer in males. Antenna on a protrusion of the front, face yellow (Bot & Van de Meutter, 2023).
 
 ## Habitat
 ### Immature
 
-Larva can be found in cavities in coniferous trees [@bot2019].
+Larva can be found in cavities in coniferous trees (Bot & Van de Meutter, 2023).
 
 ### Mature
 
-As the larva stage, adult affectioned spruce and pine forest with overmature trees but can also be observed in mixed forest [@speight2017; @bot2019].
+As the larva stage, adult affectioned spruce and pine forest with overmature trees but can also be observed in mixed forest (Speight, 2017; Bot & Van de Meutter, 2023).
 
 ## Distribution
 
