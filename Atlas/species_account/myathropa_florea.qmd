@@ -16,7 +16,6 @@ include-in-header:
           margin-top: 3rem !important;
       }
       </style>
-bibliography: references.bib
 ---
 
 ```{r setup}
@@ -28,9 +27,12 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 
+
 ### Author {.author-species}
 
 Hinatea Ariey
+
+
 
 :::::::::::::::: columns
 ::::: {.column width="50%"}
@@ -49,11 +51,15 @@ for (i in ids) {
 cat('</div>\n</div>\n')
 ```
 ::: species-taxonomy
+
 **Subfamily** Eristalinae   **Tribe** Eristalini
+
 :::
+
 ::: species-taxonomy
 **EN**   Yellow-haired Sun Fly <br> **LB**   Batmanschwiefmecke<br> **FR**   Éristale des fleurs<br> **DE**   Totenkopfschwebfliege<br>
 :::
+
 :::::
 
 :::::::::::: {.column width="50%"}
@@ -121,8 +127,28 @@ Well distributed through the country.
 #| echo: false
 #| warning: false
 #| message: false
-get_species_map(params$species, data = DB4, rtp = rtp, base_map = base_map)
+get_species_map(params$species, rtp = rtp, base_map = base_map)
 ```
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+
+seuil_obs <- 30  
+#n_obs <- nrow(DB)
+n_obs <- DB %>% filter(ID == params$species) %>% nrow()
+
+cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
+
+if (n_obs < seuil_obs) {
+  cat(sprintf(
+    '<div class="obs-warning"> ⚠ Low number of records (&lt; %d).</div>\n',
+    seuil_obs
+  ))
+}
+```
+
 ## Notes
 
 Microsatellite analysis has shown that the population is genetically homogeneous across Luxembourg as far as Cologne, despite significant urbanisation (Wittische et al., 2024). However, two morphs are occurring at the same period and could transform this species in a species complex of two species in Europe if DNA evidence supports this theory.

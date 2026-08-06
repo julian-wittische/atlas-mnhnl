@@ -1,3 +1,100 @@
 # Spatial analysis of hoverfly diversity
 
 ### Author {.author}
+
+
+
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "17_Effort.R"))
+```
+
+
+
+## Number of Field Surveys per Grid Cell
+
+```{r}
+#| fig-width: 14
+#| fig-height: 14
+#| fig-align: center
+#| echo: false
+#| warning: false
+#| message: false
+
+carte_effort_cell(effort_cell, rtp, lux_borders, GR2169_c)
+```
+
+```{=html}
+<div id="img-modal">
+  <span class="close-btn" onclick="closeLightbox()">&times;</span>
+  <img id="img-modal-content" src="">
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".lightbox img").forEach(function(img) {
+    img.addEventListener("click", function() {
+      document.getElementById("img-modal-content").src = this.src;
+      document.getElementById("img-modal").classList.add("active");
+    });
+  });
+});
+
+document.addEventListener("click", function(e) {
+  if (e.target.id === "img-modal") closeLightbox();
+});
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeLightbox();
+});
+
+function closeLightbox() {
+  document.getElementById("img-modal").classList.remove("active");
+}
+</script>
+```
+
+
+::: {.columns}
+
+::: {.column width="50%"}
+
+## Observations per Survey
+::: {.lightbox}
+
+```{r}
+#| fig-width: 14
+#| fig-height: 14
+#| fig-align: center
+#| echo: false
+#| warning: false
+#| message: false
+carte_ratio_cell(ratio_cell, rtp, lux_borders, GR2169_c)
+```
+:::
+
+:::
+
+::: {.column width="50%"}
+
+## Taxa per Survey
+::: {.lightbox}
+
+```{r}
+#| fig-width: 14
+#| fig-height: 14
+#| fig-align: center
+#| echo: false
+#| warning: false
+#| message: false
+carte_ratio_especes_cell(ratio_especes_cell, rtp, lux_borders, GR2169_c)
+```
+:::
+
+:::
+
+:::

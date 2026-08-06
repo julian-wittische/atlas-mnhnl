@@ -4,4 +4,26 @@ title: "History of Hoverflies recording in Luxembourg"
 
 ### Author {.author}
 
-STATIC MAP (EVELYNE C) FOCUS ON PROJECT
+## Evelyne Carrières (before 2016)
+
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+```
+
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+#| fig.height: 14
+#| fig.width: 14
+
+p_carrieres
+```
+

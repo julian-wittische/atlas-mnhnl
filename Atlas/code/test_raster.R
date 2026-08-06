@@ -1,13 +1,13 @@
 
 # nb observations par espece
-species_counts <- DB2 %>% count(ID, name = "n_obs")
+species_counts <- DB %>% count(ID, name = "n_obs")
 
 #  seuil de 80 espece
 species_keep <- species_counts %>% filter(n_obs >= 80) %>% pull(ID)
-DB2_filtered <- DB2 %>% filter(ID %in% species_keep)
+DB_filtered <- DB %>% filter(ID %in% species_keep)
 
 #  nb d'observations par cellule
-obscell <- DB2_filtered %>%
+obscell <- DB_filtered %>%
   count(ID, Cell) %>%
   pivot_wider(names_from = Cell, values_from = n, values_fill = 0)  # 1 colonne par cellule
 

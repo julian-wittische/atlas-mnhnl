@@ -16,7 +16,7 @@ habitat_richness <- habitat_richness %>%
 
 # par cellule
 
-DB2_habitat <- DB2 %>%
+DB_habitat <- DB %>%
   left_join(habitat_richness %>% select(CellID, Habitat_Dominant),
             by = c("Cell" = "CellID"))
 
@@ -30,7 +30,7 @@ pts_2169 <- project(pts, "EPSG:2169")
 # forest_100m    <- terra::extract(forest_2169,    pts_2169, buffer = 500, fun = mean, na.rm = TRUE)
 # 
 # # DB2_habitat_100m
-# DB2_habitat_100m <- DB2 %>%
+# DB2_habitat_100m <- DB %>%
 #   mutate( Grassland_pct = grassland_100m[[2]], Forest_pct = forest_100m[[2]],  Other_pct= 1 - Grassland_pct - Forest_pc ) %>%
 #   mutate(Habitat_Dominant = case_when(
 #     Grassland_pct >= Forest_pct & Grassland_pct >= Other_pct ~ "Grassland",

@@ -92,6 +92,9 @@ h3.author{
 
 /* Species */
 
+.columns.header-row {
+  align-items: flex-start;
+}
 
 h3.author-species {
   margin-top: -2rem !important;
@@ -234,8 +237,6 @@ h2.no-top-margin {
 
 .obs-count{
     text-align:center;
-    color:#333;
-    font-size:0.85rem;
     margin-top:0.5rem;
     margin-bottom:0.3rem;
 }
@@ -246,8 +247,44 @@ h2.no-top-margin {
     margin:0 auto 4rem auto;
     max-width:600px;
     text-align:center;
-    font-weight:bold;
-    font-size:0.85rem;
+}
+
+.lightbox img {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.lightbox img:hover {
+  opacity: 0.85;
+}
+
+
+#img-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+}
+#img-modal.active {
+  display: flex;
+}
+#img-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  cursor: default;
+}
+#img-modal .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  line-height: 1;
 }
 
 /* Map */

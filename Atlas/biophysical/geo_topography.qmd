@@ -53,19 +53,9 @@ knitr::kable(tableau_unites)
 
 </details>
 
-<details>
-<summary><strong> Show german legend description table</strong></summary>
 
-```{r geology description de}
-#| echo: false
-#| warning: false
-#| message: false
-knitr::kable(tableau_unites)
-```
 
-</details>
-
-English nomenclature was unavailable
+English legend available soon
 
 ::: {.spacer}
 :::

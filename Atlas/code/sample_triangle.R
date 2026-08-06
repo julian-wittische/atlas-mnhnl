@@ -38,7 +38,7 @@
 #        width = 25, height = 25, units = "cm")
 
 
-DB3_sf <- st_transform(DB3_sf, st_crs(rtp_sf))
+DB_sf <- st_transform(DB3_sf, st_crs(rtp_sf))
 
 library(tidyverse)
 library(sf)

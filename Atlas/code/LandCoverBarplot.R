@@ -1,48 +1,65 @@
 
 
-library(terra)
-library(sf)
-library(terra)
-library(dplyr)
-library(ggplot2)
+# Vecteur
 
+pts_sf <- st_as_sf(DB, coords = c("Long", "Lat"), crs = 4326) %>%
+  st_transform(2169) %>%
+  mutate(point_id = row_number())
 
-pts_sf <- st_as_sf(DB2, coords = c("Long", "Lat"), crs = 4326) %>%
-  st_transform(2169)
-pts_sf$point_id <- seq_len(nrow(pts_sf))
 buffers <- st_buffer(pts_sf, 500)
 
+land_cover <- st_read("Atlas/data/LandCover_Luxembourg_2018_2021_2024.gdb",
+                      layer = "LandCover_Luxembourg_status_2024", quiet = TRUE) %>%
+  st_transform(2169) %>%
+  st_make_valid() %>%
+  mutate(Habitat_Dominant = case_when(
+    LC2024 %in% c(10, 20)      ~ "Built",
+    LC2024 %in% c(70, 80)      ~ "Forest",
+    LC2024 %in% c(91, 92, 93)  ~ "Herbaceous",
+    LC2024 == 30                ~ "Bare soil",
+    LC2024 == 60                ~ "Water"
+  )) %>%
+  filter(!is.na(Habitat_Dominant)) %>%
+  select(Habitat_Dominant)  
+
+DB_landcover_vecteur <- st_join(buffers, land_cover, largest = TRUE) %>%
+  st_drop_geometry()
+
+
+
+# Raster
+pts_sf <- st_as_sf(DB, coords = c("Long", "Lat"), crs = 4326) %>%
+  st_transform(2169) %>%
+  mutate(point_id = row_number())
+
+buffers <- st_buffer(pts_sf, 500)
 
 lc_raster <- rast("Atlas/data/LandCover_Luxembourg_status_2024.tif")
 
-lc_low_res <- aggregate(lc_raster, fact = 5000, fun = "modal")
-
-ext_data <- terra::extract(lc_low_res, vect(buffers))
-
-
-
-lc_values <- terra::extract(lc_raster, vect(buffers), fun = "modal") 
-
-
-lc_freq <- terra::extract(lc_raster, vect(buffers), fun = "freq")
-
+lc_values <- terra::extract(lc_raster, vect(buffers), fun = "modal") %>%
+  rename(point_id = ID)    # extrait la classe majeure du radius choisi
 
 recode_lc <- function(x) {
   case_when(
-    x %in% c(10, 20) ~ "Built",  x %in% c(70, 80) ~ "Forest",
-    x %in% c(91, 92, 93) ~ "Herbaceous",
-    x == 30 ~ "Bare soil",  x == 60 ~ "Water",
-    TRUE ~ NA_character_)
+    x %in% c(10, 20)      ~ "Built",
+    x %in% c(70, 80)      ~ "Forest",
+    x %in% c(91, 92, 93)  ~ "Herbaceous",
+    x == 30               ~ "Bare soil",
+    x == 60                ~ "Water",
+    TRUE                  ~ NA_character_
+  )
 }
 
-
-DB2_landcover <- DB2 %>%
-  mutate(point_id = row_number()) %>%
-  left_join( lc_values %>% mutate(Habitat_Dominant = recode_lc(lyr1)),by = c("point_id")
+DB_landcover_raster <- pts_sf %>%
+  st_drop_geometry() %>%
+  left_join(lc_values %>% mutate(Habitat_Dominant = recode_lc(lyr1)), by = "point_id"
   )
 
 
-plot_habitat_espece <- function(espece, data = DB2_landcover) {
+
+
+
+plot_habitat_espece <- function(espece, data) {
   lc_colors <- c("Built" = "#E40102", "Forest" = "#267400", "Herbaceous" = "#55FF00",
                  "Bare soil" = "#73DDFE", "Water" = "#014DA7")
   df <- data %>%
@@ -62,4 +79,5 @@ plot_habitat_espece <- function(espece, data = DB2_landcover) {
           axis.text.y = element_blank(), axis.text.x = element_text(size = 10))
 }
 
-plot_habitat_espece("Volucella zonaria")
+plot_habitat_espece("Volucella zonaria", data = DB_landcover_vecteur)
+plot_habitat_espece("Volucella zonaria", data = DB_landcover_raster)

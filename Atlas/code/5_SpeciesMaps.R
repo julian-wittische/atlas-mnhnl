@@ -4,74 +4,10 @@
 # Start: Summer 2026
 # Script objective : cartes par espèce et carte de richesse spécifique
 
-###### Données ----
-
-build_master_dataset <- function(BC, HN, MD, rtp) {
-  
-  ## Bycatch (deja charge par 3_LoadData.R, pas de re-lecture) ---
-  bycatch <- BC
-  bycatch$Observateur <- bycatch$Collecteur
-  bycatch$Identifieur <- bycatch$IDENTIFIER
-  bycatch$Origin      <- bycatch$Source
-  bycatch$URL         <- NA_character_
-  colnames(bycatch)[colnames(bycatch) == "Année"] <- "Year"
-  
-  ## Hand netting (deja charge) ---
-  handnetting <- HN
-  handnetting$Observateur <- handnetting$Collecteur
-  handnetting$Identifieur <- handnetting$IDENTIFIER
-  handnetting$Origin      <- handnetting$Source
-  handnetting$URL         <- NA_character_
-  colnames(handnetting)[colnames(handnetting) == "Année"] <- "Year"
-  
-  ## MNHNL (deja charge) ---
-  mnhnl <- MD
-  mnhnl$ID          <- mnhnl$preferred
-  mnhnl$Observateur <- mnhnl$Recorders
-  mnhnl$Identifieur <- mnhnl$Determiner
-  mnhnl$Origin <- ifelse(
-    startsWith(mnhnl$Observation_Key, "INAT_"), "Inaturalist",
-    ifelse(startsWith(mnhnl$Observation_Key, "oOrg_"), "Observation.org", "MNHNL"))
-  mnhnl$URL <- ifelse(
-    mnhnl$Origin == "Inaturalist",
-    paste0("https://www.inaturalist.org/observations/", sub("^INAT_", "", mnhnl$Observation_Key)),
-    ifelse(
-      mnhnl$Origin == "Observation.org",
-      paste0("https://observation.org/observation/", sub("^oOrg_", "", mnhnl$Observation_Key), "/"),
-      NA_character_))
-  
-  ## Assemblage (identique a avant) ---
-  cols_keep <- c("Latitude", "Longitude", "ID", "Source", "Origin", "Year", "Date", "Observateur", "Identifieur", "URL")
-  master_data <- rbind(bycatch[, cols_keep], handnetting[, cols_keep])
-  colnames(master_data)[1:2] <- c("Lat", "Long")
-  mnhnl_subset <- mnhnl[, c("Lat", "Long", "ID", "Source", "Origin", "Year", "Date", "Observateur", "Identifieur", "URL")]
-  master_data <- rbind(master_data, mnhnl_subset)
-  
-  master_data[(master_data$Origin %in% c("Inaturalist", "Observation.org")), "Source"] <- "Citizen science"
-  master_data[!(master_data$Source %in% c("Citizen science", "Hand netting", "Malaise traps", "Pan traps")), "Source"] <- "MNHNL"
-  
-  master_data <- master_data[c(-517), ] # problematic WBA sample
-  
-  master_data$Long <- as.numeric(master_data$Long)
-  master_data$Lat  <- as.numeric(master_data$Lat)
-  master_data$Year <- as.numeric(master_data$Year)
-  
-  master_data <- master_data[complete.cases(master_data[, c("Long", "Lat", "Year")]), ]
-  
-  ## la grille ---
-  master_sf <- st_as_sf(master_data, coords = c("Long", "Lat"), crs = 4326, remove = FALSE)
-  rtp_sf    <- st_as_sf(rtp)
-  rtp_sf    <- st_transform(rtp_sf, st_crs(master_sf))
-  master_sf <- st_join(master_sf, rtp_sf)
-  master_data$Cell <- master_sf$layer
-  master_data
-}
-
-DB4 <- build_master_dataset(BC, HN, MD, rtp)
 
 
 ###### liste des identificateurs avec plus de 30 identifications ----
-top_identifieurs <- DB4 %>%
+top_identifieurs <- DB_full %>%
   filter(!is.na(Identifieur)) %>%
   count(Identifieur, name = "nb_id") %>%
   filter(nb_id > 30) %>%
@@ -82,7 +18,7 @@ top_identifieurs
 
 
 ######  carte par espèce ----
-get_species_map <- function(species_name, data, rtp, base_map) {
+get_species_map <- function(species_name, data = DB_full , rtp , base_map ) {
   
   ## Sélection des observations 
   species_obs <- data[which(data$ID == species_name), ]
@@ -159,7 +95,7 @@ get_species_map <- function(species_name, data, rtp, base_map) {
         "<strong>Source : </strong>", species_obs$Source, "<br>",
         "<strong>Date : </strong>", format(species_obs$Date, "%d/%m/%Y"), "<br>",
         "<strong>Observer : </strong>", ifelse(is.na(species_obs$Observateur), "Inconnu", species_obs$Observateur), "<br>",
-        "<strong>Identifier : </strong>", ifelse(is.na(species_obs$Identifieur), "Inconnu", species_obs$Observateur), 
+        "<strong>Identifier : </strong>", ifelse(is.na(species_obs$Identifieur), "Inconnu", species_obs$Identifieur), 
         ifelse( species_obs$Origin == "Inaturalist" & !is.na(species_obs$URL),
           paste0("<br><a href='", species_obs$URL, "' target='_blank'>Voir sur iNaturalist</a>"),
           "" ),
@@ -179,7 +115,7 @@ get_species_map <- function(species_name, data, rtp, base_map) {
 
 ###### Species Richness Map ----
 
-get_richness_map <- function(data = DB2) {
+get_richness_map <- function(data = DB) {
   
   ############ Toutes les observations (toutes espèces confondues)
   DB_rich <- data

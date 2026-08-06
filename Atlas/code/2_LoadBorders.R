@@ -6,7 +6,7 @@
 
 
 ############ Bbox for the Greater Region
-bbox <- st_bbox(c(xmin = 5.7, xmax = 6.55, ymax = 50.2, ymin = 49.4),
+bbox <- st_bbox(c(xmin = 5.7, xmax = 6.60, ymax = 50.2, ymin = 49.4),
                 crs = st_crs(4326))
 
 bbox_2169 <- st_bbox(st_transform(st_as_sfc(bbox),c(xmin = 5.7, xmax = 6.55, ymax = 50.2, ymin = 49.4), crs = 2169))

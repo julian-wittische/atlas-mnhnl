@@ -10,11 +10,11 @@ library(purrr)
 library(stringr)
 
 ############ Filtrage ----
-DB3$Certainty <- !grepl("\\?", DB3$ID)
+DB$Certainty <- !grepl("\\?", DB$ID)
 sum(DB3$Certainty, na.rm = TRUE)
 
 ############ espèces à traiter (données sources) ----
-# Extraction stricte sous forme de vecteur de caractères
+
 species_list <- DB3 %>% 
   filter(Certainty) %>% 
   pull(ID) %>% 
@@ -37,7 +37,7 @@ if (file.exists(chemin_cache)) {
 }
 
 ############ Espèces déjà connues vs nouvelles ----
-# Nettoyage préventif des valeurs manquantes ou vides
+
 species_list <- species_list[!is.na(species_list) & species_list != ""]
 species_manquantes <- setdiff(species_list, DB_taxo$verbatim_name)
 
@@ -75,7 +75,7 @@ if (length(species_manquantes) > 0) {
     ) %>%
     select(verbatim_name, name, authorship, Subfamily, Tribe, Genus)
   
-  # Suivi des espèces non résolues (fautes de frappe)
+
   non_resolues <- setdiff(species_manquantes, nouvelles_lignes$verbatim_name)
   if (length(non_resolues) > 0) {
     warning(
@@ -83,7 +83,7 @@ if (length(species_manquantes) > 0) {
       paste(paste0("- ", non_resolues), collapse = "\n")
     )
     
-    # Stockage des échecs en cache pour éviter de re-solliciter l'API inutilement au prochain run
+
     lignes_manquees <- tibble(
       verbatim_name = non_resolues,
       name          = NA_character_,

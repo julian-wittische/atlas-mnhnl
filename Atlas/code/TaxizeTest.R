@@ -2,7 +2,7 @@ library(taxize)
 
 
 
-DB3$Certainty <- !(DB3$ID == grep("\\?", DB3$ID, value=TRUE))
+DB$Certainty <- !(DB3$ID == grep("\\?", DB3$ID, value=TRUE))
 sum(DB3$Certainty, na.rm=T)
 
 

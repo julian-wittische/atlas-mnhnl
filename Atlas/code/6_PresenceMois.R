@@ -18,7 +18,7 @@ grille <- expand.grid(Month = 1:12, Quart = 1:4) %>%
 base <- grille$Position[grille$Quart == 1]
 
 ############ Prépare les données de présence pour une espèce ----
-prepare_presence <- function(species_name, data = DB3 ) {
+prepare_presence <- function(species_name, data = DB ) {
   data %>%
     filter(ID == species_name) %>%
     mutate(
@@ -37,7 +37,7 @@ prepare_presence <- function(species_name, data = DB3 ) {
 
 
  ############ Graphique bâtons par source ----
-plot_activite_source <- function(species_name, data = DB3) {
+plot_activite_source <- function(species_name, data = DB) {
   presence <- prepare_presence(species_name, data)
   ggplot(presence, aes(x = Position, y = prop, fill = Source2)) +
     geom_col(width = 0.85) +
@@ -57,7 +57,7 @@ plot_activite_source <- function(species_name, data = DB3) {
 }
 ############ Graphique heatmap ----
 
-plot_heatmap <- function(species_name, data = DB3) {
+plot_heatmap <- function(species_name, data = DB) {
   presence <- prepare_presence(species_name, data)
   ggplot(presence, aes(x = Position , y= 0.5,fill = n)) +
     geom_tile(width = 1,color = NA) +

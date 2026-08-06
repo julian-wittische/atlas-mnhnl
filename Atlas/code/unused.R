@@ -4,7 +4,7 @@ grille <- expand.grid(Month = 1:12, Quart = 1:4) %>%
   mutate(Position = row_number())
 base <- grille$Position[grille$Quart == 1]
 
-plot_activite_smooth <- function(species_name, data = DB3) {
+plot_activite_smooth <- function(species_name, data = DB) {
   presence <- prepare_presence(species_name, data)
   ggplot(presence, aes(x = Position, y = n)) +
     geom_area(stat = "smooth", fill = "lightblue", span = 1/3, alpha = 0.6, se = FALSE,

@@ -28,40 +28,14 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 
 
-::: {.columns}
 
-::: {.column width="50%" }
 
 ### Author {.author-species}
 
 Hinatea Ariey
 
-:::
 
-::: {.column width="50%" }
 
-```{r}
-#| echo: false
-#| results: asis
-#| warning: false
-#| message: false
-
-seuil_obs <- 30  
-
-n_obs <- DB4 %>% filter(ID == params$species) %>% nrow()
-
-cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
-
-if (n_obs < seuil_obs) {
-  cat(sprintf(
-    '<div class="obs-warning"> ⚠ Low number of records (&lt; %d).</div>\n',
-    seuil_obs
-  ))
-}
-```
-:::
-
-:::
 ::: {.columns}
 
 ::: {.column width="50%" }
@@ -165,8 +139,29 @@ Localised in coniferous area, this syrphid can be found all around Luxembourg if
 #| echo: false
 #| warning: false
 #| message: false
-get_species_map(params$species, data = DB4, rtp = rtp, base_map = base_map)
+get_species_map(params$species, rtp = rtp, base_map = base_map)
 ```
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+
+seuil_obs <- 30  
+#n_obs <- nrow(DB)
+n_obs <- DB %>% filter(ID == params$species) %>% nrow()
+
+cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
+
+if (n_obs < seuil_obs) {
+  cat(sprintf(
+    '<div class="obs-warning"> ⚠ Low number of records (&lt; %d).</div>\n',
+    seuil_obs
+  ))
+}
+```
+
 ## Notes
 
 This species was record in 2021 and was not observed since 2025 despite all the science citizens platforms. Fortunately, the Hoverfly Atlas project has boosted interest in this family and enabled the observation of new specimens in two different localities.

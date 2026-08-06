@@ -133,19 +133,19 @@ MD_carrieres_sf <- st_as_sf(MD_carrieres, coords = c("Long", "Lat"), crs = 4326)
 p_carrieres <- ggplot() +
   geom_sf(data = lux_borders_sf, fill = "white", color = "black", linewidth = 0.3) +
   geom_sf(data = MD_carrieres_sf, color = "darkred", size = 1, alpha = 0.7) +
-  ggtitle("Evelyne Carrières (Before 2016)") +
   theme_void() +
   annotation_scale(location = "bl", width_hint = 0.2,
-                   style = "ticks", text_cex = 0.6,
-                   line_width = 0.5, height = unit(0.2, "cm"),
-                   pad_x = unit(1.2, "cm"), pad_y = unit(1.2, "cm")) +
+                   line_width = 1, height = unit(0.5, "cm"),
+                   style = "ticks", text_cex = 1,
+                   pad_x = unit(2, "cm"), pad_y = unit(2, "cm")) +
+  
   annotation_north_arrow(location = "tr", which_north = "true",
                          style = north_arrow_fancy_orienteering(),
-                         height = unit(1, "cm"), width = unit(1, "cm"),
-                         pad_x = unit(1.4, "cm"), pad_y = unit(1.4, "cm")) +
+                         height = unit(1.5, "cm"), width = unit(1.5, "cm"),
+                         pad_x = unit(2, "cm"), pad_y = unit(2, "cm")) +
   geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
   geom_text(data = country_labels, aes(x = x, y = y, label = name),
-            size = 3, color = "grey40", fontface = "italic") 
-p_carrieres
+            size = 5, color = "grey40", fontface = "italic") 
+
 
 

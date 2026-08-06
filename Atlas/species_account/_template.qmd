@@ -27,7 +27,40 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 ```
 
+::: {.columns}
+
+::: {.column width="50%" }
+
 ### Author {.author-species}
+
+
+
+:::
+
+::: {.column width="50%" }
+
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+
+seuil_obs <- 30  
+
+n_obs <- DB_full %>% filter(ID == params$species) %>% nrow()
+
+cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
+
+if (n_obs < seuil_obs) {
+  cat(sprintf(
+    '<div class="obs-warning"> ⚠ Low number of records (&lt; %d).</div>\n',
+    seuil_obs
+  ))
+}
+```
+:::
+
+:::
 
 ::: {.columns}
 
@@ -136,7 +169,7 @@ plot_heatmap(params$species)
 #| echo: false
 #| warning: false
 #| message: false
-get_species_map(params$species, data = DB4, rtp = rtp, base_map = base_map)
+get_species_map(params$species, rtp = rtp, base_map = base_map)
 ```
 
 ## Notes

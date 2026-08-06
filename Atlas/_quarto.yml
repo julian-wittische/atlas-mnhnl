@@ -41,7 +41,7 @@ format:
 
   html:
     number-sections: false
-    toc: false
+    toc: true
     smooth-scroll: true
     html-math-method: katex
     theme:
