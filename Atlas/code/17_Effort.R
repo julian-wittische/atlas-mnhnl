@@ -52,12 +52,6 @@ carte_effort_cell <- function(effort_cell, rtp, lux_borders, GR2169_c) {
 
 
 
-
-
-
-
-
-
 nb_insectes_cell <- HN %>%
   filter(!is.na(Cell)) %>%
   count(Cell, name = "Nb_insectes")

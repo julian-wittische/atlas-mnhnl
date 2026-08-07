@@ -58,6 +58,7 @@ function closeLightbox() {
 </script>
 ```
 
+To account for differences in sampling effort, the two maps below show the average number of records (left) and different species (right) recorded per field survey in each grid cell.
 
 ::: {.columns}
 

@@ -40,6 +40,63 @@ HN <- rbind(
 
 HN$Date <- dmy(date_5chiffres(HN$Date_out))
 
+# # #####Checkpoint####################################
+# # # vue d'ensemble
+# table(HN$Longitude)
+# table(HN$Latitude)
+# # 
+# # 
+# # # Isoler les NA 
+# sum(HN$Longitude == "NA" | is.na(HN$Longitude), na.rm = TRUE)
+# sum(HN$Latitude == "NA" | is.na(HN$Latitude), na.rm = TRUE)
+# # 
+# # # Isoler les lignes avec un caractère
+# HN[grepl("[^0-9.\\-]", HN$Longitude) & !is.na(HN$Longitude) & HN$Longitude != "NA", "Longitude"]
+# HN[grepl("[^0-9.\\-]", HN$Latitude) & !is.na(HN$Latitude) & HN$Latitude != "NA", "Latitude"]
+# # 
+# # 
+# # 5 lignes notations scientifiques/ 1 avec ,
+# # #########################################################
+
+
+inserer_point <- function(x, pos) {
+  x <- gsub("[^0-9]", "", x)  
+  paste0(substr(x, 1, pos), ".", substr(x, pos + 1, nchar(x)))
+}
+
+HN$Latitude <- gsub(",$", "", HN$Latitude)
+HN$Longitude <- as.numeric(sapply(HN$Longitude, inserer_point, pos = 1))
+HN$Latitude <- as.numeric(sapply(HN$Latitude, inserer_point, pos = 2))
+
+
+table(test$plausible, useNA = "ifany")
+
+lon_num <- as.numeric(HN$Longitude)
+lat_num <- as.numeric(HN$Latitude)
+
+# Bornes pour le Luxembourg
+lon_min <- 5.6; lon_max <- 6.6
+lat_min <- 49.3; lat_max <- 50.3
+
+
+
+HN_valid <- HN[valides, ]
+HN_valid$lon_tmp <- lon_num[valides]
+HN_valid$lat_tmp <- lat_num[valides]
+
+HN_sf <- st_as_sf(HN_valid, coords = c("lon_tmp", "lat_tmp"), crs = 4326, remove = FALSE)
+rtp_sf <- st_transform(st_as_sf(rtp), st_crs(HN_sf))
+HN_cell <- st_join(HN_sf, rtp_sf)$layer
+
+nrow(HN_sf) == length(HN_cell)   
+
+# ajout de la colonne cell calculées a partir des long et lat utilisables
+HN$RightCell <- NA
+HN$RightCell[valides] <- HN_cell
+
+# 8 voisin
+
+
 ###### MNHNL (Mdata) ----
 MD <- read.csv(paste0(DATAPATH, "Mdata.csv"), header = TRUE, encoding = "latin1")
 colnames(MD)[17] <- "Source"
@@ -51,6 +108,7 @@ MD_sf <- st_as_sf(MD, coords = c("Long", "Lat"), crs = 4326, remove = FALSE)
 rtp_sf <- st_transform(st_as_sf(rtp), st_crs(MD_sf))
 MD_cell <- st_join(MD_sf, rtp_sf)$layer
 MD$Cell <- MD_cell
+
 
 ############ Table  unique ----
 
@@ -75,8 +133,9 @@ DB <- DB %>%
 
 ###### Version spatiale ----
 DB_sf <- st_as_sf(DB, coords = c("Long", "Lat"), crs = 4326) %>%
-  st_crop(bbox) %>%
   st_transform("EPSG:2169")
+  #st_crop(bbox) %>%   # !! Cela va cacher les erreurs dans les coordonnées
+  
 
 
 
