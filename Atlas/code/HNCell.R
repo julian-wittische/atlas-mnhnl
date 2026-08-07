@@ -77,6 +77,10 @@ codes_suspects <- HN %>%
   select(Code, Cell, RightCell, Longitude, Latitude, Collecteur, Date)
 print(codes_suspects, n = Inf)
 
+
+HN$Erreur <- mapply(function(i, j) i %in% voisins_par_cellule[[as.character(j)]],
+                    HN$Cell, HN$RightCell)
+
 ###### Bilan coordonnées non exploitables ----
 
 ## Lignes sans Longitude/ Latitude
@@ -88,3 +92,72 @@ cat("Non-NA mais hors bornes LU :",
     sum(!is.na(HN$Longitude) & !is.na(HN$Latitude) &
           !(HN$Longitude >= 5.6 & HN$Longitude <= 6.6 &
               HN$Latitude >= 49.3 & HN$Latitude <= 50.3)), "\n")
+table_voisins <- utils::stack(voisins_par_cellule)
+HN$TFCell <- HN$Cell %in% voisins_par_cellule 
+
+# Caroline Grounds 2023-06-06
+
+
+View(HN[HN$Collecteur == "Caroline Grounds" & HN$Date == "2023-06-06",])
+
+
+
+
+
+library(dplyr)
+library(leaflet)
+
+library(dplyr)
+library(leaflet)
+
+map_observers <- function(data = HN, Collecteur = NULL, Date = NULL) {
+  
+  df <- data %>%
+    filter(!is.na(Latitude), !is.na(Longitude))
+  
+
+  if (!is.null(Collecteur) && nzchar(Collecteur)) {
+    search_term <- Collecteur  #
+    df <- df %>%
+      filter(grepl(search_term, .data$Collecteur, ignore.case = TRUE))
+  }
+  
+
+  if (!is.null(Date) && any(nzchar(Date))) {
+    if (length(Date) == 1) {
+      d <- as.Date(Date)
+      df <- df %>% filter(.data$Date == d)
+    } else if (length(Date) == 2) {
+      d1 <- as.Date(Date[1])
+      d2 <- as.Date(Date[2])
+      df <- df %>% filter(.data$Date >= d1, .data$Date <= d2)
+    }
+  }
+  
+  
+  
+  leaflet(df) %>%
+    addTiles() %>%
+    addCircleMarkers(
+      lng = ~Longitude,
+      lat = ~Latitude,
+      radius = 5,
+      stroke = TRUE,
+      color = "darkblue",
+      fillOpacity = 0.7,
+      popup = ~paste0(
+        "<b>Collecteur :</b> ", Collecteur, "<br>",
+        "<b>Date :</b> ", format(Date, "%d-%m-%Y"), "<br>",
+        "<b>Espèce identifiée :</b> ", ID, "<br>"
+
+      )
+    )
+}
+
+
+# une date précise
+map_observers(Collecteur = "Caroline Grounds", Date = "2023-06-06")
+
+
+
+
