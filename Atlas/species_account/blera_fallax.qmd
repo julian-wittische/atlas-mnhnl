@@ -25,8 +25,14 @@ include-in-header:
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "18_redList.R"))
 ```
 
+```{r}
+#| echo: false
+#| warning: false
+status <- get_iucn_status(params$species)
+```
 
 
 
@@ -55,10 +61,10 @@ for (i in ids) {
 }
 cat('</div>\n</div>\n')
 ```
-::: {.species-taxonomy}
+::: species-taxonomy
 **Subfamily** *Eristalinae* &nbsp; **Tribe** *Milesiini*
 :::
-::: {.species-common-names}
+::: species-taxonomy
 **EN** &nbsp;   Pine Hoverfly<br>
 **LB** &nbsp;   Blera fallax<br>
 **FR** &nbsp;   Blera fallax<br>
@@ -71,13 +77,14 @@ cat('</div>\n</div>\n')
 
 
 ## Conservation status {.no-top-margin}
+
 ::: {.columns .status-row}
 
 ::: {.column width="25%"}
 ### Europe
 :::
 ::: {.column width="25%"}
-![](/images/LC.png){.logo}
+![](/images/`r status$europe`.png){.logo}
 :::
 :::
 
@@ -87,7 +94,7 @@ cat('</div>\n</div>\n')
 ### European Union<br>(27)
 :::
 ::: {.column width="50%"}
-![](/images/LC.png){.logo}
+![](/images/`r status$eu27`.png){.logo}
 :::
 :::
 

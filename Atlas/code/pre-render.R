@@ -1,10 +1,10 @@
 ###### PRE-RENDER SCRIPT ----
 # Genere automatiquement a chaque rendu du livre
 
-taxon <- "Hoverflies"
 
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "config.R"))
 source(here::here("Atlas", "code", "Taxonomie.R"))  
 source(here::here("Atlas", "code", "7_GenerateSpeciesPages.R"))
 

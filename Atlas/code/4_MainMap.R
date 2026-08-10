@@ -93,6 +93,13 @@ DB_2169 <- st_transform(DB_sf, crs = 2169)
 DB_pre_cs <- DB_2169 %>%
   filter(Year < first_cs_year)
 
+
+
+
+
+####### vcarte MNHNL seule, avant 2012 (citizen science) ----
+
+
 p <- ggplot() +
   geom_sf(data = lux_borders_sf, fill = "white", color = "black", linewidth = 0.3) +
   geom_sf(data = DB_pre_cs, aes(color = Source), size = 1, alpha = 0.7) +
@@ -123,19 +130,19 @@ p
 
 
 
-MD_carrieres <- MD %>%
-  filter(Recorders == "Evelyne Carrières", Year < 2016)
+MD_2012 <- MD %>%
+  filter(Year < 2012)
 
-MD_carrieres_sf <- st_as_sf(MD_carrieres, coords = c("Long", "Lat"), crs = 4326) %>%
+MD_sf <- st_as_sf(MD_2012 , coords = c("Long", "Lat"), crs = 4326) %>%
   st_transform(crs = 2169)
 
 
-p_carrieres <- ggplot() +
+MD_carte <- ggplot() +
   geom_sf(data = lux_borders_sf, fill = "white", color = "black", linewidth = 0.3) +
-  geom_sf(data = MD_carrieres_sf, color = "darkred", size = 1, alpha = 0.7) +
+  geom_sf(data = MD_sf, color = "darkred", size = 5, alpha = 0.1) +
   theme_void() +
   annotation_scale(location = "bl", width_hint = 0.2,
-                   line_width = 1, height = unit(0.5, "cm"),
+                   line_width = 1, height = unit(0.2, "cm"),
                    style = "ticks", text_cex = 1,
                    pad_x = unit(2, "cm"), pad_y = unit(2, "cm")) +
   
@@ -147,5 +154,5 @@ p_carrieres <- ggplot() +
   geom_text(data = country_labels, aes(x = x, y = y, label = name),
             size = 5, color = "grey40", fontface = "italic") 
 
-
+MD_carte 
 

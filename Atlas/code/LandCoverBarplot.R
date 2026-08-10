@@ -12,6 +12,8 @@ land_cover <- st_read("Atlas/data/LandCover_Luxembourg_2018_2021_2024.gdb",
                       layer = "LandCover_Luxembourg_status_2024", quiet = TRUE)
 
 
+#object avec les points saqns le buffer
+
 land_cover <- land_cover %>%
   st_transform(2169) %>%
   st_make_valid() %>%
@@ -24,7 +26,7 @@ land_cover <- land_cover %>%
   )) %>%
   filter(!is.na(Habitat_Dominant)) %>%
   select(Habitat_Dominant)  # %>%
- # st_simplify(dTolerance = 10, preserveTopology = TRUE) # reduir e le nombre de vecteurs
+ # st_simplify(dTolerance = 10, preserveTopology = TRUE) # reduire le nombre de vecteurs
 
 DB_landcover_vecteur <- st_join(buffers, land_cover, largest = TRUE) %>%
   st_drop_geometry()

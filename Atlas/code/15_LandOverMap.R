@@ -1,8 +1,4 @@
-
-
-plot_land_cover_lux <- function(datapath = "Atlas/data/LandCover_Luxembourg_status_2024.tif",
-                                agg_fact = 100,  
-                                cache_path = "Atlas/data/lc_lux_cache.tif") {
+plot_land_cover_lux_vecteur <- function(land_cover) {
   
   land_cover_colors <- c(
     "10" = "#E40102", "20" = "#FFA902", "30" = "#73DDFE", "60" = "#014DA7",
@@ -15,31 +11,21 @@ plot_land_cover_lux <- function(datapath = "Atlas/data/LandCover_Luxembourg_stat
     "91" = "Permanent herbaceous vegetation", "92" = "Seasonal herbaceous vegetation",
     "93" = "Vineyards")
   
-  if (file.exists(cache_path)) {
-    lc_agg <- rast(cache_path)
-  } else {
-    message("Agrégation en cours (une seule fois)...")
-    lc_agg <- aggregate(rast(datapath), fact = agg_fact, fun = "modal")
-    writeRaster(lc_agg, cache_path, overwrite = TRUE)
-  }
-  
-  levels(lc_agg) <- data.frame(
-    id = as.integer(names(land_cover_labels)),
-    Land_Cover = land_cover_labels
-  )
-  colors_by_label <- setNames(land_cover_colors, land_cover_labels[names(land_cover_colors)])
-  
-  ggplot() +
-    geom_spatraster(data = lc_agg) +
-    scale_fill_manual(values = colors_by_label, name = "Land Cover", na.translate = FALSE) +
+  ggplot(land_cover) +
+    geom_sf(aes(fill = Habitat_Dominant), color = NA) +
+    scale_fill_manual(values = land_cover_colors, labels = land_cover_labels, name = "Land Cover") +
     annotation_scale(location = "br", width_hint = 0.25, style = "bar", text_cex = 0.7) +
-    coord_sf(crs = "EPSG:2169", expand = FALSE) +
+    coord_sf(crs = 2169, expand = FALSE) +
     theme_void() +
-    theme(panel.background = element_rect(fill = "white", color = NA),
-      plot.background  = element_rect(fill = "white", color = NA),legend.position = c(0.98, 0.98),
+    theme(
+      panel.background = element_rect(fill = "white", color = NA),
+      plot.background  = element_rect(fill = "white", color = NA),
+      legend.position = c(0.98, 0.98),
       legend.justification = c("right", "top"),
-      legend.background = element_rect(fill = alpha("white", 0.8), color = "grey70"), legend.title = element_text(face = "bold", size = 10),
-      legend.text = element_text(size = 8), legend.key.size = unit(0.4, "cm"))
+      legend.background = element_rect(fill = alpha("white", 0.8), color = "grey70"),
+      legend.title = element_text(face = "bold", size = 10),
+      legend.text = element_text(size = 8),
+      legend.key.size = unit(0.4, "cm")
+    )
 }
-
-plot_land_cover_lux()
+plot_land_cover_lux_vecteur(land_cover) 

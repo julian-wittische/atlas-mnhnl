@@ -40,11 +40,6 @@
 
 DB_sf <- st_transform(DB3_sf, st_crs(rtp_sf))
 
-library(tidyverse)
-library(sf)
-library(raster)
-library(ggtern)
-library(viridis)
 
 
 
@@ -128,3 +123,103 @@ ggtern(data = habitat_richness, aes(x = Habitat_A, y = Habitat_B, z = Habitat_C)
     tern.axis.arrow = element_blank(),legend.title = element_text(size = 12),legend.text = element_text(size = 10), tern.axis.arrow.text.T = element_text(size = 10),
     tern.axis.arrow.text.L = element_text(size = 10), tern.axis.arrow.text.R = element_text(size = 10)
   )
+
+
+################3
+
+DB <- DB %>% mutate(.obs_row_id = row_number())
+
+
+obs_vect_2169 <- vect(DB, geom = c("Long", "Lat"), crs = "EPSG:4326") %>%
+  project("EPSG:2169")
+
+#  500 m
+obs_buffer <- buffer(obs_vect_2169, width = 500)
+
+# Extraction 
+grassland_pct <- terra::extract(grassland_2169, obs_buffer, fun = mean, na.rm = TRUE)[, 2]
+forest_pct    <- terra::extract(forest_2169, obs_buffer, fun = mean, na.rm = TRUE)[, 2]
+
+
+habitat_par_observation_df <- DB %>%
+  mutate(
+    Grassland = pmin(grassland_pct * 100, 100),
+    Forest    = pmin(forest_pct * 100, 100),
+    Other     = pmax(100 - Grassland - Forest, 0),
+    total     = Grassland + Forest + Other,
+    Habitat_A = Grassland / total * 100,
+    Habitat_B = Forest / total * 100,
+    Habitat_C = Other / total * 100
+  ) %>%
+  select(.obs_row_id, Species = ID, Habitat_A, Habitat_B, Habitat_C)
+
+ggtern(data = habitat_par_observation_df, aes(x = Habitat_A, y = Habitat_B, z = Habitat_C)) +
+  geom_point(size = 3, alpha = 0.5) +
+  labs(x = "Grassland (%)", y = "Forest (%)", z = "Other (%)") +
+  theme_bw() + theme_showarrows() +
+  theme(
+    tern.axis.title.T = element_blank(), tern.axis.title.L = element_blank(), tern.axis.title.R = element_blank(),
+    tern.axis.arrow = element_blank(),
+    legend.title = element_text(size = 12), legend.text = element_text(size = 10),
+    tern.axis.arrow.text.T = element_text(size = 10), tern.axis.arrow.text.L = element_text(size = 10), tern.axis.arrow.text.R = element_text(size = 10)
+  )
+
+
+#######################################################################
+
+
+# lc <- st_read("Atlas/data/LandCover_Luxembourg_2018_2021_2024.gdb",
+#               layer = "LandCover_Luxembourg_2018_2021_2024") %>%
+#   st_transform(2169) %>%
+#   mutate(HabitatClass = case_when(
+#     LC2024 %in% c("70", "80")       ~ "Forest",
+#     LC2024 %in% c("91", "92", "93") ~ "Grassland",
+#     LC2024 %in% c("10", "20", "30", "60") ~ "Other",
+#     TRUE ~ NA_character_
+#   )) %>%
+#   filter(!is.na(HabitatClass)) %>%
+#   select(HabitatClass)
+
+# 500m
+obs_sf <- DB %>%
+  mutate(obs_id = row_number()) %>%
+  st_as_sf(coords = c("Long", "Lat"), crs = 4326) %>%
+  st_transform(2169)
+
+obs_buffer <- st_buffer(obs_sf, dist = 500)
+
+#  proportion par classe par observation
+habitat_par_observation <- st_intersection(obs_buffer, lc) %>%
+  mutate(area = as.numeric(st_area(geometry))) %>%
+  st_drop_geometry() %>%
+  group_by(obs_id, HabitatClass) %>%
+  summarise(area = sum(area), .groups = "drop") %>%
+  group_by(obs_id) %>%
+  mutate(pct = area / sum(area) * 100) %>%
+  ungroup() %>%
+  select(obs_id, HabitatClass, pct) %>%
+  pivot_wider(names_from = HabitatClass, values_from = pct, values_fill = 0) %>%
+  left_join(st_drop_geometry(obs_sf) %>% select(obs_id, ID), by = "obs_id")
+
+ggtern(data = habitat_par_observation, aes(x = Grassland, y = Forest, z = Other)) +
+  geom_point(size = 3, alpha = 0.5) +
+  labs(x = "Grassland (%)", y = "Forest (%)", z = "Other (%)") +
+  theme_bw() + theme_showarrows() +
+  theme(
+    tern.axis.title.T = element_blank(), tern.axis.title.L = element_blank(), tern.axis.title.R = element_blank(),
+    tern.axis.arrow = element_blank(),
+    tern.axis.arrow.text.T = element_text(size = 10), tern.axis.arrow.text.L = element_text(size = 10), tern.axis.arrow.text.R = element_text(size = 10)
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+

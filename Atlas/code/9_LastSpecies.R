@@ -1,6 +1,9 @@
-# Taxon Syrphidae (famille)
+source(here::here("Atlas", "code", "1_config.R"))
+
+
+# Taxon (famille)
 taxon_id <- content(GET("https://api.inaturalist.org/v1/taxa",
-                        query = list(q = "Syrphidae", rank = "family")))$results[[1]]$id
+                        query = list(q = taxon, rank = "family")))$results[[1]]$id
 
 # Lieu : Luxembourg
 place_id <- content(GET("https://api.inaturalist.org/v1/places/autocomplete",
@@ -14,7 +17,7 @@ obs_data <- content(GET("https://api.inaturalist.org/v1/observations",
 
 # Téléchargement de la photo (chemin ancré via here::here)
 download.file(sub("square", "large", obs_data$photos[[1]]$url),
-              here::here("Atlas", "last_syrphidae.jpg"), mode = "wb")
+              here::here("Atlas", "last_observation.jpg"), mode = "wb")
 
 # Valeurs utilisées dans le .qmd
 species <- obs_data$taxon$name

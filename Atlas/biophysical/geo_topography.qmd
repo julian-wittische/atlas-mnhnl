@@ -26,6 +26,37 @@ source(here::here("Atlas", "code", "12_SoilsMap.R"))
 plot_carte_geologique(uniteGeo_lux, failles_lux, df_excel)
 ```
 
+```{=html}
+<div id="img-modal">
+  <span class="close-btn" onclick="closeLightbox()">&times;</span>
+  <img id="img-modal-content" src="">
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".lightbox img").forEach(function(img) {
+    img.addEventListener("click", function() {
+      document.getElementById("img-modal-content").src = this.src;
+      document.getElementById("img-modal").classList.add("active");
+    });
+  });
+});
+
+document.addEventListener("click", function(e) {
+  if (e.target.id === "img-modal") closeLightbox();
+});
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeLightbox();
+});
+
+function closeLightbox() {
+  document.getElementById("img-modal").classList.remove("active");
+}
+</script>
+```
+
+::: {.lightbox}
+
 ```{r geology LEGENDE}
 #| echo: false
 #| warning: false
@@ -35,6 +66,8 @@ plot_carte_geologique(uniteGeo_lux, failles_lux, df_excel)
 
 plot_legende_geologique(uniteGeo_lux, df_excel, cex_legende = 1.28)
 ```
+
+:::
 
 <details>
 <summary><strong> Show french legend description table</strong></summary>
@@ -84,6 +117,8 @@ English legend available soon
 plot_carte_sols(DATAPATH)
 ```
 
+::: {.lightbox}
+
 ```{r soil LEGENDE}
 #| echo: false
 #| warning: false
@@ -94,6 +129,6 @@ plot_carte_sols(DATAPATH)
 
 plot_legende_sols(DATAPATH)
 ```
-
+:::
 
 

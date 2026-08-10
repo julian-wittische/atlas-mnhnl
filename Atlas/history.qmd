@@ -4,7 +4,7 @@ title: "History of Hoverflies recording in Luxembourg"
 
 ### Author {.author}
 
-## Evelyne Carrières (before 2016)
+## Observation before 2012
 
 ```{r setup}
 #| echo: false
@@ -24,6 +24,6 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 #| fig.height: 14
 #| fig.width: 14
 
-p_carrieres
+MD_carte
 ```
 

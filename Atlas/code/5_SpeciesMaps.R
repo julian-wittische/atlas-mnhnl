@@ -188,7 +188,7 @@ get_richness_map <- function(data = DB) {
 }
 
 
-##### carte staique
+##### carte statique
 
 
 

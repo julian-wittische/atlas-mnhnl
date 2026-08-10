@@ -5,11 +5,17 @@
 # Script objective : Load libraries
 
 
-############ Reading files ----
+
+############ Lecture / écriture de fichiers ----
 library(readxl)
-library(knitr)
-library(httr)
 library(openxlsx)
+library(here)
+library(glue)
+library(jsonlite)
+
+############ Rendu / rapport ----
+library(knitr)
+library(httr)          # appels API (Catalogue of Life, iNaturalist...)
 
 ############ GIS ----
 library(sf)
@@ -17,38 +23,48 @@ library(sp)
 library(raster)
 library(terra)
 library(geobounds)
+library(geodata)       
 
 ############ Cartes interactives / widgets ----
 library(leaflet)
 library(leaflet.extras2)
 library(mapview)
-library(crosstalk)   
+library(crosstalk)
 library(htmltools)
 library(htmlwidgets)
 
 ############ Plotting ----
+library(ggplot2)
+library(ggrepel)
+library(ggspatial)
+library(ggnewscale)
+library(cowplot)
+library(patchwork)
 library(RColorBrewer)
 library(colorspace)
 library(rayshader)
-library(ggplot2)
-library(ggrepel)
-library(cowplot)
-library(patchwork)
-library(ggnewscale)
-library(ggspatial)
-library(geodata)
 
 ############ Data manipulation ----
 library(tidyverse)
-library(tidyterra)
 library(dplyr)
-library(lubridate)
-library(rcol)
-library(stringr)
 library(purrr)
-library(taxize)
+library(stringr)
+library(lubridate)
 library(scales)
+library(tidyterra)
+
+############ Taxonomie / bibliographie ----
+library(rcol)           # Catalogue of Life
+library(taxize)
 library(bib2df)
+
+############ Graphiques spécialisés / analyses exploratoires ----
+library(collapsibleTree)
+library(ggtern)
+library(viridis)
+library(vegan)
+library(rredlist)        
+
 
 
 source(here::here("Atlas", "code", "1_config.R"))

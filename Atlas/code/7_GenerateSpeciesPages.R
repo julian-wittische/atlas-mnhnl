@@ -4,7 +4,7 @@
 # Start: Summer 2026
 # Script objective : génération automatique des fiches espèces avec _template.qmd
 # Suppose DB_taxo déjà nettoyé (noms valides, dédupliqués, sans synonymes ni genres seuls)
-# -> tout le nettoyage/vérification taxonomique se fait en amont, dans Taxonomie.R
+# -> tout le nettoyage/vérification taxonomique se fait dans Taxonomie.R
 
 
 library(tidyverse)
@@ -32,7 +32,7 @@ stopifnot(
 )
 
 
-############ Id de page (slug) ----
+############ Id de page  ----
 
 build_species_key <- function(verbatim_name) {
   verbatim_name %>%
@@ -55,7 +55,7 @@ stopifnot(
 )
 
 
-############ Noms vernaculaires (Catalogue of Life) ----
+############  (Catalogue of Life) ----
 
 vernacular_lang_codes <- c(EN = "eng", LB = "ltz", FR = "fra", DE = "deu")
 
@@ -186,4 +186,6 @@ cat("\nPage deja presente (", length(gen_result$already_present), ") :\n", sep =
 if (length(gen_result$already_present) > 0) {
   cat(paste0("  - ", gen_result$already_present), sep = "\n")
 } else cat("  (aucune)\n")
+
+
 

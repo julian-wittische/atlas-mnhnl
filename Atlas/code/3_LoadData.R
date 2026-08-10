@@ -18,6 +18,8 @@ BC <- rbind(
   read_xlsx(paste0(DATAPATH, "ID_Bycatch sorting_20260611.xlsx"), sheet = 12) %>% mutate(Source = "Pan traps")
 )
 
+# reconstruit une date à partir d'un identifiant à 5 ou 6 chiffres
+
 date_5chiffres <- function(x) {
   x <- ifelse(tolower(x) == "na", NA, x)  # uniformiser NA
   x <- as.character(str_extract(x, "\\d+$"))
@@ -26,7 +28,7 @@ date_5chiffres <- function(x) {
 }
 
 
-
+# correction d'une longitude aberrante repérée à la main
 BC$Longitude[BC$Longitude == 2723371] <- 5.98
 BC$Date <- dmy(date_5chiffres(BC$Date_out))
 
@@ -40,36 +42,34 @@ HN <- rbind(
 
 HN$Date <- dmy(date_5chiffres(HN$Date_out))
 
-# # #####Checkpoint####################################
-# # # vue d'ensemble
+# #####Checkpoint####################################
+#  # vue d'ensemble
 # table(HN$Longitude)
 # table(HN$Latitude)
-# # 
-# # 
-# # # Isoler les NA 
+# 
+# 
+# #  Isoler les NA
 # sum(HN$Longitude == "NA" | is.na(HN$Longitude), na.rm = TRUE)
 # sum(HN$Latitude == "NA" | is.na(HN$Latitude), na.rm = TRUE)
-# # 
-# # # Isoler les lignes avec un caractère
+# 
+# #  Isoler les lignes avec un caractère
 # HN[grepl("[^0-9.\\-]", HN$Longitude) & !is.na(HN$Longitude) & HN$Longitude != "NA", "Longitude"]
 # HN[grepl("[^0-9.\\-]", HN$Latitude) & !is.na(HN$Latitude) & HN$Latitude != "NA", "Latitude"]
-# # 
-# # 
+# 
+# 
 # # 5 lignes notations scientifiques/ 1 avec ,
-# # #########################################################
+# #########################################################
 
-
+# remet une virgule/point décimal au bon endroit quand les coordonnées ont été saisies sans séparateur
 inserer_point <- function(x, pos) {
   x <- gsub("[^0-9]", "", x)  
   paste0(substr(x, 1, pos), ".", substr(x, pos + 1, nchar(x)))
 }
 
 HN$Latitude <- gsub(",$", "", HN$Latitude)
-HN$Longitude <- as.numeric(sapply(HN$Longitude, inserer_point, pos = 1))
-HN$Latitude <- as.numeric(sapply(HN$Latitude, inserer_point, pos = 2))
+HN$Longitude <- as.numeric(sapply(HN$Longitude, inserer_point, pos = 1)) # longitude : 1 chiffre avant la virgule
+HN$Latitude <- as.numeric(sapply(HN$Latitude, inserer_point, pos = 2)) # latitude : 2 chiffres avant la virgule
 
-
-table(test$plausible, useNA = "ifany")
 
 lon_num <- as.numeric(HN$Longitude)
 lat_num <- as.numeric(HN$Latitude)
@@ -78,17 +78,21 @@ lat_num <- as.numeric(HN$Latitude)
 lon_min <- 5.6; lon_max <- 6.6
 lat_min <- 49.3; lat_max <- 50.3
 
+valides <- !is.na(lon_num) & !is.na(lat_num) &
+  lon_num >= lon_min & lon_num <= lon_max &
+  lat_num >= lat_min & lat_num <= lat_max
 
-
+# ne garde que les points GPS plausibles (dans la bbox du Luxembourg)
 HN_valid <- HN[valides, ]
 HN_valid$lon_tmp <- lon_num[valides]
 HN_valid$lat_tmp <- lat_num[valides]
 
+# passage en objet spatial pour pouvoir croiser avec la grille de cellules
 HN_sf <- st_as_sf(HN_valid, coords = c("lon_tmp", "lat_tmp"), crs = 4326, remove = FALSE)
 rtp_sf <- st_transform(st_as_sf(rtp), st_crs(HN_sf))
 HN_cell <- st_join(HN_sf, rtp_sf)$layer
 
-nrow(HN_sf) == length(HN_cell)   
+nrow(HN_sf) == length(HN_cell)    # verification : même nombre de lignes des deux côtés
 
 # ajout de la colonne cell calculées a partir des long et lat utilisables
 HN$RightCell <- NA
@@ -161,6 +165,7 @@ DB_MD_full <- MD %>%
       startsWith(Observation_Key, "oOrg_") ~ "Observation.org",
       TRUE ~ "MNHNL"
     ),
+    # reconstruit l'URL de l'observation pour les sources externes
     URL = case_when(
       Origin == "Inaturalist" ~ paste0("https://www.inaturalist.org/observations/", sub("^INAT_", "", Observation_Key)),
       Origin == "Observation.org" ~ paste0("https://observation.org/observation/", sub("^oOrg_", "", Observation_Key), "/"),
@@ -179,5 +184,6 @@ DB_full <- DB_full %>%
   filter(complete.cases(Long, Lat, Year)) %>%
   slice(-517)  
 
+#on garde DB / DB_sf / DB_full, plus besoin des tables intermédiaires par source
 
 rm(DB_BC_full , DB_HN_full, DB_MD_full,DB_BC , DB_HN, DB_MD)

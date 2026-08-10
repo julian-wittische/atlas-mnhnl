@@ -1,4 +1,4 @@
-# Acknowledgements {-}
+# Acknowledgements 
 
 ```{r setup}
 #| echo: false
@@ -7,7 +7,7 @@
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
-source(here::here("Atlas", "code", "9_LastHoverfly.R", local = FALSE))
+source(here::here("Atlas", "code", "9_LastSpecies.R"), local=FALSE)
 ```
 
 ## Observer names
@@ -37,7 +37,7 @@ print_recorder_list(MD[MD$Origin == "Other", ])
 
 ## Last Hoverfly recorded (iNaturalist)
 
-![](last_syrphidae.jpg){fig-pos="H"}
+![](last_observation.jpg){fig-pos="H"}
 ```{r}
 #| echo: false
 #| results: asis

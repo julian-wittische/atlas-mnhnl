@@ -25,6 +25,7 @@ include-in-header:
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "18_redList.R"))
 ```
 
 
@@ -34,8 +35,8 @@ Hinatea Ariey
 
 
 
-:::::::::::::::: columns
-::::: {.column width="50%"}
+::: columns
+::: {.column width="50%"}
 ```{r}
 #| echo: false
 #| results: asis
@@ -50,22 +51,27 @@ for (i in ids) {
 }
 cat('</div>\n</div>\n')
 ```
+
 ::: species-taxonomy
 
-**Subfamily** Eristalinae   **Tribe** Eristalini
+**Subfamily** Eristalinae  **Tribe** Eristalini
 
 :::
 
 ::: species-taxonomy
-**EN**   Yellow-haired Sun Fly <br> **LB**   Batmanschwiefmecke<br> **FR**   Éristale des fleurs<br> **DE**   Totenkopfschwebfliege<br>
+**EN** &nbsp; Yellow-haired Sun Fly <br>
+**LB** &nbsp; Batmanschwiefmecke <br>
+**FR** &nbsp; Éristale des fleurs <br>
+**DE** &nbsp; Totenkopfschwebfliege<br>
 :::
 
-:::::
+:::
 
-:::::::::::: {.column width="50%"}
+
+::: {.column width="50%"}
 ## Conservation status {.no-top-margin}
 
-::::: {.columns .status-row}
+::: {.columns .status-row}
 ::: {.column width="25%"}
 ### Europe
 :::
@@ -81,18 +87,18 @@ cat('</div>\n</div>\n')
 ::: {.column width="50%"}
 ![](/images/LC.png){.logo}
 :::
-:::::
+:::
 
-::::: {.columns .status-row}
+::: {.columns .status-row}
 ::: {.column width="25%"}
 ### Luxembourg (preliminary)
 :::
 ::: {.column width="25%"}
 ![](/images/NTLU.png){.logo}
 :::
-:::::
-::::::::::::
-::::::::::::::::
+:::
+:::
+:::
 
 ![](/images/myathropa_florea.png){.species-photo}
 

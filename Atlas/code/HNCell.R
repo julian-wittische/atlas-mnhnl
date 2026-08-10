@@ -70,7 +70,7 @@ erreurs_suspectes %>%
   select(Code, Cell, RightCell, Longitude, Latitude, Collecteur, Date) %>%
   print(n = Inf)
 
-## Récupérer toutesles lignes d'observations
+## Récupérer toutes les lignes d'observations
 codes_suspects <- HN %>%
   filter(Cell %in% erreurs_suspectes$Cell & 
            RightCell %in% erreurs_suspectes$RightCell) %>%
