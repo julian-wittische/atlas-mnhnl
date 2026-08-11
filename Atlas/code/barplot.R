@@ -20,18 +20,18 @@ DB_habitat <- DB %>%
   left_join(habitat_richness %>% select(CellID, Habitat_Dominant),
             by = c("Cell" = "CellID"))
 
-# # par radius de 100m
+# # par radius de 500m
 # 
-pts <- vect(DB2, geom = c("Long", "Lat"), crs = "EPSG:4326")
+pts <- vect(DB, geom = c("Long", "Lat"), crs = "EPSG:4326")
 pts_2169 <- project(pts, "EPSG:2169")
 # 
-# # radieus 100m
-# grassland_100m <- terra::extract(grassland_2169, pts_2169, buffer = 500, fun = mean, na.rm = TRUE)
-# forest_100m    <- terra::extract(forest_2169,    pts_2169, buffer = 500, fun = mean, na.rm = TRUE)
+# # radieus 500m
+# grassland_500m <- terra::extract(grassland_2169, pts_2169, buffer = 500, fun = mean, na.rm = TRUE)
+# forest_500m    <- terra::extract(forest_2169,    pts_2169, buffer = 500, fun = mean, na.rm = TRUE)
 # 
-# # DB2_habitat_100m
-# DB2_habitat_100m <- DB %>%
-#   mutate( Grassland_pct = grassland_100m[[2]], Forest_pct = forest_100m[[2]],  Other_pct= 1 - Grassland_pct - Forest_pc ) %>%
+# # DB_habitat_500m
+# DB_habitat_500m <- DB %>%
+#   mutate( Grassland_pct = grassland_500m[[2]], Forest_pct = forest_500m[[2]],  Other_pct= 1 - Grassland_pct - Forest_pc ) %>%
 #   mutate(Habitat_Dominant = case_when(
 #     Grassland_pct >= Forest_pct & Grassland_pct >= Other_pct ~ "Grassland",
 #     Forest_pct >= Grassland_pct & Forest_pct >= Other_pct    ~ "Forest",
@@ -77,7 +77,7 @@ forest_pct_adj <- sapply(1:nrow(adj_forest), function(i) {
 
 
 
-DB2_habitat_adj <- DB2 %>%
+DB_habitat_adj <- DB %>%
   mutate(Grassland_pct = grassland_pct_adj, Forest_pct= forest_pct_adj, Other_pct= pmax(1 - Grassland_pct - Forest_pct, 0)) %>%
   mutate(Habitat_Dominant = case_when(Grassland_pct >= Forest_pct & Grassland_pct >= Other_pct ~ "Grassland",
                                       Forest_pct >= Grassland_pct & Forest_pct >= Other_pct ~ "Forest", TRUE ~ "Other")
@@ -87,9 +87,9 @@ DB2_habitat_adj <- DB2 %>%
 
 
 
-mean(DB2_habitat_adj$Grassland_pct, na.rm=TRUE)
-mean(DB2_habitat_adj$Forest_pct, na.rm=TRUE)
-mean(DB2_habitat_adj$Other_pct, na.rm=TRUE)
+mean(DB_habitat_adj$Grassland_pct, na.rm=TRUE)
+mean(DB_habitat_adj$Forest_pct, na.rm=TRUE)
+mean(DB_habitat_adj$Other_pct, na.rm=TRUE)
 
 
 
@@ -99,7 +99,7 @@ mean(DB2_habitat_adj$Other_pct, na.rm=TRUE)
 
 
 
-plot_habitat_espece <- function(espece, data = DB2_habitat) {
+plot_habitat_espece <- function(espece, data = DB_habitat) {
   
   df <- data %>%
     filter(ID == espece) %>%
@@ -143,14 +143,15 @@ plot_habitat_espece <- function(espece, data = DB2_habitat) {
 }
 
 
-plot_habitat_espece("Volucella zonaria", data = DB2_habitat)
-plot_habitat_espece("Volucella zonaria", data = DB2_habitat_adj)
+plot_habitat_espece("Volucella zonaria", data = DB_habitat)
+plot_habitat_espece("Volucella zonaria", data = DB_habitat_adj)
 
-plot_habitat_espece("Episyrphus balteatus", data = DB2_habitat)
-plot_habitat_espece("Helophilus hybridus", data = DB2_habitat_adj)
+plot_habitat_espece("Episyrphus balteatus", data = DB_habitat)
+plot_habitat_espece("Helophilus hybridus", data = DB_habitat_adj)
 
 
-DB2_habitat <- DB2[DB2$Source == "Hand netting",] %>%
+
+DB_habitat <- DB[DB$Source == "Hand netting",] %>%
   left_join(habitat_richness %>% select(CellID, Habitat_Dominant),
             by = c("Cell" = "CellID"))
 

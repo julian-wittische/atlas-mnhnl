@@ -7,8 +7,8 @@
 
 ############ Titres reconnus dans le fichier texte ----
 
-titres_reconnus <- c("### Author {.author-species}","## Description", "## Habitat", "### Immature", "### Mature",
-                     "## Distribution", "## Notes")
+titres_reconnus <- c("## Description", "## Habitat", "### Immature", "### Mature",
+                     "## Distribution", "## Notes", "### Author {.author-species}")
 
 ############ Sauvegarde du texte  ----
 lire_sections_texte <- function(chemin_txt) {
@@ -23,13 +23,13 @@ lire_sections_texte <- function(chemin_txt) {
     if (is.null(titre_en_cours)) {
       
       if (any(nzchar(trimws(lignes_du_titre)))) {
-        warning("Texte avant le premier titre, ignore dans : ", chemin_txt, call. = FALSE)
+        warning("Texte avant le premier titre: ", chemin_txt, call. = FALSE)
       }
       return(invisible(NULL))
     }
     if (titre_en_cours %in% names(contenu_par_titre)) {
       warning("Titre '", titre_en_cours, "' apparait plusieurs fois dans : ", chemin_txt,
-              "  la derniere occurrence est la seule conservee", call. = FALSE)
+              "  le dernier est la seule conservee", call. = FALSE)
     }
     contenu_par_titre[[titre_en_cours]] <<- paste(lignes_du_titre, collapse = "\n")
   }

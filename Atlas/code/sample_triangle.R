@@ -44,7 +44,7 @@ DB_sf <- st_transform(DB3_sf, st_crs(rtp_sf))
 
 
 #  Refaire le join
-richness_par_cellule <- DB3_sf %>%
+richness_par_cellule <- DB_sf %>%
   st_join(rtp_sf, join = st_within) %>%
   st_drop_geometry() %>%
   filter(!is.na(layer)) %>%
@@ -128,18 +128,12 @@ ggtern(data = habitat_richness, aes(x = Habitat_A, y = Habitat_B, z = Habitat_C)
 ################3
 
 DB <- DB %>% mutate(.obs_row_id = row_number())
-
-
 obs_vect_2169 <- vect(DB, geom = c("Long", "Lat"), crs = "EPSG:4326") %>%
   project("EPSG:2169")
-
-#  500 m
 obs_buffer <- buffer(obs_vect_2169, width = 500)
 
-# Extraction 
 grassland_pct <- terra::extract(grassland_2169, obs_buffer, fun = mean, na.rm = TRUE)[, 2]
 forest_pct    <- terra::extract(forest_2169, obs_buffer, fun = mean, na.rm = TRUE)[, 2]
-
 
 habitat_par_observation_df <- DB %>%
   mutate(
@@ -153,17 +147,38 @@ habitat_par_observation_df <- DB %>%
   ) %>%
   select(.obs_row_id, Species = ID, Habitat_A, Habitat_B, Habitat_C)
 
-ggtern(data = habitat_par_observation_df, aes(x = Habitat_A, y = Habitat_B, z = Habitat_C)) +
-  geom_point(size = 3, alpha = 0.5) +
-  labs(x = "Grassland (%)", y = "Forest (%)", z = "Other (%)") +
-  theme_bw() + theme_showarrows() +
-  theme(
-    tern.axis.title.T = element_blank(), tern.axis.title.L = element_blank(), tern.axis.title.R = element_blank(),
-    tern.axis.arrow = element_blank(),
-    legend.title = element_text(size = 12), legend.text = element_text(size = 10),
-    tern.axis.arrow.text.T = element_text(size = 10), tern.axis.arrow.text.L = element_text(size = 10), tern.axis.arrow.text.R = element_text(size = 10)
-  )
 
+plot_habitat_ternaire <- function(espece, data = habitat_par_observation_df) {
+  
+  df_espece <- data %>% filter(Species == espece)
+  
+  if (nrow(df_espece) == 0) {
+    stop(paste("Espèce non trouvée:", espece))
+  }
+  
+  ggtern(data = df_espece, aes(x = Habitat_A, y = Habitat_B, z = Habitat_C)) +
+    geom_point(size = 3, alpha = 0.6, color = "#E40102") +
+    labs(title = paste("Habitats ternaires —", espece, 
+                       "(n =", nrow(df_espece), "obs)"),
+         x = "Grassland (%)", y = "Forest (%)", z = "Other (%)") +
+    theme_bw() + theme_showarrows() +
+    theme(
+      tern.axis.title.T = element_blank(), 
+      tern.axis.title.L = element_blank(), 
+      tern.axis.title.R = element_blank(),
+      tern.axis.arrow = element_blank(),
+      legend.title = element_text(size = 12), 
+      legend.text = element_text(size = 10),
+      tern.axis.arrow.text.T = element_text(size = 10), 
+      tern.axis.arrow.text.L = element_text(size = 10), 
+      tern.axis.arrow.text.R = element_text(size = 10),
+      plot.title = element_text(face = "bold", size = 14)
+    )
+}
+
+plot_habitat_ternaire("Volucella zonaria")
+plot_habitat_ternaire("Myathropa florea")
+plot_habitat_ternaire("Blera fallax")
 
 #######################################################################
 
@@ -181,25 +196,23 @@ ggtern(data = habitat_par_observation_df, aes(x = Habitat_A, y = Habitat_B, z = 
 #   select(HabitatClass)
 
 # 500m
-obs_sf <- DB %>%
+obs_buffer <- DB %>%
   mutate(obs_id = row_number()) %>%
   st_as_sf(coords = c("Long", "Lat"), crs = 4326) %>%
-  st_transform(2169)
+  st_transform(2169) %>%
+  st_buffer(dist = 500)
 
-obs_buffer <- st_buffer(obs_sf, dist = 500)
-
-#  proportion par classe par observation
+# proportion par classe par observation
 habitat_par_observation <- st_intersection(obs_buffer, lc) %>%
-  mutate(area = as.numeric(st_area(geometry))) %>%
+  mutate(area = as.numeric(st_area(geometry))) %>% # aire
   st_drop_geometry() %>%
-  group_by(obs_id, HabitatClass) %>%
-  summarise(area = sum(area), .groups = "drop") %>%
-  group_by(obs_id) %>%
-  mutate(pct = area / sum(area) * 100) %>%
+  group_by(obs_id, ID, HabitatClass) %>% # groupe par observation + classe
+  summarise(area = sum(area), .groups = "drop") %>%  # fusion
+  group_by(obs_id, ID) %>%
+  mutate(pct = area / sum(area) * 100) %>% #% /observation
   ungroup() %>%
-  select(obs_id, HabitatClass, pct) %>%
-  pivot_wider(names_from = HabitatClass, values_from = pct, values_fill = 0) %>%
-  left_join(st_drop_geometry(obs_sf) %>% select(obs_id, ID), by = "obs_id")
+  select(obs_id, ID, HabitatClass, pct) %>%
+  pivot_wider(names_from = HabitatClass, values_from = pct, values_fill = 0) # une colonne par classe
 
 ggtern(data = habitat_par_observation, aes(x = Grassland, y = Forest, z = Other)) +
   geom_point(size = 3, alpha = 0.5) +
@@ -210,7 +223,6 @@ ggtern(data = habitat_par_observation, aes(x = Grassland, y = Forest, z = Other)
     tern.axis.arrow = element_blank(),
     tern.axis.arrow.text.T = element_text(size = 10), tern.axis.arrow.text.L = element_text(size = 10), tern.axis.arrow.text.R = element_text(size = 10)
   )
-
 
 
 

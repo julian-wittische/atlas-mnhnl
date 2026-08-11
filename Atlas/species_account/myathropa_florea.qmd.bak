@@ -1,8 +1,8 @@
 ---
-title: "Blera fallax"
+title: "Myathropa florea"
 subtitle: "(Linnaeus, 1758)"
 params:
-  species: "Blera fallax"
+  species: "Myathropa florea"
 include-in-header:
   - text: |
       <style>
@@ -56,16 +56,16 @@ cat('</div>\n</div>\n')
 
 ::: species-taxonomy
 
-**Subfamily** Eristalinae   &nbsp; **Tribe** Milesiini
+**Subfamily** Eristalinae   &nbsp; **Tribe** Eristalini
 
 :::
 
 ::: species-taxonomy
 
-**EN** Pine hoverfly <br>
+**EN** Yellow-haired Sun Fly <br>
 **LB**  <br>
-**FR**  <br>
-**DE** Hundeschnauzenschwebfliege
+**FR** Éristale des fleurs <br>
+**DE** Totenkopfschwebfliege
 
 :::
 
@@ -109,7 +109,7 @@ cat('</div>\n</div>\n')
 
 ::: {.column width="25%"}
 
-![](/images/LNT.png){.logo}
+![](/images/NTLU.png){.logo}
 
 :::
 
@@ -119,8 +119,8 @@ cat('</div>\n</div>\n')
 
 :::
 
-![](/images/blera_fallax.Sam_Schaack.all right reserved.png){.species-photo}
-[all right reserved Sam Schaack]{.image-credit}
+![](/images/myathropa_florea.Raoul Gerend.CC-BY-NC.png){.species-photo}
+[CC-BY-NC Raoul Gerend]{.image-credit}
 
 ## Activity period
 
@@ -135,27 +135,18 @@ plot_heatmap(params$species)
 
 ## Description
 
-A medium hoverfly with an unmistakable pattern of coloration. Head, thorax and the upper part of abdomen black, the rest of the body is orange. Proportion of the orange part may varies depending on the sex, it should be bigger and clearer in males. Antenna on a protrusion of the front, face yellow (Bot & Van de Meutter, 2023).
-
 ## Habitat
 ### Immature
-
-Larva can be found in cavities in coniferous trees (Bot & Van de Meutter, 2023).
-
 ### Mature
 
-As the larva stage, adult affectioned spruce and pine forest with overmature trees but can also be observed in mixed forest (Speight, 2017; Bot & Van de Meutter, 2023).
-
 ## Distribution
-
-Localised in coniferous area, this syrphid can be found all around Luxembourg if the habitat is suitable.
-
 ```{r m3}
 #| echo: false
 #| warning: false
 #| message: false
 get_species_map(params$species, rtp = rtp, base_map = base_map)
 ```
+
 ```{r}
 #| echo: false
 #| results: asis
@@ -167,16 +158,15 @@ n_obs <- DB %>% filter(ID == params$species) %>% nrow()
 cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
 if (n_obs < seuil_obs) {
   cat(sprintf(
-    '<div class="obs-warning"> ⚠ Low number of records.</div>\n',
+    '<div class="obs-warning"> ⚠ Low number of records (&lt; %d).</div>\n',
     seuil_obs
   ))
 }
 ```
+
 ## Notes
 
-This species was record in 2021 and was not observed since 2025 despite all the science citizens platforms. Fortunately, the Hoverfly Atlas project has boosted interest in this family and enabled the observation of new specimens in two different localities.
+
 
 ### Author {.author-species}
-
-Hinatea Ariey
 

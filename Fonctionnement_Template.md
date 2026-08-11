@@ -243,27 +243,18 @@ Pour la procédure d'ajout d'une nouvelle espèce, voir le Guide pas-à-pas.
 
 ### Contenu d'une fiche générée
 
-Dans l'ordre d'apparition : - **Auteur** de la fiche (`### Author`).
+Dans l'ordre d'apparition :
 
-- **Compteur d'observation** : nombre total d'observations pour l'espèce (`DB_full` filtré sur `ID`), affiché via `.obs-count`
-
-\- **Avertissement conditionnel** : si le nombre d'observations est inférieur à un seuil (`seuil_obs`, actuellement fixé à 30 dans `_template.qmd`), un encart `.obs-warning` signale « Low number of records »
-
-\- **Menu déroulant des synonymes** : bouton « Synonyms ▾ » (classes `.dropdown`/`.dropdown-btn`/`.dropdown-content` dans `style.scss`) qui liste les synonymes du nom d'espèce récupérés via `col_synonyms(col_match(...))` (Catalogue of Life)
-
-\- **Taxonomie et noms vernaculaires** : sous-famille, tribu, puis noms communs en anglais/luxembourgeois/français/allemand (`.species-taxonomy`)
-
-\- **Statuts de conservation** : trois blocs (Europe, Union européenne (27), pays — actuellement marqué « preliminary »), chacun avec son pictogramme IUCN
-
-\- **Photo de l'espèce** (`.species-photo`)
-
-\- **Période d'activité** : heatmap mensuelle (`plot_heatmap`, voir plus bas)
-
-\- **Description / Habitat (Immature, Mature) / Distribution** : texte injecté depuis `species_content/`
-
-\- **Carte de répartition interactive** (`get_species_map`)
-
-\- **Notes** : texte injecté depuis `species_content/`.
+1. **Auteur** de la fiche (`### Author {.author-species}`), texte injecté par `8_InjectContent.R`.
+2. **Menu déroulant des synonymes** : bouton « Synonyms ▾ » (classes `.dropdown`/`.dropdown-btn`/`.dropdown-content` dans `style.scss`) qui liste les synonymes du nom d'espèce récupérés via `col_synonyms(col_match(...))` (Catalogue of Life).
+3. **Taxonomie et noms vernaculaires** : sous-famille, tribu, puis noms communs en anglais/luxembourgeois/français/allemand (`.species-taxonomy`). Ce bloc partage une colonne avec le menu des synonymes, à côté du bloc Statuts de conservation.
+4. **Statuts de conservation** (`## Conservation status`) : deux blocs côte à côte — Europe et Union européenne (27), calculés dynamiquement via `get_iucn_status()` (`18_redList.R`) — voir « Statuts de conservation (IUCN) ».
+5. **Photo de l'espèce** (`.species-photo`).
+6. **Période d'activité** : heatmap mensuelle (`plot_heatmap`).
+7. **Description / Habitat (Immature, Mature) / Distribution** : texte injecté depuis `species_content/`.
+8. **Carte de répartition interactive** (`get_species_map`).
+9. **Compteur d'observations** (`.obs-count`) et **avertissement conditionnel** (`.obs-warning`, si `n_obs < seuil_obs`, actuellement fixé à 30) — placés juste avant les Notes, donc *après* la carte de répartition, et non plus à côté de l'Auteur en haut de page.
+10. **Notes** : texte injecté depuis `species_content/`.
 
 ### Comprendre la carte et le graphique d'une fiche espèce
 
@@ -280,6 +271,34 @@ Un clic sur un point affiche le détail de cette observation précise : la méth
 Le passage d'une couche à l'autre est automatique selon le niveau de zoom : à faible zoom, seules les cellules colorées (Cells) sont visibles ; à partir du niveau 12, les cellules disparaissent et les points individuels apparaissent.
 
 Le graphique d'activité (heatmap) est une bande horizontale divisée en 48 segments (4 par mois, un par quart de mois : jours 1-7, 8-14, 15-21, et 22-fin de mois). Chaque segment est coloré selon le nombre d'observations enregistrées durant cette période de l'année, toutes années confondues : blanc pour aucune observation, vert de plus en plus foncé quand le nombre d'observations augmente. Ce graphique permet de voir en un coup d'œil la période de l'année où l'espèce est le plus souvent observée.
+
+
+## Statuts de conservation (IUCN)
+
+Chaque fiche espèce affiche trois statuts de conservation, sous forme de pictogramme : **Europe**, **Union européenne (27)**, et **Luxembourg** .
+
+Le mécanisme, dans `_template.qmd` :
+
+``` r
+status <- get_iucn_status(params$species)
+```
+
+`status$europe` et `status$eu27` contiennent chacun un code IUCN. Ce code est utilisé directement comme nom de fichier image : `/images/{status$europe}.png` et `/images/{status$eu27}.png`.
+
+### Fichier source requis : `data/EuropeanRedList.xlsx`
+
+`18_redList.R` lit un fichier Excel  : chaque projet doit le créer et le placer dans son dossier `data/`, sous le nom exact `EuropeanRedList.xlsx`. Le script lit la première feuille du classeur (`sheet = 1`) et attend les colonnes suivantes :
+
+| Colonne attendue | Rôle |
+|------------------------------------|------------------------------------|
+| `Genus` | Genre de l'espèce |
+| `Species` | Épithète spécifique (sans le genre) |
+| `European Category` | Catégorie IUCN au niveau européen (ex. LC, NT, VU, EN, CR, EW, EX) |
+| `European Criteria` | Critère(s) IUCN associé(s), niveau européen |
+| `European Endemic` | Endémisme, niveau européen |
+| `EU27 Category` | Catégorie IUCN au niveau Union européenne (27) |
+| `EU27 Criteria` | Critère(s) IUCN associé(s), niveau UE27 |
+| `EU27 Endemic` | Endémisme, niveau UE27 |
 
 ## Images
 

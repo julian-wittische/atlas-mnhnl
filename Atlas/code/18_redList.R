@@ -6,8 +6,8 @@
 
 
 
-
-redList <- read_xlsx("data/EuropeanRedList.xlsx", sheet = 1) %>%
+here::i_am("atlas-mnhnl.Rproj")
+redList <- read_xlsx(here::here(DATAPATH, "EuropeanRedList.xlsx"), sheet = 1) %>%
   rename(
     European_Category = `European\r\nCategory`,
     European_Criteria  = `European Criteria`,

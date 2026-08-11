@@ -15,7 +15,7 @@ carte_altitude <- function(datapath, fact_aggregation = 100) {
   lux_borders_vect_dsm <- vect(st_transform(lux_borders_sf, crs(dsm_agg)))
   dsm_agg <- mask(crop(dsm_agg, lux_borders_vect_dsm), lux_borders_vect_dsm)
   
-  breaks <- c(-Inf, 150, 250, 350, 450, 550, Inf)
+  breaks <- c(-Inf, 150, 250, 350, 450, 550, Inf) 
   etiquettes <- c("< 150", "150-250", "250-350", "350-450", "450-550", "> 550")
   couleurs <- c("#6AA85B", "#9DB84A", "#dbcc46", "#c9973a", "#a87334", "#704B29")
   
@@ -41,7 +41,7 @@ carte_altitude <- function(datapath, fact_aggregation = 100) {
     scale_fill_gradient(low = "black", high = "white", guide = "none") +
     new_scale_fill() +
     geom_raster(data = alt_df, aes(x, y, fill = classe), alpha = 0.6) +
-    scale_fill_manual(name = "Altitude (m)", values = setNames(couleurs, etiquettes), na.translate = FALSE) +
+    scale_fill_manual(name = "Altitude (m)", values = setNames(couleurs, etiquettes), na.translate = FALSE,guide = guide_legend(reverse = TRUE)) + #inverser
     geom_sf(data = masque_hors_lux, fill = "white", color = NA) +
     geom_sf(data = lux_borders_sf, fill = NA, color = "black", linewidth = 0.4) +
     geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
@@ -59,19 +59,14 @@ carte_altitude <- function(datapath, fact_aggregation = 100) {
                            pad_x = unit(1.5, "cm"), pad_y = unit(1, "cm")) +
     theme_void() +
     theme(
-      plot.background = element_rect(fill = "white", color = NA), legend.position = c(0.85, 0.80), 
-      legend.title = element_text(size = 8), legend.text = element_text(size = 7), legend.key.size = unit(0.4, "cm"),
+      plot.background = element_rect(fill = "white", color = NA), legend.position = c(0.85, 0.65), 
+      legend.title = element_text(size = 9), legend.text = element_text(size = 8), legend.key.size = unit(0.5, "cm"),
       plot.margin = margin(0, 0, 0, 0, "cm"))
   
   return(carte)
 }
 
-# 
-# 
-# 
-# 
-# 
-# 
+
 # # 3D map
 # x |>
 #   # sphere_shade(texture= "imhof4",sunangle = 45) |>

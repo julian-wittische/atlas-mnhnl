@@ -28,15 +28,17 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 source(here::here("Atlas", "code", "18_redList.R"))
 ```
 
+```{r}
+#| echo: false
+#| warning: false
+status <- get_iucn_status(params$species)
+```
 
-### Author {.author-species}
 
-Hinatea Ariey
+::: {.columns}
 
+::: {.column width="50%" }
 
-
-::: columns
-::: {.column width="50%"}
 ```{r}
 #| echo: false
 #| results: asis
@@ -54,53 +56,71 @@ cat('</div>\n</div>\n')
 
 ::: species-taxonomy
 
-**Subfamily** Eristalinae  **Tribe** Eristalini
+**Subfamily** Eristalinae   &nbsp; **Tribe** Eristalini
 
 :::
 
 ::: species-taxonomy
-**EN** &nbsp; Yellow-haired Sun Fly <br>
-**LB** &nbsp; Batmanschwiefmecke <br>
-**FR** &nbsp; Éristale des fleurs <br>
-**DE** &nbsp; Totenkopfschwebfliege<br>
-:::
+
+**EN** Yellow-haired Sun Fly <br>
+**LB** Batmanschwiefmecke <br>
+**FR** Éristale des fleurs <br>
+**DE** Totenkopfschwebfliege
 
 :::
 
+:::
 
 ::: {.column width="50%"}
+
 ## Conservation status {.no-top-margin}
 
 ::: {.columns .status-row}
+
 ::: {.column width="25%"}
 ### Europe
 :::
-::: {.column width="25%"}
-![](/images/LC.png){.logo}
-:::
-:::::
 
-::::: {.columns .status-row}
-::: {.column width="50%"}
-### European Union<br>(27)
+::: {.column width="25%"}
+
+<img src="/images/`r status$europe`.png" alt="Statut IUCN Europe : `r status$europe`" title=" `r status$europe`" class="logo">
 :::
-::: {.column width="50%"}
-![](/images/LC.png){.logo}
-:::
+
 :::
 
 ::: {.columns .status-row}
+
 ::: {.column width="25%"}
-### Luxembourg (preliminary)
-:::
-::: {.column width="25%"}
-![](/images/NTLU.png){.logo}
-:::
-:::
-:::
+
+### European Union<br>(27)
 :::
 
-![](/images/myathropa_florea.png){.species-photo}
+::: {.column width="25%"}
+<img src="/images/`r status$eu27`.png" alt="Statut IUCN Union européenne (27) : `r status$eu27`" title="`r status$eu27`" class="logo">
+:::
+
+:::
+
+::: {.columns .status-row}
+
+::: {.column width="25%"}
+### Luxembourg  (preliminary)
+:::
+
+::: {.column width="25%"}
+
+![](/images/LNT.png){.logo}
+
+:::
+
+:::
+
+:::
+
+:::
+
+![](/images/myathropa_florea.Raoul Gerend.CC-BY-NC.png){.species-photo}
+[CC-BY-NC Raoul Gerend]{.image-credit}
 
 ## Activity period
 
@@ -112,6 +132,7 @@ cat('</div>\n</div>\n')
 #| fig.width: 9
 plot_heatmap(params$species)
 ```
+
 ## Description
 
 A medium hoverfly with a bright yellow-orangish coloration. Very particular black-colour pattern on the thorax representing a bat or a skull, giving it the surname of “common batman fly” (Bot & Van de Meutter, 2023). This pattern could be reduced.
@@ -140,22 +161,22 @@ get_species_map(params$species, rtp = rtp, base_map = base_map)
 #| results: asis
 #| warning: false
 #| message: false
-
 seuil_obs <- 30  
 #n_obs <- nrow(DB)
 n_obs <- DB %>% filter(ID == params$species) %>% nrow()
-
 cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
-
 if (n_obs < seuil_obs) {
   cat(sprintf(
-    '<div class="obs-warning"> ⚠ Low number of records (&lt; %d).</div>\n',
+    '<div class="obs-warning"> ⚠ Low number of records.</div>\n',
     seuil_obs
   ))
 }
 ```
-
 ## Notes
 
 Microsatellite analysis has shown that the population is genetically homogeneous across Luxembourg as far as Cologne, despite significant urbanisation (Wittische et al., 2024). However, two morphs are occurring at the same period and could transform this species in a species complex of two species in Europe if DNA evidence supports this theory.
+
+### Author {.author-species}
+
+Hinatea Ariey
 

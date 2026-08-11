@@ -86,5 +86,7 @@ plot_habitat_espece <- function(espece, data) {
           axis.text.y = element_blank(), axis.text.x = element_text(size = 10))
 }
 
+
 plot_habitat_espece("Volucella zonaria", data = DB_landcover_vecteur)
 plot_habitat_espece("Volucella zonaria", data = DB_landcover_raster)
+

@@ -1,8 +1,8 @@
 ---
-title: "Blera fallax"
-subtitle: "(Linnaeus, 1758)"
+title: "Temnostoma meridionale"
+subtitle: "Krivosheina & Mamaev, 1962"
 params:
-  species: "Blera fallax"
+  species: "Temnostoma meridionale"
 include-in-header:
   - text: |
       <style>
@@ -62,10 +62,10 @@ cat('</div>\n</div>\n')
 
 ::: species-taxonomy
 
-**EN** Pine hoverfly <br>
+**EN**  <br>
 **LB**  <br>
 **FR**  <br>
-**DE** Hundeschnauzenschwebfliege
+**DE** 
 
 :::
 
@@ -119,8 +119,8 @@ cat('</div>\n</div>\n')
 
 :::
 
-![](/images/blera_fallax.Sam_Schaack.all right reserved.png){.species-photo}
-[all right reserved Sam Schaack]{.image-credit}
+![](/images/temnostoma_meridionale.Sam_Schaack.CC-BY-NC.png){.species-photo}
+[CC-BY-NC Sam Schaack]{.image-credit}
 
 ## Activity period
 
@@ -135,20 +135,20 @@ plot_heatmap(params$species)
 
 ## Description
 
-A medium hoverfly with an unmistakable pattern of coloration. Head, thorax and the upper part of abdomen black, the rest of the body is orange. Proportion of the orange part may varies depending on the sex, it should be bigger and clearer in males. Antenna on a protrusion of the front, face yellow (Bot & Van de Meutter, 2023).
+Large size with a body length of 14 to 17mm.
 
 ## Habitat
 ### Immature
 
-Larva can be found in cavities in coniferous trees (Bot & Van de Meutter, 2023).
+Larvae live and develop in the wet wood of dead deciduous trees, stumps, and logs.
 
 ### Mature
 
-As the larva stage, adult affectioned spruce and pine forest with overmature trees but can also be observed in mixed forest (Speight, 2017; Bot & Van de Meutter, 2023).
+Old beech and oak forests. Adults feed on many flowers including Apiaceae and flowering shrubs such as Cornus.
 
 ## Distribution
 
-Localised in coniferous area, this syrphid can be found all around Luxembourg if the habitat is suitable.
+Widespread from France to the Baltic states and European Russia, but rarest of the Temnostoma species in Luxembourg.
 
 ```{r m3}
 #| echo: false
@@ -174,9 +174,9 @@ if (n_obs < seuil_obs) {
 ```
 ## Notes
 
-This species was record in 2021 and was not observed since 2025 despite all the science citizens platforms. Fortunately, the Hoverfly Atlas project has boosted interest in this family and enabled the observation of new specimens in two different localities.
+Temnostoma also mimi wasps in behavior with the extension of forelegs beyond their head to resemble wasp antennae.
 
 ### Author {.author-species}
 
-Hinatea Ariey
+Julian Wittische
 
