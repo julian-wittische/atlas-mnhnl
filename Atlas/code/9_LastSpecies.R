@@ -1,3 +1,9 @@
+######################## PROJECT: Atlas Template
+# Author: Selene Perez
+# Request: Julian Wittische
+# Start: Summer 2026
+# Script objective : Va chercher les informations de la dernière observation de Inaturalist et génère la photo de l espece
+
 source(here::here("Atlas", "code", "1_config.R"))
 
 

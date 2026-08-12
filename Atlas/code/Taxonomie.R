@@ -5,9 +5,6 @@
 # Script objective : Crée / met à jour une DB de sous-famille - tribu - genre par espèce,
 #                     sans refaire les appels Catalogue of Life pour les espèces déjà connues.
 
-library(dplyr)
-library(purrr)
-library(stringr)
 
 ############ Filtrage ----
 DB$Certainty <- !grepl("\\?", DB$ID)
@@ -47,15 +44,15 @@ message(length(species_manquantes), " nouvelle(s) espèce(s) à interroger sur C
 ############ Catalogue of Life : uniquement pour les nouvelles espèces ----
 if (length(species_manquantes) > 0) {
   
-  # Remplacement de col_match_checklist par une boucle robuste sur col_match
+
   message("Interrogation de l'API Catalogue of Life...")
   matches <- purrr::map_dfr(species_manquantes, function(sp) {
     res <- rcol::col_match(sp)
-    res$verbatim_name <- sp  # Alignement manuel sécurisé du nom d'origine
+    res$verbatim_name <- sp  # Alignement manuel e
     return(res)
   })
   
-  ############ extraction d'un rang taxonomique donné, SANS appel réseau ----
+  ############ extraction d'un rang taxonomique donné ----
   extract_rank_local <- function(classif, target_rank) {
     if (is.null(classif) || !is.data.frame(classif) || !"rank" %in% names(classif)) {
       return(NA_character_)
@@ -79,7 +76,7 @@ if (length(species_manquantes) > 0) {
   non_resolues <- setdiff(species_manquantes, nouvelles_lignes$verbatim_name)
   if (length(non_resolues) > 0) {
     warning(
-      "Espèce(s) non résolue(s) par Catalogue of Life (vérifier l'orthographe) : \n",
+      "Espèce non résoluepar Catalogue of Life : \n",
       paste(paste0("- ", non_resolues), collapse = "\n")
     )
     
@@ -95,7 +92,7 @@ if (length(species_manquantes) > 0) {
     nouvelles_lignes <- bind_rows(nouvelles_lignes, lignes_manquees)
   }
   
-  ############ Fusion + sauvegarde du cache ----
+  ############ Fusion ----
   DB_taxo <- bind_rows(DB_taxo, nouvelles_lignes) %>% 
     distinct(verbatim_name, .keep_all = TRUE)
   

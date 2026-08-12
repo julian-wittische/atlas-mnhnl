@@ -1,0 +1,224 @@
+---
+title: "Vérification des coordonnées GPS et des numéros de cellule"
+subtitle: "Jeu de données BC — Bycatch (Pan traps / Malaise traps)"
+date: today
+format:
+  docx:
+    toc: false
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "BCCell.R"))
+
+library(knitr)
+
+LU_LON_RANGE <- c(5.6, 6.6)
+LU_LAT_RANGE <- c(49.3, 50.3)
+
+stopifnot(all(c("Code", "Cell", "Longitude", "Latitude", "Collecteur", "Date") %in% names(BC)))
+
+use_flextable <- requireNamespace("flextable", quietly = TRUE)
+if (use_flextable) library(flextable)
+
+pretty_table <- function(df, caption = NULL) {
+  if (use_flextable) {
+    ft <- flextable(df)
+    ft <- theme_box(ft)
+    ft <- bold(ft, part = "header")
+    ft <- bg(ft, bg = "#F2F2F2", part = "header")
+    ft <- align(ft, align = "left", part = "all")
+    ft <- valign(ft, valign = "top", part = "body")
+    ft <- fontsize(ft, size = 10, part = "all")
+    ft <- set_table_properties(ft, layout = "autofit", width = 1)
+    if (!is.null(caption)) ft <- set_caption(ft, caption)
+    ft
+  } else {
+    kable(df, caption = caption)
+  }
+}
+```
+
+```{r calc-rightcell}
+
+if (!"RightCell" %in% names(BC)) {
+  pts <- BC %>%
+    filter(!is.na(Longitude), !is.na(Latitude)) %>%
+    st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326, remove = FALSE)
+
+  pts <- st_transform(pts, st_crs(rtp_sf))
+  inter <- st_join(pts, rtp_sf["layer"])
+
+  BC <- BC %>%
+    left_join(
+      inter %>% st_drop_geometry() %>% select(Code, RightCell = layer),
+      by = "Code"
+    )
+}
+```
+
+```{r bounds-check}
+n_total <- nrow(BC)
+
+missing_coords <- sum(is.na(BC$Longitude) | is.na(BC$Latitude))
+
+out_of_bounds <- sum(
+  !is.na(BC$Longitude) & !is.na(BC$Latitude) &
+    !(BC$Longitude >= LU_LON_RANGE[1] & BC$Longitude <= LU_LON_RANGE[2] &
+      BC$Latitude  >= LU_LAT_RANGE[1] & BC$Latitude  <= LU_LAT_RANGE[2])
+)
+
+n_non_exploitable <- missing_coords + out_of_bounds
+n_exploitable <- n_total - n_non_exploitable
+```
+
+```{r comparaison}
+comparables <- !is.na(BC$Cell) & !is.na(BC$RightCell)
+n_comparables <- sum(comparables)
+
+manque_rightcell <- BC %>% filter(!is.na(Cell) & is.na(RightCell))
+n_manque_rightcell <- nrow(manque_rightcell)
+
+match <- BC$Cell == BC$RightCell
+n_match <- sum(match[comparables], na.rm = TRUE)
+n_mismatch <- sum(!match[comparables], na.rm = TRUE)
+pct_mismatch <- round(100 * n_mismatch / n_comparables, 1)
+
+erreurs <- BC %>%
+  filter(comparables & !match) %>%
+  select(Code, Cell, RightCell, Longitude, Latitude, Collecteur, Date)
+
+erreurs_uniques <- erreurs %>%
+  distinct(Cell, RightCell, Longitude, Latitude, Collecteur, Date, .keep_all = TRUE)
+n_erreurs_uniques <- nrow(erreurs_uniques)
+```
+
+```{r adjacency}
+voisins_liste <- st_touches(rtp_sf, rtp_sf)
+noms_cellules <- rtp_sf$layer
+voisins_par_cellule <- setNames(
+  lapply(voisins_liste, function(idx) noms_cellules[idx]),
+  noms_cellules
+)
+
+erreurs_uniques$est_voisin <- mapply(function(cell, rightcell) {
+  voisins_de_rightcell <- voisins_par_cellule[[as.character(rightcell)]]
+  if (is.null(voisins_de_rightcell)) return(NA)
+  cell %in% voisins_de_rightcell
+}, erreurs_uniques$Cell, erreurs_uniques$RightCell)
+
+erreurs_voisines  <- erreurs_uniques %>% filter(est_voisin == TRUE)
+erreurs_suspectes <- erreurs_uniques %>% filter(est_voisin == FALSE)
+
+n_voisines  <- nrow(erreurs_voisines)
+n_suspectes <- nrow(erreurs_suspectes)
+
+table_suspects <- erreurs_suspectes %>%
+  group_by(Cell, RightCell) %>%
+  summarise(
+    Code          = paste(unique(Code), collapse = ", "),
+    Collecteurs   = { c <- unique(na.omit(Collecteur)); if (length(c) == 0) NA_character_ else paste(c, collapse = ", ") },
+    n_sous_lignes = n(),
+    annees        = list(sort(unique(format(as.Date(Date), "%Y")))),
+    .groups = "drop"
+  ) %>%
+  transmute(
+    `Code` = Code,
+    `Cellule notée` = Cell,
+    `Cellule calculée` = RightCell,
+    `Collecteur(s)` = ifelse(is.na(Collecteurs), " ", Collecteurs)
+  )
+```
+
+::: {.content-visible when-format="docx"}
+```{=openxml}
+<w:p><w:pPr><w:pStyle w:val="Author"/><w:pBdr><w:bottom w:val="single" w:sz="6" w:space="10" w:color="BFBFBF"/></w:pBdr><w:spacing w:after="200"/><w:jc w:val="center"/><w:rPr><w:color w:val="7F7F7F" w:themeColor="text1" w:themeTint="80"/><w:sz w:val="18"/><w:szCs w:val="18"/></w:rPr></w:pPr><w:r><w:rPr><w:color w:val="7F7F7F" w:themeColor="text1" w:themeTint="80"/><w:sz w:val="18"/><w:szCs w:val="18"/></w:rPr><w:t xml:space="preserve">Généré automatiquement à partir de </w:t></w:r><w:r><w:rPr><w:color w:val="7F7F7F" w:themeColor="text1" w:themeTint="80"/><w:sz w:val="18"/><w:szCs w:val="18"/></w:rPr><w:t>ErreurHN.qmd</w:t></w:r></w:p>
+```
+:::
+
+## Contexte et objectif
+
+Le jeu de données BC contient `r format(n_total, big.mark = " ")` observations, Pan traps et Malaise traps (feuilles 3, 7, 8, 11 et 12 du fichier source). Chaque observation possède 2 informations de localisation : coordonnées GPS (Latitude et Longitude) et numéro de la cellule (grille de référence 5 km). L'objectif : vérifier que ces 2 informations concordent, c'est-à-dire que la cellule notée à la main correspond bien à la cellule dans laquelle tombent réellement les coordonnées GPS.
+
+## Vérification des données GPS
+
+Plusieurs problèmes dans les colonnes Longitude et Latitude ont été identifiés :
+
+- Valeurs manquantes ou non exploitables : `r missing_coords` lignes
+- Virgule décimale au lieu d'un point (ex. `5,814094`), corrigée directement (`,` → `.`)
+- Quelques valeurs correspondant à du texte = non exploitables
+- Une ligne avec Longitude renseignée mais Latitude manquante (100_1_230522_C3C_p_sp. su), non récupérable
+
+### Résultat du nettoyage
+
+```{r}
+pretty_table(tibble::tibble(
+  Catégorie = c("Total observations BC", "Coordonnées exploitables", "Coordonnées non exploitables"),
+  `Nombre de lignes` = c(n_total, n_exploitable, n_non_exploitable)
+))
+```
+
+### Détail des lignes non exploitables
+
+```{r}
+pretty_table(tibble::tibble(
+  `Sous-catégorie` = c("Longitude/latitude manquante", "Coordonnées hors bornes Luxembourg"),
+  `Nombre de lignes` = c(missing_coords, out_of_bounds)
+))
+```
+
+## Calcul de la cellule à partir des coordonnées
+
+Pour les `r n_exploitable` lignes aux coordonnées exploitables, une colonne "RightCell" a été calculée en alliant chaque point GPS à la grille de référence 5 km.
+
+- Lignes où Cell (saisie manuelle) ET RightCell sont toutes deux renseignées : `r n_comparables`
+- Lignes où Cell est renseigné mais RightCell manquant : `r n_manque_rightcell` (coordonnées invalides ou hors grille)
+
+**Remarque sur la colonne Cell** : la colonne Cell de BC quelques lignes, du texte en plus du numéro (ex. `42BOUL`, `15EXP`, `130ELLER`, `49BEAU`). Un nettoyage a été fait pour ne récupérer que la partie numérique.
+
+## Comparaison entre Cell et RightCell
+
+```{r}
+pretty_table(tibble::tibble(
+  Résultat = c("Correspondance exacte", "Résultat différent"),
+  `Nombre de lignes` = c(as.character(n_match), paste0(n_mismatch, " (", pct_mismatch, " %)"))
+))
+```
+
+Après regroupement des lignes correspondant à une même sortie (mêmes coordonnées, même collecteur, mêmes dates), ces `r n_mismatch` lignes correspondent à `r n_erreurs_uniques` événements distincts.
+
+## Distinguer les 2 types d'erreurs
+
+Un point GPS proche d'une frontière entre deux cellules peut être calculé dans la cellule voisine plutôt que celle notée sur le terrain. Chaque cellule de la grille a donc été comparée à ses 8 cellules voisines directes pour distinguer ce cas d'une vraie erreur.
+```{r}
+pretty_table(tibble::tibble(
+  Résultat = c("Cellule notée = cellule voisine", "Cellule notée ≠ cellule voisine"),
+  `Nombre d'événements` = c(n_voisines, n_suspectes)
+))
+```
+
+### Les `r n_suspectes` cas à vérifier
+
+```{r}
+pretty_table(table_suspects)
+```
+
+## Résumé
+
+- `r format(n_total, big.mark = " ")` observations au total (feuilles Pan traps / Malaise traps sélectionnées)
+- `r n_non_exploitable` observations ont des coordonnées GPS non exploitables
+- Sur les `r n_comparables` lignes comparables, `r n_mismatch` lignes (`r n_erreurs_uniques` événements distincts) présentent un désaccord entre cellule notée et cellule calculée
+- `r n_voisines` de ces désaccords concernent des cellules directement voisines
+- `r n_suspectes` erreurs importantes
+
+
+

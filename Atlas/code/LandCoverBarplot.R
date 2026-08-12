@@ -1,18 +1,30 @@
+# Author: Selene Perez
+# Request: Julian Wittische
+# Start: Summer 2026
+# Script objective : Comparaison de deux méthodes pour déterminer l'habitat dominant autour des observations :
+#                    - méthode vectorielle
+#                    - méthode raster
 
 
-# Vecteur
-
+###### Préparation des points d'observation ----
+# Conversion des coordonnées GPS en objets spatiaux
 pts_sf <- st_as_sf(DB, coords = c("Long", "Lat"), crs = 4326) %>%
   st_transform(2169) %>%
   mutate(point_id = row_number())
 
+# Création d'un buffer de 500 m autour de chaque observation
 buffers <- st_buffer(pts_sf, 500)
 
+
+###### Méthode vectorielle ----
+############ Lecture de la couche Land Cover 2024 ----
 land_cover <- st_read("Atlas/data/LandCover_Luxembourg_2018_2021_2024.gdb",
                       layer = "LandCover_Luxembourg_status_2024", quiet = TRUE)
 
 
-#object avec les points saqns le buffer
+############ Préparation et regroupement des classes d'habitat ----
+# Transformation dans le même système de coordonnées que les points
+# puis regroupement des classes Land Cover en grandes catégories d'habitat
 
 land_cover <- land_cover %>%
   st_transform(2169) %>%
@@ -25,27 +37,22 @@ land_cover <- land_cover %>%
     LC2024 == 60                ~ "Water"
   )) %>%
   filter(!is.na(Habitat_Dominant)) %>%
-  select(Habitat_Dominant)  # %>%
- # st_simplify(dTolerance = 10, preserveTopology = TRUE) # reduire le nombre de vecteurs
+  select(Habitat_Dominant)  
 
+############ Détermination de l'habitat dominant dans chaque buffer ----
 DB_landcover_vecteur <- st_join(buffers, land_cover, largest = TRUE) %>%
   st_drop_geometry()
 
 
+###### Méthode raster ----
+############ Lecture du raster Land Cover 2024 ----
+lc_raster <- rast("Atlas/data/LandCover_Luxembourg_status_2024.tif") 
 
-# Raster
-pts_sf <- st_as_sf(DB, coords = c("Long", "Lat"), crs = 4326) %>%
-  st_transform(2169) %>%
-  mutate(point_id = row_number())
-
-buffers <- st_buffer(pts_sf, 500)
-
-lc_raster <- rast("Atlas/data/LandCover_Luxembourg_status_2024.tif") # %>%
-  # terra::aggregate(fact = 50, fun = "modal")
-
+############ Extraction de l'habitat dominant autour de chaque observation ----
 lc_values <- terra::extract(lc_raster, vect(buffers), fun = "modal") %>%
   rename(point_id = ID)    # extrait la classe majeure du radius choisi
 
+############ Extraction de l'habitat dominant autour de chaque observation ----
 recode_lc <- function(x) {
   case_when(
     x %in% c(10, 20)      ~ "Built",
@@ -57,14 +64,17 @@ recode_lc <- function(x) {
   )
 }
 
+############ Extraction de l'habitat dominant autour de chaque observation ----
+
+# Association de l'habitat dominant à chaque observation
 DB_landcover_raster <- pts_sf %>%
   st_drop_geometry() %>%
   left_join(lc_values %>% mutate(Habitat_Dominant = recode_lc(LandCover_Luxembourg_status_2024)),
             by = "point_id")
 
 
-
-
+###### Visualisation des habitats par espèce ----
+############ Fonction de représentation de la proportion des habitats ----
 
 plot_habitat_espece <- function(espece, data) {
   lc_colors <- c("Built" = "#E40102", "Forest" = "#267400", "Herbaceous" = "#55FF00",
@@ -86,5 +96,7 @@ plot_habitat_espece <- function(espece, data) {
           axis.text.y = element_blank(), axis.text.x = element_text(size = 10))
 }
 
+###### Exemple de comparaison des deux méthodes ----
 plot_habitat_espece("Volucella zonaria", data = DB_landcover_vecteur)
 plot_habitat_espece("Volucella zonaria", data = DB_landcover_raster)
+

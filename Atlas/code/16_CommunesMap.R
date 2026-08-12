@@ -1,9 +1,15 @@
+######################## PROJECT: Atlas Template
+# Author: Selene Perez
+# Request: Julian Wittische
+# Start: Summer 2026
+# Script objective : génértion d'une carte de richesse spécique et observations par communes
 
 
-communes <- st_read("Atlas/data/communes4326.geojson")
+###### Récupération des données ----
+communes <- st_read("data/communes4326.geojson")
 communes_2169 <- st_transform(communes, 2169)
 
-
+###### Carte de richesse spécifique  ----
 carte_especes_commune <- function(DB, communes_data = communes_2169) {
   
   DB_sf <- st_as_sf(DB, coords = c("Long", "Lat"), crs = 4326) %>%
@@ -22,7 +28,7 @@ carte_especes_commune <- function(DB, communes_data = communes_2169) {
   
   ggplot() +
     geom_sf(data = communes_join, aes(fill = n), color = "black", linewidth = 0.3) +
-    geom_sf_text(data = centroids, aes(label = n), size = 2.5, color = "black") +
+    geom_sf_text(data = centroids, aes(label = n), size = 3, color = "black") +
     geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
     scale_fill_gradient(name = NULL, low = "white", high = "red") +
     geom_text(data = country_labels, aes(x = x, y = y, label = name),
@@ -40,9 +46,8 @@ carte_especes_commune <- function(DB, communes_data = communes_2169) {
     
 }
 
-carte_especes_commune(DB)
 
-
+###### Carte du nombre d'observation  ----
 carte_obs_commune <- function(DB, communes_data = communes_2169) {
   
   DB_sf <- st_as_sf(DB, coords = c("Long", "Lat"), crs = 4326) %>%
@@ -61,7 +66,7 @@ carte_obs_commune <- function(DB, communes_data = communes_2169) {
   
   ggplot() +
     geom_sf(data = communes_join, aes(fill = n), color = "black", linewidth = 0.3) +
-    geom_sf_text(data = centroids, aes(label = n), size = 2.5, color = "black") +
+    geom_sf_text(data = centroids, aes(label = n), size = 3, color = "black") +
     geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
     scale_fill_gradient(name = NULL, low = "white", high = "red") +
     geom_text(data = country_labels, aes(x = x, y = y, label = name),
@@ -78,5 +83,5 @@ carte_obs_commune <- function(DB, communes_data = communes_2169) {
     theme(legend.position = c(0.76, 0.69), legend.justification = c(0, 1))
 }
 
-carte_obs_commune(DB)
+
 

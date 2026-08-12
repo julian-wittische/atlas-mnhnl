@@ -1,3 +1,12 @@
+######################## PROJECT: Atlas Template
+# Author: Selene Perez
+# Request: Julian Wittische
+# Start: Summer 2026
+# Script objective : génértion d'une carte de couverture des sols
+
+
+
+###### Carte statique Land Cover ----
 plot_land_cover_lux_vecteur <- function(land_cover) {
   
   land_cover_colors <- c(

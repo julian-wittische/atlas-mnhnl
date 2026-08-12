@@ -7,6 +7,8 @@
 
 ###### Static Soils map ----
 
+
+# construit la palette de couleurs et les libelles associes aux codes PECODE presents dans `sols`
 .preparer_legende_sols <- function(sols) {
   couleurs_pecode <- c(
     "1" = "#FCCD76", "2" = "#BAEE81", "3" = "#D9F375", "4" = "#73C88F",
@@ -50,6 +52,7 @@
     "32" = "Sols en pente"
   )
   
+  # tri numerique
   codes_presents <- as.character(sort(unique(as.numeric(as.character(sols$PECODE)))))
   codes_presents <- codes_presents[codes_presents %in% names(couleurs_pecode)]
   
@@ -59,7 +62,7 @@
   )
 }
 
-
+# carte statique, decoupee aux frontieres du Luxembourg
 plot_carte_sols <- function(datapath) {
   sols <- st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)
 
@@ -93,7 +96,7 @@ plot_carte_sols <- function(datapath) {
 
 plot_carte_sols(DATAPATH)
 
-
+# legende separee (base R graphics) pour la carte des sols
 plot_legende_sols <- function(datapath,
                               ncol_legende = 1,
                               cex_legende = 1.5,
@@ -101,7 +104,7 @@ plot_legende_sols <- function(datapath,
                               y_intersp = 0.8) {
   sols <- sf::st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)
   
-  prep <- .preparer_legende_sols(sols)
+  prep <- .preparer_legende_sols(sols_lux)
   
   par(mar = c(0, 0, 0, 0), xpd = TRUE)
   plot.new()

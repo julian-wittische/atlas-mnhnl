@@ -58,12 +58,12 @@ library(rcol)           # Catalogue of Life
 library(taxize)
 library(bib2df)
 
-############ Graphiques spécialisés / analyses exploratoires ----
+############ Graphiques spécialisés  ----
 library(collapsibleTree)
 library(ggtern)
 library(viridis)
 library(vegan)
-library(rredlist)        
+      
 
 
 

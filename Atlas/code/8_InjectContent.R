@@ -6,33 +6,33 @@
 
 
 ############ Titres reconnus dans le fichier texte ----
+# seuls ces titres sont extraits des .txt et injectés dans les .qmd / le reste est ignoré
 
-titres_reconnus <- c("### Author {.author-species}","## Description", "## Habitat", "### Immature", "### Mature",
-                     "## Distribution", "## Notes")
+titres_reconnus <- c("## Description", "## Habitat", "### Immature", "### Mature",
+                     "## Distribution", "## Notes", "### Author {.author-species}")
 
 ############ Sauvegarde du texte  ----
-lire_sections_texte <- function(chemin_txt) {
 
+# decoupe un fichier .txt en sections nommees d'apres les titres reconnus qu'il contient
+lire_sections_texte <- function(chemin_txt) {
+  
+  # sentinel "## __FIN__" ajoute pour forcer la cloture de la derniere section via la meme logique
   lignes_source <- c(readLines(chemin_txt, encoding = "UTF-8", warn = FALSE), "## __FIN__")
   
   contenu_par_titre <- list()
   titre_en_cours <- NULL
   lignes_du_titre <- c()
   
+  # enregistre le contenu accumule sous le titre precedent avant de passer au suivant
   cloturer_section <- function() {
     if (is.null(titre_en_cours)) {
-      
       if (any(nzchar(trimws(lignes_du_titre)))) {
-        warning("Texte avant le premier titre, ignore dans : ", chemin_txt, call. = FALSE)
-      }
-      return(invisible(NULL))
-    }
+        warning("Texte avant le premier titre: ", chemin_txt, call. = FALSE)}
+      return(invisible(NULL))}
     if (titre_en_cours %in% names(contenu_par_titre)) {
       warning("Titre '", titre_en_cours, "' apparait plusieurs fois dans : ", chemin_txt,
-              "  la derniere occurrence est la seule conservee", call. = FALSE)
-    }
-    contenu_par_titre[[titre_en_cours]] <<- paste(lignes_du_titre, collapse = "\n")
-  }
+              "  le dernier est la seule conservee", call. = FALSE)}
+    contenu_par_titre[[titre_en_cours]] <<- paste(lignes_du_titre, collapse = "\n")}
   
   for (ligne_source in lignes_source) {
     if (ligne_source %in% titres_reconnus || ligne_source == "## __FIN__") {
@@ -40,12 +40,12 @@ lire_sections_texte <- function(chemin_txt) {
       titre_en_cours <- ligne_source
       lignes_du_titre <- c()
     } else {
-      lignes_du_titre <- c(lignes_du_titre, ligne_source)
-    }
-  }
+      lignes_du_titre <- c(lignes_du_titre, ligne_source) }}
   contenu_par_titre
 }
 ############ Ne pas supprimer les chunk  ----
+
+# copie un bloc ``` ... ``` ou ::: ... ::: tel quel (code/callout qmd), pour ne jamais l'ecraser en remplacant le texte
 garder_bloc <- function(lignes_qmd, i, nb_lignes) {
   debut_bloc <- i
   i <- i + 1
@@ -54,12 +54,15 @@ garder_bloc <- function(lignes_qmd, i, nb_lignes) {
   if (i <= nb_lignes) i <- i + 1
   list(lignes_bloc = lignes_qmd[debut_bloc:(i - 1)], i_suivant = i)
 }
+
 ############ Remplace le contenu de chaque titre dans le .qmd ----
 
 #   - "insertion" : rien avant
 #   - "mise_a_jour" : texte different
 #   - "aucun_changement" : texte identique
 #   - NA  : rien a signaler
+
+
 remplacer_sections <- function(lignes_qmd, contenu_par_titre) {
   
   lignes_qmd_modifiees <- c()
@@ -71,6 +74,7 @@ remplacer_sections <- function(lignes_qmd, contenu_par_titre) {
     ligne_actuelle <- lignes_qmd[i]
     lignes_qmd_modifiees <- c(lignes_qmd_modifiees, ligne_actuelle)
     
+    # ligne normale (pas un titre reconnu) : on la garde telle quelle et on avance
     if (!(ligne_actuelle %in% names(contenu_par_titre))) {
       i <- i + 1
       next }
@@ -81,6 +85,7 @@ remplacer_sections <- function(lignes_qmd, contenu_par_titre) {
     if (nchar(texte_a_inserer) > 0) {
       lignes_qmd_modifiees <- c(lignes_qmd_modifiees, "", texte_a_inserer, "")}
     
+    # on avance jusqu'au prochain titre en sautant l'ancien texte, mais en preservant les chunks/callouts
     ancien_texte_lignes <- c()
     while (i <= nb_lignes && !grepl("^#{1,6} ", lignes_qmd[i])) {
       if (grepl("^:::|^```", lignes_qmd[i])) {
@@ -106,7 +111,9 @@ remplacer_sections <- function(lignes_qmd, contenu_par_titre) {
   
   list(lignes = lignes_qmd_modifiees, statuts = statut_par_titre)
 }
+
 ############ Remplir fiches espèces ----
+
 fichiers_qmd <- list.files(here::here("Atlas", "species_account"), pattern = "\\.qmd$", full.names = FALSE)
 fichiers_qmd <- setdiff(fichiers_qmd, c("_template.qmd", "PLACEHOLDER.qmd"))
 
@@ -116,14 +123,12 @@ for (fichier_qmd in fichiers_qmd) {
   
   if (!file.exists(chemin_txt)) {
     cat("Pas de contenu texte pour :", slug, "(ignoré)\n")
-    next
-  }
-  
+    next }
   chemin_qmd <- here::here("Atlas", "species_account", fichier_qmd)
   lignes_qmd <- readLines(chemin_qmd, encoding = "UTF-8", warn = FALSE)
   contenu_par_titre <- lire_sections_texte(chemin_txt)
   
-  
+  # titres presents dans le .txt mais absents de titres_reconnus : signale sans bloquer le traitement
   titres_inattendus <- setdiff(names(contenu_par_titre), c(titres_reconnus, "## __FIN__"))
   if (length(titres_inattendus) > 0) {
     cat("Titres non reconnus dans", slug, ":", paste(titres_inattendus, collapse = ", "), "\n")
@@ -133,9 +138,9 @@ for (fichier_qmd in fichiers_qmd) {
   lignes_qmd_final <- resultat_remplacement$lignes
   statuts <- resultat_remplacement$statuts
   
-
   statuts_valides <- statuts[!vapply(statuts, is.na, logical(1))]
   
+  # un seul message par fichier : priorite mise_a_jour > insertion > aucun changement si plusieurs titres ont des statuts differents
   if (length(statuts_valides) == 0) {
 
   } else if ("mise_a_jour" %in% statuts_valides) {
@@ -146,7 +151,7 @@ for (fichier_qmd in fichiers_qmd) {
     cat("Aucun changement pour :", slug, "\n")
   }
   
-  
+  # sauvegarde avant ecrasement
   file.copy(chemin_qmd, paste0(chemin_qmd, ".bak"), overwrite = TRUE)
   
   

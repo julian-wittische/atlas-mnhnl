@@ -11,7 +11,9 @@
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "16_CommunesMap.R"))
 source(here::here("Atlas", "code", "17_Effort.R"))
+
 ```
 
 
@@ -98,4 +100,29 @@ carte_ratio_especes_cell(ratio_especes_cell, rtp, lux_borders, GR2169_c)
 
 :::
 
+:::
+
+## Spatial Distribution of Observations
+::: {.lightbox}
+```{r}
+#| fig-width: 14
+#| fig-height: 14
+#| fig-align: center
+#| echo: false
+#| warning: false
+#| message: false
+carte_obs_commune(DB)
+```
+:::
+## Spatial Distribution of Species
+::: {.lightbox}
+```{r}
+#| fig-width: 14
+#| fig-height: 14
+#| fig-align: center
+#| echo: false
+#| warning: false
+#| message: false
+carte_especes_commune(DB)
+```
 :::

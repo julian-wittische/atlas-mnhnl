@@ -40,7 +40,6 @@ Atlas/_book/history.html
 *.html
 Atlas/data/MNS_Lidar2024.tif
 Atlas/data/MNS_Lidar2024.tif
-
 /.quarto/
 **/*.quarto_ipynb
 .RDataTmp*
@@ -64,3 +63,4 @@ Atlas/biophysical_files/
 *.png
 Atlas/biophysical_files/
 Atlas/biophysical_files/figure-html/
+Atlas/data/LandCover_Luxembourg_status_2024.tif

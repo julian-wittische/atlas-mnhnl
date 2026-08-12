@@ -27,10 +27,44 @@ date_5chiffres <- function(x) {
   ifelse(nchar(x) %in% c(6, 8) & !is.na(suppressWarnings(as.numeric(x))), x, NA)
 }
 
-
 # correction d'une longitude aberrante repérée à la main
 BC$Longitude[BC$Longitude == 2723371] <- 5.98
 BC$Date <- dmy(date_5chiffres(BC$Date_out))
+
+BC$Longitude <- as.numeric(gsub(",", ".", BC$Longitude))
+BC$Latitude  <- as.numeric(gsub(",", ".", BC$Latitude))
+
+###### Calcul de RightCell pour BC 
+lon_num <- as.numeric(BC$Longitude)
+lat_num <- as.numeric(BC$Latitude)
+
+pts_test <- BC %>%
+  mutate(row_id = row_number()) %>%
+  filter(!is.na(Longitude), !is.na(Latitude)) %>%
+  st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326, remove = FALSE) %>%
+  st_transform(st_crs(lux_borders_sf))
+pts_test$dans_lux <- lengths(st_within(pts_test, lux_borders_sf)) > 0
+valides <- rep(FALSE, nrow(BC))
+valides[pts_test$row_id[pts_test$dans_lux]] <- TRUE
+
+BC_valid <- BC[valides, ]
+BC_valid$lon_tmp <- lon_num[valides]
+BC_valid$lat_tmp <- lat_num[valides]
+
+BC_sf <- st_as_sf(BC_valid, coords = c("lon_tmp", "lat_tmp"), crs = 4326, remove = FALSE)
+rtp_sf <- st_transform(st_as_sf(rtp), st_crs(BC_sf))
+BC_cell <- st_join(BC_sf, rtp_sf)$layer
+
+nrow(BC_sf) == length(BC_cell)   # vérification : même nombre de lignes des deux côtés
+
+
+BC$Cell<- as.numeric(str_extract(BC$Cell, "^[0-9]+")) # Nettoyer les cell avec des lettres
+BC$RightCell <- NA
+BC$RightCell[valides] <- BC_cell
+
+
+
+
 
 ###### Hand netting ----
 HN <- rbind(
@@ -75,12 +109,15 @@ lon_num <- as.numeric(HN$Longitude)
 lat_num <- as.numeric(HN$Latitude)
 
 # Bornes pour le Luxembourg
-lon_min <- 5.6; lon_max <- 6.6
-lat_min <- 49.3; lat_max <- 50.3
-
-valides <- !is.na(lon_num) & !is.na(lat_num) &
-  lon_num >= lon_min & lon_num <= lon_max &
-  lat_num >= lat_min & lat_num <= lat_max
+pts_test <- HN %>%
+   mutate(row_id = row_number()) %>%
+       filter(!is.na(Longitude), !is.na(Latitude)) %>%
+       st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326, remove = FALSE) %>%
+       st_transform(st_crs(lux_borders_sf))
+pts_test$dans_lux <- lengths(st_within(pts_test, lux_borders_sf)) > 0
+valides <- rep(FALSE, nrow(HN))
+valides[pts_test$row_id[pts_test$dans_lux]] <- TRUE
+  
 
 # ne garde que les points GPS plausibles (dans la bbox du Luxembourg)
 HN_valid <- HN[valides, ]

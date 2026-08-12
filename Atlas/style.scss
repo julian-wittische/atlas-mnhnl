@@ -97,19 +97,19 @@ h3.author{
 }
 
 h3.author-species {
-  margin-top: -2rem !important;
+  margin-top: 3.5rem !important;
   margin-bottom: 0.2rem !important;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 400;
   font-style: italic;
   color: #555;
   text-align: left;
-}
 
-h3.author-species + p {
-  margin-top: 0 !important;
-  text-align: auto;
-   margin-bottom: 5rem !important;
+  & + p {
+    margin-top: 0 !important;
+    font-size: 0.9rem;
+    color: #555;
+  }
 }
 
 .dropdown {
@@ -168,23 +168,35 @@ h3.author-species + p {
   margin-bottom: 2.5rem;
 }
 
-
-.species-photo {
-  display: block;
-  max-width: 70%;
-  margin: 3.5rem auto 6.5rem auto;
-  border: 1px solid #e2e2e2;
-  border-radius: 4px;
-  margin-top: 3rem;
-  margin-bottom: auto;
-}
-
 .logo {
   height: 45px;
   margin-bottom: 0;
 }
 
 
+.species-photo {
+  display: block;
+  max-width: 70%;
+  width: auto;
+  height: auto;
+  border: 1px solid #e2e2e2;
+  border-radius: 4px;
+  margin-top: 5rem;
+  margin-bottom: 0rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.image-credit {
+  display: block;
+  max-width: 70%;
+  text-align: left;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5rem;
+}
 
 /* Columns */
 .columns {

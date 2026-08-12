@@ -28,40 +28,12 @@ source(here::here("Atlas", "code", "0_Initialisation.R"))
 source(here::here("Atlas", "code", "18_redList.R"))
 ```
 
-::: {.columns}
-
-::: {.column width="50%" }
-
-### Author {.author-species}
-
-
-
-:::
-
-::: {.column width="50%" }
-
 ```{r}
 #| echo: false
-#| results: asis
 #| warning: false
-#| message: false
-
-seuil_obs <- 30  
-
-n_obs <- DB_full %>% filter(ID == params$species) %>% nrow()
-
-cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
-
-if (n_obs < seuil_obs) {
-  cat(sprintf(
-    '<div class="obs-warning"> ⚠ Low number of records (&lt; %d).</div>\n',
-    seuil_obs
-  ))
-}
+status <- get_iucn_status(params$species)
 ```
-:::
 
-:::
 
 ::: {.columns}
 
@@ -82,26 +54,27 @@ for (i in ids) {
 cat('</div>\n</div>\n')
 ```
 
-
 ::: species-taxonomy
+
 **Subfamily** <<subfamily>>   &nbsp; **Tribe** <<tribe>>
+
 :::
 
 ::: species-taxonomy
+
 **EN** <<en>> <br>
 **LB** <<lb>> <br>
 **FR** <<fr>> <br>
 **DE** <<de>>
-:::
-
 
 :::
 
+:::
 
 ::: {.column width="50%"}
 
-
 ## Conservation status {.no-top-margin}
+
 ::: {.columns .status-row}
 
 ::: {.column width="25%"}
@@ -109,19 +82,21 @@ cat('</div>\n</div>\n')
 :::
 
 ::: {.column width="25%"}
-![](/images/LC.png){.logo}
+
+<img src="/images/`r status$europe`.png" alt="Statut IUCN Europe : `r status$europe`" title=" `r status$europe`" class="logo">
 :::
 
 :::
 
 ::: {.columns .status-row}
 
-::: {.column width="50%"}
+::: {.column width="25%"}
+
 ### European Union<br>(27)
 :::
 
-::: {.column width="50%"}
-![](/images/LC.png){.logo}
+::: {.column width="25%"}
+<img src="/images/`r status$eu27`.png" alt="Statut IUCN Union européenne (27) : `r status$eu27`" title="`r status$eu27`" class="logo">
 :::
 
 :::
@@ -133,8 +108,8 @@ cat('</div>\n</div>\n')
 :::
 
 ::: {.column width="25%"}
+
 ![](/images/NTLU.png){.logo}
-:::
 
 :::
 
@@ -142,11 +117,12 @@ cat('</div>\n</div>\n')
 
 :::
 
+:::
 
-![](/images/<<name>>.png){.species-photo}
+![](/images/<<image_file>>){.species-photo}
+[<<image_credit>>]{.image-credit}
 
 ## Activity period
-
 
 ```{r g-source}
 #| echo: false
@@ -157,15 +133,13 @@ cat('</div>\n</div>\n')
 plot_heatmap(params$species)
 ```
 
-
 ## Description
+
 ## Habitat
 ### Immature
 ### Mature
+
 ## Distribution
-
-
-
 ```{r m3}
 #| echo: false
 #| warning: false
@@ -173,6 +147,26 @@ plot_heatmap(params$species)
 get_species_map(params$species, rtp = rtp, base_map = base_map)
 ```
 
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+seuil_obs <- 30  
+#n_obs <- nrow(DB)
+n_obs <- DB %>% filter(ID == params$species) %>% nrow()
+cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
+if (n_obs < seuil_obs) {
+  cat(sprintf(
+    '<div class="obs-warning"> ⚠ Low number of records.</div>\n',
+    seuil_obs
+  ))
+}
+```
+
 ## Notes
 
+
+
+### Author {.author-species}
 

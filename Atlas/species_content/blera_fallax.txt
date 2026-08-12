@@ -1,6 +1,4 @@
-### Author {.author-species}
 
-Hinatea Ariey
 
 ## Description
 
@@ -22,3 +20,7 @@ Localised in coniferous area, this syrphid can be found all around Luxembourg if
 ## Notes
 
 This species was record in 2021 and was not observed since 2025 despite all the science citizens platforms. Fortunately, the Hoverfly Atlas project has boosted interest in this family and enabled the observation of new specimens in two different localities.
+
+### Author {.author-species}
+
+Hinatea Ariey

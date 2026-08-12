@@ -5,15 +5,15 @@
 # Script objective : 2 cartes : températures et précipitations moyennes par an
 
 
-################# Données climatiques WorldClim ----
+############ Données climatiques WorldClim ----
 bioclim_lux <- worldclim_country(country = "Luxembourg", var = "bio", res = 0.5, path = tempdir())
 
-################# Frontière nationale du Luxembourg ----
+############ Frontière nationale du Luxembourg ----
 lux_borders <- gb_get_adm0("Luxembourg")
 lux_borders <- st_transform(lux_borders, crs = "EPSG:2169")
 lux_borders <- as(lux_borders, "Spatial")
 
-################# carte BIO1 (température moyenne annuelle) ----
+############ Carte BIO1 (température moyenne annuelle) ----
 plot_bio1_map <- function(bioclim_lux, lux_borders) {
   bio1 <- bioclim_lux[["wc2.1_30s_bio_1"]]
   
@@ -24,7 +24,7 @@ plot_bio1_map <- function(bioclim_lux, lux_borders) {
   
   lux_sf_2169 <- st_transform(st_as_sf(lux_borders), crs = 2169)
   zone_totale <- st_as_sfc(bbox_2169)
-  masque_hors_lux <- st_difference(zone_totale, st_union(lux_sf_2169)) 
+  masque_hors_lux <- st_difference(zone_totale, st_union(lux_sf_2169))  # masque blanc en dehors des frontieres
   
   ggplot() +
     geom_spatraster(data = bio1_lux) +
@@ -53,7 +53,7 @@ plot_bio1_map <- function(bioclim_lux, lux_borders) {
 }
 plot_bio1_map(bioclim_lux, lux_borders)
 
-################# carte BIO12 (précipitations annuelles) ----
+############ Carte BIO12 (précipitations annuelles) ----
 plot_bio12_map <- function(bioclim_lux, lux_borders) {
   bio12 <- bioclim_lux[["wc2.1_30s_bio_12"]]
   
@@ -93,7 +93,10 @@ plot_bio12_map <- function(bioclim_lux, lux_borders) {
 }
 
 
-################# Multiple choices map ----
+############ Multiple choices map ----
+
+# table de metadonnees des 19 variables bioclimatiques WorldClim (nom de couche, titre, unite, palette),
+# utilisee par plot_bio_map pour generer la carte de n'importe quelle variable BIO via var_num
 
 bio_vars <- data.frame(
   num   = 1:19,
@@ -108,7 +111,7 @@ bio_vars <- data.frame(
 
 bio_vars$palette <- list(
   
- # palettes de couleur
+  # une palette de couleur par variable (ordre = num, une ligne = un vecteur de couleurs pour scale_fill_gradientn)
    c("#2C7BB6", "#ABD9E9", "#FFFFBF", "#FDAE61", "#D7191C"), # BIO1
    c("#4575B4", "#91BFDB", "#FFFFBF", "#FC8D59", "#D73027"), # BIO2
    c("#313695", "#74ADD1", "#FFFFBF", "#FDAE61", "#A50026"), # BIO3
@@ -127,11 +130,10 @@ bio_vars$palette <- list(
  c("#F7FCF0", "#C7E9C0", "#7FCDBB", "#2C7FB8", "#084081"), # BIO16
   c("#FFF7BC", "#FEC44F", "#FE9929", "#D95F0E", "#993404"), # bio17
   c("#FFF7BC", "#FEC44F", "#FE9929", "#D95F0E", "#993404"), # BIO18
-
   c("#F7FCF0", "#C7E9C0", "#7FCDBB", "#2C7FB8", "#084081"))  # BIO19
 
 
-
+# carte generique pour n'importe quelle variable BIO (var_num = 1 a 19), palette/unite/titre lus depuis bio_vars
 plot_bio_map <- function(bioclim_lux, lux_borders, var_num,label_size = 6,
                          legend_title_size = 11,legend_text_size = 9, legend_key_cm = 0.8) {
   
@@ -147,7 +149,7 @@ plot_bio_map <- function(bioclim_lux, lux_borders, var_num,label_size = 6,
     crop(lux_vect) |>
     mask(lux_vect)
   
-  # garder que les données dans le Luxembourg
+  # masque blanc hors des frontieres du Luxembourg
   zone_totale <- st_as_sfc(bbox_2169)
   masque_hors_lux <- st_difference(zone_totale, st_union(lux_sf))
   

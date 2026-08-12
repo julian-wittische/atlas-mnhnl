@@ -37,7 +37,6 @@ prepare_presence <- function(species_name, data = DB ) {
 
 
 ############ Graphique heatmap ----
-
 plot_heatmap <- function(species_name, data = DB) {
   presence <- prepare_presence(species_name, data)
   ggplot(presence, aes(x = Position , y= 0.5,fill = n)) +
