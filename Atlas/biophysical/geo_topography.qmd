@@ -97,12 +97,12 @@ English legend available soon
 
 ## Altitude {.unnumbered} 
 
-<!-- # ```{r altitude} -->
-<!-- # #| echo: false -->
-<!-- # #| warning: false -->
-<!-- # #| message: false -->
-<!-- # carte_altitude(DATAPATH) -->
-<!-- # ``` -->
+```{r altitude}
+#| echo: false
+#| warning: false
+#| message: false
+carte_altitude(DATAPATH)
+```
 
 
 ## Soil {.unnumbered}

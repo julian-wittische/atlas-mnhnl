@@ -113,21 +113,22 @@ plot_bio1_map(bioclim_lux, lux_borders)
 
 Éléments :
 
-- `# Climate` : titre principal du chapitre.
+- `# Climate` : titre de niveau 1 du chapitre.
 
-\- Bloc `setup` : charge `0_Initialisation.R`, qui charge les librairies et les scripts communs essentiels (config, bordures, données, cartes principales, graphiques d'activité). Les scripts spécifiques à un chapitre (ici `14_ClimateMaps.R`) ne sont pas chargés dans `0_Initialisation.R` mais directement dans le `.qmd` qui en a besoin. - `## Annual Mean Temperature` : titre de niveau 2
+\- Bloc `setup` : charge `0_Initialisation.R`, qui charge les librairies et les scripts communs essentiels (config, bordures, données, cartes principales, graphiques d'activité). Les scripts spécifiques à un chapitre (ici `14_ClimateMaps.R`) ne sont pas chargés dans `0_Initialisation.R` mais directement dans le `.qmd` qui en a besoin. 
+
+\- `## Annual Mean Temperature` : titre de niveau 2
 
 \- Le bloc de code appelle une fonction déjà définie dans `code/` (`plot_bio1_map`) ; le résultat s'affiche directement dans la page.
 
 \- `#| echo: false` masque le code R dans le rendu final. `#| fig.height` / `#| fig.width` fixent les dimensions de la figure.
 
-**Cas sélecteur interactif (climat)** : dans `biophysical/climate.qmd`, le chapitre teste le format de sortie avec `knitr::pandoc_to("html")`. En HTML, il génère un menu déroulant JS (`<select id="bio-select">`, stylé via `.bio-select`/`.bio-map` dans `style.scss`) qui bascule entre plusieurs cartes BIOCLIM pré-générées mais cachées (`style="display:none"`).
+**Cas sélecteur interactif (climat)** : dans `biophysical/climate.qmd`, le chapitre teste le format de sortie avec `knitr::pandoc_to("html")`. En HTML, il génère un menu déroulant (`<select id="bio-select">`, stylé via `.bio-select`/`.bio-map` dans `style.scss`) qui bascule entre plusieurs cartes BIOCLIM pré-générées (`style="display:none"`).
 
 Principe général : une page `.qmd` n'effectue quasiment aucun calcul directement ; elle appelle des fonctions déjà écrites dans `code/`.
 
 ## Chapitres narratifs
 
-Certains chapitres sont entièrement pilotés par du code, d'autres combinent texte libre à rédiger et figures générées :
 
 | Chapitre | Contenu attendu |
 |------------------------------------|------------------------------------|
@@ -184,6 +185,7 @@ Ces scripts ne sont pas chargés dans `0_Initialisation.R` mais directement `sou
 | `15_LandOverMap.R` | Carte d'occupation du sol, prévue pour `land_use_cover.qmd`. |
 | `16_CommunesMap.R` | Cartes de richesse spécifique (`carte_especes_commune`) et de nombre d'observations (`carte_obs_commune`) agrégées par commune, à partir d'un fichier de limites communales. |
 | `17_Effort.R` | Cartes d'effort d'échantillonnage par cellule de la grille : nombre de sorties terrain (`carte_effort_cell`), ratio observations/sortie (`carte_ratio_cell`), ratio espèces/sortie (`carte_ratio_especes_cell`). |
+| `18_redList.R` | Construction d'une base de données propre pour l'extraction des catégorie IUCN (à partir d'un Excel à fournir)|
 | `Taxonomie.R` | Construit `DB_taxo` (nom, sous-famille, tribu, genre par espèce) via le Catalogue of Life. |
 | `PhylogeneticGraph.R` | Arbre interactif (`collapsibleTree`) de la hiérarchie Subfamily/Tribe/Genus/espèce. |
 | `LandCoverBarplot.R` | Exploration de graphiques d'habitat par espèce à partir de l'occupation du sol dans un rayon de 500 m autour des observations. |
@@ -192,7 +194,7 @@ Ces scripts ne sont pas chargés dans `0_Initialisation.R` mais directement `sou
 
 ## Ce qui se passe automatiquement au rendu
 
-Le script `pre-render.R` s'exécute automatiquement avant chaque rendu (voir le Guide pas-à-pas pour la commande de rendu). Il enchaîne, dans l'ordre :
+Le script `pre-render.R` s'exécute automatiquement avant chaque rendu (voir Guide pour la commande de rendu). Il enchaîne, dans l'ordre :
 
 1.  `Taxonomie.R` : construit `DB_taxo` (sous-famille, tribu, genre par espèce) à partir des données d'observation et du Catalogue of Life.
 2.  `7_GenerateSpeciesPages.R` : génère une fiche `.qmd` pour chaque nouvelle espèce à partir de `_template.qmd` et `DB_taxo`, met à jour `_quarto.yml`, puis appelle `8_InjectContent.R` pour insérer le texte rédigé dans `species_content/`.
@@ -229,7 +231,11 @@ Une version étendue, `DB_full`, ajoute les colonnes utilisées par les fiches e
 | `Identifieur` | Nom de la personne ayant identifié le spécimen |
 | `URL` | Lien direct vers l'observation en ligne si elle vient d'une plateforme externe, sinon `NA` |
 
-Étapes à reproduire dans votre propre `3_LoadData.R` : 1. Lire chacune de vos sources de données brutes et harmoniser les noms de colonnes. 2. Convertir chaque source en objet spatial (`st_as_sf(..., coords = c("Long", "Lat"), crs = 4326)`). 3. Calculer la colonne `Cell` par une jointure spatiale avec la grille `rtp` (déjà construite par `2_LoadBorders.R`) : `st_join(votre_sf, st_transform(st_as_sf(rtp), st_crs(votre_sf)))$layer`. 4. Empiler (`rbind`) toutes les sources harmonisées en une seule table `DB` (et `DB_full` pour les popups détaillés). 5. Nettoyer : ne garder que les lignes avec coordonnées et année valides, gérer les noms d'espèce (variantes de casse, séparateurs, déterminations incertaines).
+Étapes à reproduire dans votre propre `3_LoadData.R` : 1. Lire chacune de vos sources de données brutes et harmoniser les noms de colonnes. 
+2. Convertir chaque source en objet spatial (`st_as_sf(..., coords = c("Long", "Lat"), crs = 4326)`). 
+3. Calculer la colonne `Cell` par une jointure spatiale avec la grille `rtp` (déjà construite par `2_LoadBorders.R`) : `st_join(votre_sf, st_transform(st_as_sf(rtp), st_crs(votre_sf)))$layer`. 
+4. Empiler (`rbind`) toutes les sources harmonisées en une seule table `DB` (et `DB_full` pour les popups détaillés). 
+5. Nettoyer : lignes avec coordonnées et année valides, gérer les noms d'espèce.
 
 Une fois `DB`/`DB_full` construits selon cette structure, tout le reste (`4_MainMap.R`, `5_SpeciesMaps.R`, `6_PresenceMois.R`, `Taxonomie.R`, `7_GenerateSpeciesPages.R`...) fonctionne sans modification.
 
@@ -239,7 +245,6 @@ Une fois `DB`/`DB_full` construits selon cette structure, tout le reste (`4_Main
 2.  **Remplissage taxonomique** : `7_GenerateSpeciesPages.R` remplit ces placeholders à partir de `DB_taxo` (nom, sous-famille, tribu), du Catalogue of Life / iNaturalist / Wikidata (noms vernaculaires EN/LB/FR/DE, en cascade) et du dossier `images/` (fichier + crédit photo, voir « Images »), pour chaque espèce sans fichier existant.
 3.  **Injection du texte** : `8_InjectContent.R` insère le contenu de `species_content/nom_espece.txt` dans les sections correspondantes (`### Author`, `## Description`, `## Habitat`, `### Immature`, `### Mature`, `## Distribution`, `## Notes`).
 
-Pour la procédure d'ajout d'une nouvelle espèce, voir le Guide pas-à-pas.
 
 ### Contenu d'une fiche générée
 
@@ -312,9 +317,8 @@ Toutes les images du projet sont stockées dans le dossier `images/`. Convention
     - `Licence` : code de licence affiché tel quel (ex. `CC-BY-NC`).
     - Un fichier dont le nom contient moins de 3 points (donc ne respecte pas ce format à 4 parties) est ignoré par `build_image_table()`.
     - Si plusieurs images correspondent au même `species_key`, seule la première par ordre alphabétique de nom de fichier est retenue, et un avertissement est émis.
-    - Si aucune image n'est trouvée pour une espèce, `get_image_info()` émet un avertissement et laisse `<<image_file>>`/`<<image_credit>>` vides plutôt que de bloquer la génération de la fiche.
     - Le crédit affiché sur la fiche (`<<image_credit>>`) est construit comme `Licence Photographe`, ex. « CC-BY-NC Sam Schaack ».
-    - **Pour changer cette convention** (par ex. l'ordre des parties, ou le séparateur), modifier `build_image_table()` dans `7_GenerateSpeciesPages.R` — c'est la seule fonction qui l'interprète.
+    - **Pour changer cette convention** (par ex. l'ordre des parties, ou le séparateur), modifier `build_image_table()` dans `7_GenerateSpeciesPages.R`
 
 \- **Images de statut de conservation** : chaque fiche affiche trois pictogrammes IUCN (CR, EN, EW, EX, LC, NT, VU).
 
@@ -348,16 +352,21 @@ $primary: #2c5f8a !default;
 }
 ```
 
-**Composants ajoutés** : - `.dropdown` / `.dropdown-btn` / `.dropdown-content` / `.scroller` : menu déroulant des synonymes sur les fiches espèces. - `.obs-count` / `.obs-warning` : compteur de records et encart d'avertissement en cas de faible nombre d'observations. - `.species-taxonomy` : mise en forme du bloc taxonomie + noms vernaculaires. - `.lightbox` / `#img-modal` : agrandissement au clic d'une image (utilisé dans `spatial.qmd`). - `.bio-select` / `.bio-map` : sélecteur de variable climatique (chapitre Climate).
+**Composants** : 
+- `.dropdown` / `.dropdown-btn` / `.dropdown-content` / `.scroller` : menu déroulant des synonymes sur les fiches espèces. 
+- `.obs-count` / `.obs-warning` : compteur de records et encart d'avertissement en cas de faible nombre d'observations. 
+- `.species-taxonomy` : mise en forme du bloc taxonomie + noms vernaculaires. 
+- `.lightbox` / `#img-modal` : agrandissement au clic d'une image (utilisé dans `spatial.qmd`). 
+- `.bio-select` / `.bio-map` : sélecteur de variable climatique (chapitre Climate)
 
-**Modifier la police du titre d'une fiche espèce** : définie directement dans `_template.qmd` (dupliquée dans chaque fiche déjà générée), pas dans `style.scss`. Un changement de police doit être appliqué dans `_template.qmd` avant génération de nouvelles fiches ; les fiches déjà générées nécessitent une modification manuelle.
+**Modifier la police du titre d'une fiche espèce** : définie directement dans `_template.qmd` (dupliquée dans chaque fiche déjà générée), pas dans `style.scss`. 
+Un changement de police doit être appliqué dans `_template.qmd` avant génération de nouvelles fiches ; les fiches déjà générées nécessitent une modification manuelle.
 
 ## Bibliographie et citations
 
 Deux fichiers de bibliographie coexistent :
 
-\- `references.bib` : format BibTeX classique, référencé par `bibliography:` dans `_quarto.yml` et utilisé par `references.qmd` (bloc `::: {#refs} :::`) pour générer la liste des références citées dans le texte (`@clé`)
-
+\- `references.bib` : format BibTeX classique, référencé par `bibliography:` dans `_quarto.yml` et utilisé par `references.qmd` (bloc `::: {#refs} :::`) pour générer la liste des références citées dans le texte
 \- `references.yaml`
 
 ## Data (`data/`)
@@ -365,9 +374,6 @@ Deux fichiers de bibliographie coexistent :
 Le dossier `data/` regroupe les données géographiques utilisées par les chapitres et scripts :
 
 \- Frontières nationales/régionales (via `geobounds`, `GRborders.gpkg`)
-
 \- Géologie, sols (chapitre Biophysical)
-
 \- Occupation du sol : raster (`LandCover_*.tif`) et version vecteur (`LandCover_*.gdb`), plus des couches CLMS haute résolution dédiées (`Grassland/`, `TreeCover/`) utilisées dans les scripts exploratoires d'habitat
-
 \- Limites communales (`communes4326.geojson`), utilisées par `16_CommunesMap.R`.
