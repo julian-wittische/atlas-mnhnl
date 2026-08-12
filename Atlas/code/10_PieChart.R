@@ -6,6 +6,7 @@
 
 ####### Tribes ---
 
+# camembert des tribus, coloration en degrades par sous-famille (meme teinte de base, nuances differentes par tribu)
 plot_tribe_pie <- function(DB_taxo) {
   tribe_counts <- DB_taxo %>%
     filter(!is.na(Tribe)) %>%
@@ -19,8 +20,10 @@ plot_tribe_pie <- function(DB_taxo) {
       ypos = cumsum(n) - 0.5 * n
     )
   
+  # une couleur de base par sous-famille
   base_colors <- setNames(hue_pal()(n_distinct(tribe_counts$Subfamily)), unique(tribe_counts$Subfamily))
   
+  # pour chaque sous-famille, degrade sur ses tribus
   tribe_palette <- tribe_counts %>%
     distinct(Subfamily, Tribe) %>%
     group_by(Subfamily) %>%
@@ -45,9 +48,10 @@ plot_tribe_pie <- function(DB_taxo) {
     )
 }
 
-# tribu de meme sous espece avec meme nuance de couleur
 
 ####### Subfamily ---
+
+# camembert des sous-familles, une couleur par sous-famille
 plot_subfamily_pie <- function(DB_taxo) {
   Subfamily_counts <- DB_taxo %>%
     filter(!is.na(Subfamily)) %>%

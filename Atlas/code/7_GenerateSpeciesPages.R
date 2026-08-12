@@ -3,10 +3,6 @@
 # Request: Julian Wittische
 # Start: Summer 2026
 # Script objective : génération automatique des fiches espèces avec _template.qmd
-# Suppose DB_taxo déjà nettoyé (noms valides, dédupliqués, sans synonymes ni genres seuls)
-# -> tout le nettoyage/vérification taxonomique se fait dans Taxonomie.R
-
-
 
 ############ Chemins ----
 
@@ -16,28 +12,24 @@ yml_path      <- here("Atlas", "_quarto.yml")
 taxo_path <- here("Atlas", "data", "DB_taxo.rds")
 images_dir    <- here("Atlas", "images")
 
-
 ############ Chargement des données déjà nettoyées ----
 
 DB_taxo <- readRDS(taxo_path)
 
 
-
-############ MODE TEST  ----
-## Pour tester le script sur seulement quelques espèces
-## choix manuel des espèces ---
-species_test <- c(
-  "Temnostoma meridionale",
-  "Myathropa florea",
-  "Blera fallax"
-)
-DB_taxo <- DB_taxo %>% filter(verbatim_name %in% species_test)
-############ 
-
-
+# ############ MODE TEST  ----
+# ## Pour tester le script sur seulement quelques espèces / choix manuel des espèces ---
+# species_test <- c(
+#   "Temnostoma meridionale",
+#   "Myathropa florea",
+#   "Blera fallax"
+# )
+# DB_taxo <- DB_taxo %>% filter(verbatim_name %in% species_test)
+# ############ 
 
 ############ Id de page  ----
 
+# construit un identifiant de fichier a partir du nom latin (sans espaces/accents)
 build_species_key <- function(verbatim_name) {
   verbatim_name %>%
     str_trim() %>%
@@ -58,7 +50,6 @@ stopifnot(
   "DB_taxo contient des species_key en double" = !anyDuplicated(DB_taxo$species_key)
 )
 
-
 ############  Noms vernaculaires COL-Inat-Wikidata ----
 
 
@@ -66,24 +57,25 @@ vernacular_lang_codes <- c(EN = "eng", LB = "ltz", FR = "fra", DE = "deu")   # c
 inat_lang_codes       <- c(EN = "en",  LB = "lb",  FR = "fr",  DE = "de")    # codes iNaturalist (ISO 639-1)
 wikidata_lang_codes    <- c(EN = "en",  LB = "lb",  FR = "fr",  DE = "de")    # codes Wikidata (ISO 639-1)
 
+# recupere les noms vernaculaires depuis Catalogue of Life
 fetch_vernacular_col <- function(species_name) {
-  empty <- set_names(rep("", length(vernacular_lang_codes)), names(vernacular_lang_codes)) # creer le vecteur
-  usage_id <- tryCatch(col_match(species_name)$usage_id, error = function(e) NA) # correspndance
+  empty <- set_names(rep("", length(vernacular_lang_codes)), names(vernacular_lang_codes))
+  usage_id <- tryCatch(col_match(species_name)$usage_id, error = function(e) NA) 
   
-  if (is.null(usage_id) || length(usage_id) == 0 || is.na(usage_id)) return(empty) # verif
-  vern <- tryCatch(col_vernacular(usage_id), error = function(e) NULL) # on recupere la liste
-  if (is.null(vern) || nrow(vern) == 0) return(empty) # verif
+  if (is.null(usage_id) || length(usage_id) == 0 || is.na(usage_id)) return(empty) 
+  vern <- tryCatch(col_vernacular(usage_id), error = function(e) NULL) 
+  if (is.null(vern) || nrow(vern) == 0) return(empty) 
   
-  out <- empty # valeur par defaut
-  for (lbl in names(vernacular_lang_codes)) { # boucle sur les langues
+  out <- empty 
+  for (lbl in names(vernacular_lang_codes)) { 
     hit <- vern %>% filter(language == vernacular_lang_codes[[lbl]])
-    if (nrow(hit) > 0) out[[lbl]] <- hit$name[1] # si correspondance on prend le premier nom
+    if (nrow(hit) > 0) out[[lbl]] <- hit$name[1] # on garde le premier nom si plusieurs existent
   }
   out
 }
 
 
-
+# recupere les noms vernaculaires depuis l'API iNaturalist, seulement pour les langues encore manquantes
 fetch_vernacular_inat <- function(species_name, labels_needed) { # inat api
   empty <- set_names(rep("", length(labels_needed)), labels_needed)
   if (length(labels_needed) == 0) return(empty)
@@ -92,32 +84,25 @@ fetch_vernacular_inat <- function(species_name, labels_needed) { # inat api
     httr::GET(
       "https://api.inaturalist.org/v1/taxa",
       query = list(q = species_name, all_names = "true", per_page = 1),
-      httr::user_agent("AtlasMNHNL/1.0 (contact: <ton email>)")
-    ),
-    error = function(e) NULL
-  )
+      httr::user_agent("AtlasMNHNL/1.0 (contact: <ton email>)") ),
+    error = function(e) NULL  )
   if (is.null(res) || httr::status_code(res) != 200) return(empty)
-  
   data <- tryCatch(
-    jsonlite::fromJSON(httr::content(res, as = "text", encoding = "UTF-8"), flatten = TRUE),
-    error = function(e) NULL
-  )
+    jsonlite::fromJSON(httr::content(res, as = "text", encoding = "UTF-8"), flatten = TRUE), 
+    error = function(e) NULL )
   if (is.null(data) || is.null(data$results) || nrow(data$results) == 0) return(empty)
-  
   noms <- data$results$names[[1]]
   if (is.null(noms) || !"locale" %in% names(noms) || nrow(noms) == 0) return(empty)
-  
   out <- empty
   for (lbl in labels_needed) {
     code <- inat_lang_codes[[lbl]]
     hit <- noms %>% filter(locale == code)
-    if ("is_valid" %in% names(hit)) hit <- hit %>% filter(is_valid == TRUE)
-    if (nrow(hit) > 0) out[[lbl]] <- hit$name[1]
-  }
+    if ("is_valid" %in% names(hit)) hit <- hit %>% filter(is_valid == TRUE) # ecarte les noms non valides cotes par iNat
+    if (nrow(hit) > 0) out[[lbl]] <- hit$name[1]}
   out
 }
 
-
+# recupere les noms vernaculaires depuis Wikidata (SPARQL), en dernier recours
 fetch_vernacular_wikidata <- function(species_name, labels_needed) {
   empty <- set_names(rep("", length(labels_needed)), labels_needed)
   if (length(labels_needed) == 0) return(empty)
@@ -129,8 +114,7 @@ fetch_vernacular_wikidata <- function(species_name, labels_needed) {
        ?item wdt:P225 "%s" .
        ?item wdt:P1843 ?commonName .
        BIND(LANG(?commonName) AS ?lang)
-       FILTER(?lang IN (%s))
-     }',
+       FILTER(?lang IN (%s))}',
     species_name,
     paste0('"', codes_needed, '"', collapse = ", ")
   )
@@ -139,19 +123,14 @@ fetch_vernacular_wikidata <- function(species_name, labels_needed) {
     httr::GET(
       "https://query.wikidata.org/sparql",
       query = list(query = sparql, format = "json"),
-      httr::user_agent("AtlasMNHNL/1.0 (contact: <ton email>)")
-    ),
-    error = function(e) NULL
-  )
+      httr::user_agent("AtlasMNHNL/1.0 (contact: <ton email>)")  ),
+    error = function(e) NULL )
   if (is.null(res) || httr::status_code(res) != 200) return(empty)
-  
   data <- tryCatch(
     jsonlite::fromJSON(httr::content(res, as = "text", encoding = "UTF-8"), flatten = TRUE),
-    error = function(e) NULL
-  )
+    error = function(e) NULL )
   bindings <- data$results$bindings
   if (is.null(bindings) || !is.data.frame(bindings) || nrow(bindings) == 0) return(empty)
-  
   out <- empty
   for (lbl in labels_needed) {
     code <- wikidata_lang_codes[[lbl]]
@@ -161,21 +140,21 @@ fetch_vernacular_wikidata <- function(species_name, labels_needed) {
   out
 }
 
-# combine les 3 api dans l ordre
+# chaine les 3 sources par ordre de priorite (CoL > iNat > Wikidata), en ne requetant que ce qui manque encore
 
 fetch_vernacular_names <- function(species_name) {
   out <- fetch_vernacular_col(species_name)
   
   manquants <- names(out)[out == ""]
   if (length(manquants) > 0) {
-    Sys.sleep(1)  # throttling iNaturalist : ~1 requête/sec max recommandé
+    Sys.sleep(1)  
     depuis_inat <- fetch_vernacular_inat(species_name, manquants)
     out[manquants] <- depuis_inat[manquants]
   }
   
   manquants2 <- names(out)[out == ""]
   if (length(manquants2) > 0) {
-    Sys.sleep(1)  # throttling Wikidata, par précaution
+    Sys.sleep(1)
     depuis_wiki <- fetch_vernacular_wikidata(species_name, manquants2)
     out[manquants2] <- depuis_wiki[manquants2]
   }
@@ -192,10 +171,8 @@ fetch_vernacular_names <- function(species_name) {
 
 build_image_table <- function(images_dir) {
   fichiers_images <- list.files(images_dir, pattern = "\\.(png|jpg|jpeg)$", ignore.case = TRUE)
-  
-  # on ne garde que les fichiers qui suivent la convention 
-  fichiers_images <- fichiers_images[str_count(fichiers_images, "\\.") >= 3]
-  
+
+  fichiers_images <- fichiers_images[str_count(fichiers_images, "\\.") >= 3] # ecarte les fichiers hors convention
   if (length(fichiers_images) == 0) {
     return(tibble(fichier = character(), species_key = character(),
                   photographe = character(), licence = character()))
@@ -213,7 +190,6 @@ build_image_table <- function(images_dir) {
 
 get_image_info <- function(species_key, images_table) {
   ligne <- images_table %>% filter(species_key == !!species_key)
-  
   if (nrow(ligne) == 0) {
     warning("Aucune image trouvee pour : ", species_key, call. = FALSE)
     return(list(fichier = "", credit = ""))
@@ -232,6 +208,7 @@ safe_val <- function(x) {
   if (length(x) == 0 || is.na(x)) "" else as.character(x)
 }
 
+# remplit le template (balises <<...>>) avec les infos taxo, noms vernaculaires et image de l'espece
 build_species_page <- function(row, vernacular_names, image_info, template_text) {
   glue(
     template_text, .open = "<<", .close = ">>",
@@ -249,6 +226,7 @@ build_species_page <- function(row, vernacular_names, image_info, template_text)
   )
 }
 
+# genere un .qmd par espece de DB_taxo, sans ecraser les fichiers deja presents
 generate_species_pages <- function(DB_taxo, species_dir, template_text, images_table) {
   created_files   <- character(0)
   already_present <- character(0)
@@ -285,6 +263,7 @@ generate_species_pages <- function(DB_taxo, species_dir, template_text, images_t
 
 ############ Mise à jour de _quarto.yml ----
 
+# insere les nouveaux .qmd dans le bloc "chapters:" sous "part: Species accounts", en respectant l'indentation existante
 update_quarto_yml <- function(yml_path, species_dir, DB_taxo) {
   lines <- readLines(yml_path, encoding = "UTF-8")
   
@@ -337,11 +316,10 @@ images_table <- images_table %>%
 
 gen_result <- generate_species_pages(DB_taxo, species_dir, template_text, images_table)
 
-## En mode test : commenter laligne ci-dessous pour ne pas réécrire _quarto.yml avec seulement les espèces testées.
+# en mode test : commenter la ligne ci-dessous pour ne pas réécrire _quarto.yml avec seulement les espèces testées
 update_quarto_yml(yml_path, species_dir, DB_taxo)
 
 source(here("Atlas", "code", "8_InjectContent.R"))
-
 
 ############ Récap ----
 

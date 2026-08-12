@@ -51,3 +51,19 @@ plot_activite_source <- function(species_name, data = DB) {
       legend.text = element_text(size = 15)
     )
 }
+
+# # radieus 500m
+# grassland_500m <- terra::extract(grassland_2169, pts_2169, buffer = 500, fun = mean, na.rm = TRUE)
+# forest_500m    <- terra::extract(forest_2169,    pts_2169, buffer = 500, fun = mean, na.rm = TRUE)
+# 
+# # DB_habitat_500m
+# DB_habitat_500m <- DB %>%
+#   mutate( Grassland_pct = grassland_500m[[2]], Forest_pct = forest_500m[[2]],  Other_pct= 1 - Grassland_pct - Forest_pc ) %>%
+#   mutate(Habitat_Dominant = case_when(
+#     Grassland_pct >= Forest_pct & Grassland_pct >= Other_pct ~ "Grassland",
+#     Forest_pct >= Grassland_pct & Forest_pct >= Other_pct    ~ "Forest",
+#     TRUE ~ "Other" ))
+
+# grassland_focal <- focal(grassland_2169, w = 16 , fun = mean, na.rm = TRUE)
+# forest_focal    <- focal(forest_2169,    w = 16 , fun = mean, na.rm = TRUE)
+# (autre variante commentée, focal() plutôt que adjacent() -- non utilisée)

@@ -16,8 +16,7 @@ top_identifieurs <- DB_full %>%
 top_identifieurs
 
 
-
-######  carte par espèce ----
+######  carte par espèce (carte interactive leaflet/mapview) ----
 get_species_map <- function(species_name, data = DB_full , rtp , base_map ) {
   
   ## Sélection des observations 
@@ -104,6 +103,8 @@ get_species_map <- function(species_name, data = DB_full , rtp , base_map ) {
           "" )) )
   
   # Affichage par zoom 
+  # aux niveaux de zoom éloignés, on montre les cellules
+  # en se rapprochant, on affiche les points
   species_map@map <- species_map@map %>%
     groupOptions("Cells", zoomLevels = 0:11) %>%
     groupOptions("Points", zoomLevels = 12:52)
@@ -113,7 +114,7 @@ get_species_map <- function(species_name, data = DB_full , rtp , base_map ) {
 
 
 
-###### Species Richness Map ----
+###### Species Richness Map (carte interactive de richesse spécifique) ----
 
 get_richness_map <- function(data = DB) {
   
@@ -187,10 +188,7 @@ get_richness_map <- function(data = DB) {
   m4
 }
 
-
-##### carte statique
-
-
+##### carte statique (équivalent non-interactif de get_species_map) ----
 
 get_species_map_static <- function(species_name, data, rtp, lux_borders, GR2169_c) {
   

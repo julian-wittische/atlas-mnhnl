@@ -4,21 +4,15 @@
 # Start: Summer 2026
 # Script objective : Arbre avec taxonomie
 
-library(dplyr)
-library(stringr)
-library(purrr)
-library(tidyr)
-library(collapsibleTree)
 
-
-# Liste espèces
+###### Liste des espèces ----
 species <- unique(DB3$ID)
 
-#catalogue of Life
+###### Catalogue of Life ----
 matches <- col_match_checklist(species)
 
 
-# Fonction extraction rang
+###### Fonction d'extraction du rang taxonomique ----
 extract_rank <- function(id, rank) {
   if (is.na(id)) return(NA_character_)
   x <- tryCatch(
@@ -32,7 +26,7 @@ extract_rank <- function(id, rank) {
 }
 
 
-# création table arbre
+###### Création de la table pour l'arbre taxonomique ----
 tree_data <- matches %>%
   filter(!is.na(usage_id)) %>%
   mutate(Genus = word(str_replace(verbatim_name, "_", " "), 1),Subfamily = map_chr(usage_id, extract_rank, "subfamily"), Tribe = map_chr(usage_id, extract_rank, "tribe") ) %>%
@@ -41,7 +35,7 @@ tree_data <- matches %>%
   distinct()
 
 
-# Arbre
+###### Arbre taxonomique ----
 collapsibleTree(tree_data,hierarchy = c("Subfamily", "Tribe", "Genus", "name"),root = "Syrphidae",collapsed = TRUE,zoomable = TRUE,height = 1500, width = "100%", fontSize = 12,linkLength = 400
 )
 

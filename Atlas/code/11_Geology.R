@@ -24,14 +24,15 @@ symbole  <- st_transform(symbole,  crs = st_crs(lux_borders))
 n_niveaux <- nlevels(factor(uniteGeo$CODESTRATUNIT))
 
 
-#### Carte des unités géologiques + failles en rouge + contours 
+############ Carte interactive : unités géologiques + failles en rouge ----
+
 m2 <- mapview(uniteGeo, zcol = "CODESTRATUNIT",
               col.regions = colorRampPalette(RColorBrewer::brewer.pal(12, "Set3"))(n_niveaux),
               legend = FALSE, homebutton = FALSE, popup = FALSE) +
   # mapview(contours, color = "#F5F5DC", lwd = 1, legend = FALSE, homebutton = FALSE) +
   mapview(failles, color = "red", lwd = 1, legend = FALSE, homebutton = FALSE)
 
-# Ajout des labels 
+# labels des symboles stratigraphiques, visibles seulement a partir du zoom 14 (sinon illisible/surcharge)
 m2@map <- m2@map %>%
   addLabelOnlyMarkers(
     data = symbole,
@@ -51,16 +52,17 @@ m2@map <- m2@map %>%
 df_excel <- read.xlsx(file.path(DATAPATH, "GEO_stratunit.xlsx"), sheet = 2)
 df_excel$couleur <- rgb(df_excel$R255, df_excel$G255, df_excel$B255, maxColorValue = 255)
 
-# 2. Fonction de préparation de la légende
+# construit la table de legende (hierarchie ere > groupe > unite) et la palette CODESTRATUNIT -> couleur,
+# utilisee a la fois par plot_carte_geologique et plot_legende_geologique
 .preparer_legende_geo <- function(uniteGeo, ref_excel) {
   
-  # Extraction des attributs uniques de la carte et injection des couleurs du Excel
+  # Extraction des attributs uniques de la carte et injection des couleurs de lExcel
   base_df <- uniteGeo |>
     sf::st_drop_geometry() |>
     distinct(ERE_FR, GROUPING1_FR, NOMUNIT_FR, AGE_MIN, CODESTRATUNIT) |>
     mutate(across(c(ERE_FR, GROUPING1_FR, NOMUNIT_FR), \(x) na_if(str_squish(x), ""))) |>
     filter(!is.na(ERE_FR), !is.na(GROUPING1_FR), !is.na(NOMUNIT_FR)) |>
-    # Jointure pour récupérer la colonne "couleur" créée à partir du Excel via le CODESTRATUNIT
+    # recupere la colonne "couleur" du fichier Excel via le CODESTRATUNIT commun
     left_join(distinct(ref_excel, CODESTRATUNIT, couleur), by = "CODESTRATUNIT") |>
     arrange(AGE_MIN) |>
     mutate(
@@ -69,6 +71,7 @@ df_excel$couleur <- rgb(df_excel$R255, df_excel$G255, df_excel$B255, maxColorVal
       row_id = row_number()
     )
   
+  # reconstruit une legende a 3 niveaux (ere / groupe / unite) + un espaceur avant chaque nouvelle ere
   legende_df <- bind_rows(
     base_df |> dplyr::filter(ere_change, row_id > 1) |>
       dplyr::transmute(row_id, sub = 0, label = "", CODESTRATUNIT = NA_character_, type = "spacer"),
@@ -82,13 +85,12 @@ df_excel$couleur <- rgb(df_excel$R255, df_excel$G255, df_excel$B255, maxColorVal
     dplyr::arrange(row_id, sub) |>
     dplyr::select(-row_id, -sub)
   
-  # Création du vecteur de couleurs nommé (Map CODESTRATUNIT -> couleur)
   palette_geo <- setNames(base_df$couleur, base_df$CODESTRATUNIT)
   
   list(legende_df = legende_df, palette_geo = palette_geo)
 }
 
-# 3. Fonction de cartographie
+# carte statique des unites geologiques (fond colore via palette_geo) + failles + bordures pays + echelle/fleche nord
 plot_carte_geologique <- function(uniteGeo, failles, ref_excel) {
   prep <- .preparer_legende_geo(uniteGeo, ref_excel)
   
@@ -115,8 +117,7 @@ plot_carte_geologique <- function(uniteGeo, failles, ref_excel) {
              expand = FALSE)
 }
 
-# 4.légende 
-
+# legende hierarchique (base R graphics) affichee separement de la carte, avec la meme palette/hierarchie que plot_carte_geologique
 plot_legende_geologique <- function(uniteGeo,
                                     ref_excel,
                                     ncol_legende = 2,
@@ -141,14 +142,15 @@ plot_legende_geologique <- function(uniteGeo,
          text.width = max(strwidth(legende_df$label, cex = cex_legende)))
 }
 
-
+# versions decoupees aux frontieres du Luxembourg (pour un usage local sans les unites/failles hors pays)
 uniteGeo_lux <- st_intersection(uniteGeo, st_geometry(lux_borders_sf))
 failles_lux  <- st_intersection(failles, st_geometry(lux_borders_sf))
 
 
 
 
-###### Description table ----
+
+############ Description table ----
 
 tableau_unites <- uniteGeo %>%
   st_drop_geometry() %>%
@@ -161,8 +163,5 @@ tableau_unites <- uniteGeo %>%
 
 tableau_unites <- tableau_unites[, c("Code", "Unité géologique", "Description")]
 
-st_read(file.path(DATAPATH, "GEO25K50K.GDB"), quiet = TRUE)
-
-st_layers(file.path(DATAPATH, "GEO25K50K.GDB"))
 
 

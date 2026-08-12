@@ -235,8 +235,8 @@ Une fois `DB`/`DB_full` construits selon cette structure, tout le reste (`4_Main
 
 ## Fiches espèces
 
-1.  **Modèle** : `species_account/_template.qmd`, contenant des placeholders `<<species>>`, `<<authorship>>`, `<<name>>`, `<<subfamily>>`, `<<tribe>>`, `<<en>>`, `<<lb>>`, `<<fr>>`, `<<de>>`.
-2.  **Remplissage taxonomique** : `7_GenerateSpeciesPages.R` remplit ces placeholders à partir de `DB_taxo` (nom, sous-famille, tribu) et du Catalogue of Life (noms vernaculaires EN/LB/FR/DE) pour chaque espèce sans fichier existant.
+1.  **Modèle** : `species_account/_template.qmd`, contenant des placeholders `<<species>>`, `<<authorship>>`, `<<name>>`, `<<subfamily>>`, `<<tribe>>`, `<<en>>`, `<<lb>>`, `<<fr>>`, `<<de>>`, `<<image_file>>`, `<<image_credit>>`.
+2.  **Remplissage taxonomique** : `7_GenerateSpeciesPages.R` remplit ces placeholders à partir de `DB_taxo` (nom, sous-famille, tribu), du Catalogue of Life / iNaturalist / Wikidata (noms vernaculaires EN/LB/FR/DE, en cascade) et du dossier `images/` (fichier + crédit photo, voir « Images »), pour chaque espèce sans fichier existant.
 3.  **Injection du texte** : `8_InjectContent.R` insère le contenu de `species_content/nom_espece.txt` dans les sections correspondantes (`### Author`, `## Description`, `## Habitat`, `### Immature`, `### Mature`, `## Distribution`, `## Notes`).
 
 Pour la procédure d'ajout d'une nouvelle espèce, voir le Guide pas-à-pas.
@@ -245,16 +245,16 @@ Pour la procédure d'ajout d'une nouvelle espèce, voir le Guide pas-à-pas.
 
 Dans l'ordre d'apparition :
 
-1. **Auteur** de la fiche (`### Author {.author-species}`), texte injecté par `8_InjectContent.R`.
-2. **Menu déroulant des synonymes** : bouton « Synonyms ▾ » (classes `.dropdown`/`.dropdown-btn`/`.dropdown-content` dans `style.scss`) qui liste les synonymes du nom d'espèce récupérés via `col_synonyms(col_match(...))` (Catalogue of Life).
-3. **Taxonomie et noms vernaculaires** : sous-famille, tribu, puis noms communs en anglais/luxembourgeois/français/allemand (`.species-taxonomy`). Ce bloc partage une colonne avec le menu des synonymes, à côté du bloc Statuts de conservation.
-4. **Statuts de conservation** (`## Conservation status`) : deux blocs côte à côte — Europe et Union européenne (27), calculés dynamiquement via `get_iucn_status()` (`18_redList.R`) — voir « Statuts de conservation (IUCN) ».
-5. **Photo de l'espèce** (`.species-photo`).
-6. **Période d'activité** : heatmap mensuelle (`plot_heatmap`).
-7. **Description / Habitat (Immature, Mature) / Distribution** : texte injecté depuis `species_content/`.
-8. **Carte de répartition interactive** (`get_species_map`).
-9. **Compteur d'observations** (`.obs-count`) et **avertissement conditionnel** (`.obs-warning`, si `n_obs < seuil_obs`, actuellement fixé à 30) — placés juste avant les Notes, donc *après* la carte de répartition, et non plus à côté de l'Auteur en haut de page.
-10. **Notes** : texte injecté depuis `species_content/`.
+1. **Menu déroulant des synonymes** : bouton « Synonyms ▾ » (classes `.dropdown`/`.dropdown-btn`/`.dropdown-content` dans `style.scss`) qui liste les synonymes du nom d'espèce récupérés via `col_synonyms(col_match(...))` (Catalogue of Life).
+2. **Taxonomie et noms vernaculaires** : sous-famille, tribu, puis noms communs en anglais/luxembourgeois/français/allemand (`.species-taxonomy`). Ce bloc partage une colonne avec le menu des synonymes, à côté du bloc Statuts de conservation.
+3. **Statuts de conservation** (`## Conservation status`) : deux blocs côte à côte — Europe et Union européenne (27), calculés dynamiquement via `get_iucn_status()` (`18_redList.R`) — voir « Statuts de conservation (IUCN) ».
+4. **Photo de l'espèce** (`.species-photo`) et crédit (`<<image_credit>>`).
+5. **Période d'activité** : heatmap mensuelle (`plot_heatmap`).
+6. **Description / Habitat (Immature, Mature) / Distribution** : texte injecté depuis `species_content/`.
+7. **Carte de répartition interactive** (`get_species_map`).
+8. **Compteur d'observations** (`.obs-count`) et **avertissement conditionnel** (`.obs-warning`, si `n_obs < seuil_obs`, actuellement fixé à 30) — placés juste avant les Notes, donc après la carte de répartition.
+9. **Notes** : texte injecté depuis `species_content/`.
+10. **Auteur** de la fiche (`### Author {.author-species}`), texte injecté par `8_InjectContent.R`. 
 
 ### Comprendre la carte et le graphique d'une fiche espèce
 
@@ -306,7 +306,15 @@ Toutes les images du projet sont stockées dans le dossier `images/`. Convention
 
 \- **Image de couverture** : le fichier doit impérativement se nommer `cover.png`. Il est appelé dans `index.qmd`.
 
-\- **Images d'espèces** : nom de fichier = nom scientifique en minuscules, underscore entre genre et espèce, ex. `blera_fallax.png`. Correspond au placeholder `<<name>>` utilisé dans les fichiers `.qmd` de `species_account/`.
+\- **Images d'espèces** : convention à **4 parties séparées par des points** : `<species_key>.<Photographe>.<Licence>.<extension>`, ex. `temnostoma_meridionale.Sam_Schaack.CC-BY-NC.png`. Cette convention est lue par `build_image_table()` dans `7_GenerateSpeciesPages.R` :
+    - `species_key` : slug du nom scientifique (minuscules, accents/caractères spéciaux retirés, espaces remplacés par `_`) — identique au `<<name>>` utilisé pour le nom du fichier `.qmd` de l'espèce.
+    - `Photographe` : underscores à la place des espaces dans le nom de fichier (ex. `Sam_Schaack`) ; ils sont convertis en espaces à l'affichage (`Sam Schaack`).
+    - `Licence` : code de licence affiché tel quel (ex. `CC-BY-NC`).
+    - Un fichier dont le nom contient moins de 3 points (donc ne respecte pas ce format à 4 parties) est ignoré par `build_image_table()`.
+    - Si plusieurs images correspondent au même `species_key`, seule la première par ordre alphabétique de nom de fichier est retenue, et un avertissement est émis.
+    - Si aucune image n'est trouvée pour une espèce, `get_image_info()` émet un avertissement et laisse `<<image_file>>`/`<<image_credit>>` vides plutôt que de bloquer la génération de la fiche.
+    - Le crédit affiché sur la fiche (`<<image_credit>>`) est construit comme `Licence Photographe`, ex. « CC-BY-NC Sam Schaack ».
+    - **Pour changer cette convention** (par ex. l'ordre des parties, ou le séparateur), modifier `build_image_table()` dans `7_GenerateSpeciesPages.R` — c'est la seule fonction qui l'interprète.
 
 \- **Images de statut de conservation** : chaque fiche affiche trois pictogrammes IUCN (CR, EN, EW, EX, LC, NT, VU).
 

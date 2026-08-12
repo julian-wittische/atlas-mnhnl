@@ -36,9 +36,6 @@ inlineCheckboxSP <- function(id, value, label) {
   )
 }
 
-##### Filtre crosstalk personnalisé ----
-
-# fonction pour utiliser blockcheckboxSP
 filter_checkboxSP <- function(id, label, sharedData, group, allLevels = FALSE,
                               inline = FALSE, columns = 1) {
   options <- makeGroupOptions(sharedData, group, allLevels)
@@ -68,3 +65,6 @@ filter_checkboxSP <- function(id, label, sharedData, group, allLevels = FALSE,
     )
   )
 }
+
+
+# fonction pour utiliser blockcheckboxSP
