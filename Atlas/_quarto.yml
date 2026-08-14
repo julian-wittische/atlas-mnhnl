@@ -23,6 +23,7 @@ book:
   - part: Species accounts
     chapters:
     - species_account/blera_fallax.qmd
+    - species_account/callicera_aurata.qmd
     - species_account/myathropa_florea.qmd
     - species_account/temnostoma_meridionale.qmd
   - spatial.qmd

@@ -34,14 +34,48 @@ print_recorder_list(MD[MD$Origin == "Citizen science", ])
 cat("\n\n### Other sources\n\n")
 print_recorder_list(MD[MD$Origin == "Other", ])
 ```
+```{=html}
+<div id="img-modal">
+  <span class="close-btn" onclick="closeLightbox()">&times;</span>
+  <img id="img-modal-content" src="">
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".lightbox img").forEach(function(img) {
+    img.addEventListener("click", function() {
+      document.getElementById("img-modal-content").src = this.src;
+      document.getElementById("img-modal").classList.add("active");
+    });
+  });
+});
+
+document.addEventListener("click", function(e) {
+  if (e.target.id === "img-modal") closeLightbox();
+});
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeLightbox();
+});
+
+function closeLightbox() {
+  document.getElementById("img-modal").classList.remove("active");
+}
+</script>
+```
+
 
 ## Last `r taxon` recorded (iNaturalist)
 
-![](last_observation.jpg){fig-pos="H"}
+::: {.lightbox}
+
+![](last_observation.jpg){width=70% fig-align="center" fig-pos="H"}
+::: 
+
 ```{r}
 #| echo: false
 #| results: asis
 cat(paste0("*", species, "*\\\n"))
+cat(paste0(obs_license, "\\\n"))
 cat(paste0(obs, "\\\n\n"))
 cat(paste0("[View observation](", obs_url, ")"))
 ```

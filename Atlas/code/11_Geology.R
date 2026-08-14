@@ -90,7 +90,12 @@ df_excel$couleur <- rgb(df_excel$R255, df_excel$G255, df_excel$B255, maxColorVal
   list(legende_df = legende_df, palette_geo = palette_geo)
 }
 
-# carte statique des unites geologiques (fond colore via palette_geo) + failles + bordures pays + echelle/fleche nord
+# versions decoupees aux frontieres du Luxembourg (pour un usage local sans les unites/failles hors pays)
+uniteGeo_lux <- st_intersection(uniteGeo, st_geometry(lux_borders_sf))
+failles_lux  <- st_intersection(failles, st_geometry(lux_borders_sf))
+
+
+############ carte statique des unites geologiques (fond colore via palette_geo) + failles + bordures pays + echelle/fleche nord
 plot_carte_geologique <- function(uniteGeo, failles, ref_excel) {
   prep <- .preparer_legende_geo(uniteGeo, ref_excel)
   
@@ -110,7 +115,8 @@ plot_carte_geologique <- function(uniteGeo, failles, ref_excel) {
                            height = unit(1.8, "cm"), width = unit(1.8, "cm"),
                            pad_x = unit(1.5, "cm"), pad_y = unit(1, "cm")) +
     theme_void() +
-    theme(legend.position = "none") +
+    theme(legend.position = "none",
+          plot.margin = margin(0, 0, 0, 0)) +
     coord_sf(crs = "EPSG:2169",
              xlim = c(bbox_2169["xmin"], bbox_2169["xmax"]),
              ylim = c(bbox_2169["ymin"], bbox_2169["ymax"]),
@@ -141,13 +147,6 @@ plot_legende_geologique <- function(uniteGeo,
          x.intersp = x_intersp, y.intersp = y_intersp, pt.cex = 1.5,
          text.width = max(strwidth(legende_df$label, cex = cex_legende)))
 }
-
-# versions decoupees aux frontieres du Luxembourg (pour un usage local sans les unites/failles hors pays)
-uniteGeo_lux <- st_intersection(uniteGeo, st_geometry(lux_borders_sf))
-failles_lux  <- st_intersection(failles, st_geometry(lux_borders_sf))
-
-
-
 
 
 ############ Description table ----

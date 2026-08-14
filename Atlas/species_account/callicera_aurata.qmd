@@ -1,8 +1,8 @@
 ---
-title: "Temnostoma meridionale"
-subtitle: "Krivosheina & Mamaev, 1962"
+title: "Callicera aurata"
+subtitle: "(Rossi, 1790)"
 params:
-  species: "Temnostoma meridionale"
+  species: "Callicera aurata"
 include-in-header:
   - text: |
       <style>
@@ -57,13 +57,13 @@ cat('</div>\n</div>\n')
 
 ::: species-taxonomy
 
-**Subfamily** Eristalinae   &nbsp; **Tribe** Milesiini
+**Subfamily** Eristalinae   &nbsp; **Tribe** Callicerini
 
 :::
 
 ::: species-taxonomy
 
-**EN**  <br>
+**EN** European Golden Longhorn <br>
 **LB**  <br>
 **FR**  <br>
 **DE** 
@@ -120,8 +120,8 @@ cat('</div>\n</div>\n')
 
 :::
 
-![](/images/temnostoma_meridionale.Sam_Schaack.CC-BY-NC.png){.species-photo}
-[CC-BY-NC Sam Schaack]{.image-credit}
+![](/images/callicera_aurata.TobiBo.CC-BY-NC.png){.species-photo}
+[CC-BY-NC TobiBo]{.image-credit}
 
 ## Activity period
 
@@ -136,20 +136,20 @@ plot_heatmap(params$species)
 
 ## Description
 
-Large size with a body length of 14 to 17mm.
+Large and furry hoverfly with a bright bronze-golden abdomen and long black antennae that are white at the tip.
 
 ## Habitat
 ### Immature
 
-Larvae live and develop in the wet wood of dead deciduous trees, stumps, and logs.
+Wet cavities (e.g. rot holes) of old and senescent trees and tree stumps. Larvae are saproxylic.
 
 ### Mature
 
-Old beech and oak forests. Adults feed on many flowers including Apiaceae and flowering shrubs such as Cornus.
+Early flyers can be found on Rosaceae flowers in wooded settings, and sometimes in more natural parks and gardens. Adults can be found resting high up in trees. Dense forests are not necessary but wooded areas with old over-mature trees are.
 
 ## Distribution
 
-Widespread from France to the Baltic states and European Russia, but rarest of the Temnostoma species in Luxembourg.
+Always scarce. Most observations in temperate Western Europe.
 
 ```{r m3}
 #| echo: false
@@ -157,7 +157,6 @@ Widespread from France to the Baltic states and European Russia, but rarest of t
 #| message: false
 get_species_map(params$species, rtp = rtp, base_map = base_map)
 ```
-
 ```{r}
 #| echo: false
 #| results: asis
@@ -174,7 +173,6 @@ if (n_obs < seuil_obs) {
   ))
 }
 ```
-
 ### Average neighbourhood land cover
 ```{r}
 #| echo: false
@@ -186,12 +184,23 @@ if (n_obs < seuil_obs) {
 plot_habitat_espece(params$species, data = DB_habitat)
 ```
 
+### Average neighbourhood across all species
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+#| fig.height: 2
+#| fig.width: 9
+plot_habitat_moyen()
+```
+
+
 ## Notes
 
-Temnostoma also mimi wasps in behavior with the extension of forelegs beyond their head to resemble wasp antennae.
+Late-flying individuals can be confused with C. spinolae as they also visit ivy, which one of the only flower left, at this time. C. aurata does not have black bands across tergites 2 and 3.
 
 ### Author {.author-species}
 
 Julian Wittische
-
 

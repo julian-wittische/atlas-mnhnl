@@ -173,10 +173,49 @@ plot_habitat_espece("Episyrphus balteatus", data = DB_habitat)
 plot_habitat_espece("Helophilus hybridus", data = DB_habitat_adj)
 
 
-############ Version DB_habitat restreinte au hand netting ----
-DB_habitat_hn <- DB[DB$Source == "Hand netting",] %>%
-  left_join(habitat_richness %>% select(CellID, Habitat_Dominant),
-            by = c("Cell" = "CellID"))
+############ Graphique : répartition d'habitat moyenne toutes espèces confondues ----
+plot_habitat_moyen <- function(data = DB_habitat) {
+  
+  df <- data %>%
+    filter(!is.na(Habitat_Dominant)) %>%
+    count(ID, Habitat_Dominant, name = "n") %>%
+    tidyr::complete(ID, Habitat_Dominant = c("Forest", "Grassland", "Other"), fill = list(n = 0)) %>%
+    group_by(ID) %>%
+    mutate(pct_espece = 100 * n / sum(n)) %>%
+    ungroup() %>%
+    group_by(Habitat_Dominant) %>%
+    summarise(pct = mean(pct_espece), .groups = "drop")
+  
+  ggplot(df, aes(x = "Toutes espèces", y = pct, fill = Habitat_Dominant)) +
+    geom_col(width = 0.6, color = "black", linewidth = 0.8) +
+    geom_text(
+      aes(label = paste0(round(pct), "%")), position = position_stack(vjust = 0.5), size = 4, fontface = "bold", color = "black") +
+    coord_flip() +
+    scale_y_continuous(
+      limits = c(0, 100),
+      breaks = seq(0, 100, 10),
+      expand = c(0, 0)
+    ) +
+    scale_fill_manual(values = c(
+      "Grassland" = "yellow",  "Forest" = "#22B14C", "Other" = "grey")) +
+    labs(x = NULL, y = NULL, fill = "Habitat type") +
+    theme_minimal(base_size = 13) +
+    theme(
+      plot.title = element_text(face = "bold", size = 15, margin = margin(b = 14)),
+      axis.text.y = element_blank(),
+      axis.text.x = element_blank(),
+      panel.grid = element_blank(),
+      legend.position = "right",
+      legend.direction = "vertical",
+      legend.text = element_text(size = 12, face = "bold"),
+      legend.spacing.y = unit(0.5, "cm"),
+      plot.margin = margin(t = 15, r = 10, b = 10, l = 10),
+      axis.title = element_blank()
+    )
+}
+
+plot_habitat_moyen()
+
 
 # ############ Bloc de test : visualisation de la forme de la fenêtre glissante ----
 # # construit une grille (n x n) et calcule, pour chaque cellule, sa distance au centre -> sert à visualiser à quoi ressemble le voisinage utilisé plus haut (avec rayon r=16)

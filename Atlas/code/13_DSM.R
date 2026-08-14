@@ -7,7 +7,6 @@
 
 ############ Static altitude map ----
 
-
 carte_altitude <- function(datapath, fact_aggregation = 100) {
   fichier_tif <- paste0(datapath, "MNS_Lidar2024.tif")
   dsm <- rast(fichier_tif)
@@ -47,7 +46,7 @@ carte_altitude <- function(datapath, fact_aggregation = 100) {
     scale_fill_manual(name = "Altitude (m)", values = setNames(couleurs, etiquettes), na.translate = FALSE,guide = guide_legend(reverse = TRUE)) + #inverser
     geom_sf(data = masque_hors_lux, fill = "white", color = NA) +
     geom_sf(data = lux_borders_sf, fill = NA, color = "black", linewidth = 0.4) +
-    geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
+    geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
     geom_text(data = country_labels, aes(x = x, y = y, label = name),
               size = 6, color = "grey40", fontface = "italic") +
     coord_sf(crs = "EPSG:2169", xlim = c(bbox_2169["xmin"], bbox_2169["xmax"]),

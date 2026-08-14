@@ -48,7 +48,7 @@ pretty_table <- function(df, caption = NULL) {
 }
 ```
 
-```{r calc-rightcell}
+```{r rightcell}
 
 if (!"RightCell" %in% names(BC)) {
   pts <- BC %>%
@@ -66,7 +66,7 @@ if (!"RightCell" %in% names(BC)) {
 }
 ```
 
-```{r bounds-check}
+```{r check}
 n_total <- nrow(BC)
 
 missing_coords <- sum(is.na(BC$Longitude) | is.na(BC$Latitude))
@@ -108,7 +108,7 @@ n_erreurs_uniques <- nrow(erreurs_uniques)
 erreurs_par_source <- erreurs_uniques %>% count(Source, name = "n")
 ```
 
-```{r adjacency}
+```{r adjacen}
 voisins_liste <- st_touches(rtp_sf, rtp_sf)
 noms_cellules <- rtp_sf$layer
 voisins_par_cellule <- setNames(

@@ -42,9 +42,17 @@ plot_heatmap <- function(species_name, data = DB) {
   ggplot(presence, aes(x = Position , y= 0.5,fill = n)) +
     geom_tile(width = 1,color = NA) +
     scale_fill_gradient(
-      name = "Number of records",
+      name = "Number of records       ",
       low = "white",
-      high = "darkgreen")+
+      high = "darkgreen",
+      guide = guide_colorbar(
+        title.position = "left",
+        title.vjust = 0.8,
+        direction = "horizontal",
+        barwidth = unit(6, "cm"),
+        barheight = unit(0.4, "cm")
+      )
+    )+
     coord_fixed(ratio = 10) +
     scale_x_continuous(limits = c(1, 48), breaks = base, labels = month.abb, expand = c(0.1, 0.1)) +
     scale_y_continuous(limits = c(0, 1), expand = c(0,0)) +
@@ -56,6 +64,11 @@ plot_heatmap <- function(species_name, data = DB) {
       axis.ticks.y = element_blank(),
       panel.grid = element_blank(),
       plot.margin = margin(t = 0, r = 0.5, b = 0, l = 0.5, unit = "cm"),
-      legend.title = element_text(size = 12)
+      legend.title = element_text(size = 10),
+      legend.position = "bottom",
+      legend.box.spacing = unit(0.8, "cm")
     )
 }
+plot_heatmap("Blera fallax")
+
+

@@ -72,10 +72,9 @@ plot_carte_sols <- function(datapath) {
   ggplot() +
     geom_sf(data = sols_lux, aes(fill = factor(PECODE)), color = "white", linewidth = 0.05) +
     scale_fill_manual(values = prep$couleurs, na.value = "grey80", guide = "none") +
-    geom_sf(data = GR2169_c, fill = NA, color = "grey30", linewidth = 0.4) +
+    geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
     geom_text(data = country_labels, aes(x = x, y = y, label = name),
               size = 6, color = "grey40", fontface = "italic") +
-    
     annotation_scale(location = "bl", width_hint = 0.2,
                      style = "ticks", text_cex = 1,
                      line_width = 1, height = unit(0.5, "cm"),

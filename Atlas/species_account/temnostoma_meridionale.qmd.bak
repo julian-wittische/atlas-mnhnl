@@ -25,7 +25,8 @@ include-in-header:
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
-source(here::here("Atlas", "code", "18_redList.R"))
+source(here::here("Atlas", "code", "18_RedList.R"))
+source(here::here("Atlas", "code", "19_Barplot.R"))
 ```
 
 ```{r}
@@ -109,7 +110,7 @@ cat('</div>\n</div>\n')
 
 ::: {.column width="25%"}
 
-![](/images/NTLU.png){.logo}
+![](/images/LNT.png){.logo}
 
 :::
 
@@ -135,18 +136,27 @@ plot_heatmap(params$species)
 
 ## Description
 
+Large size with a body length of 14 to 17mm.
+
 ## Habitat
 ### Immature
+
+Larvae live and develop in the wet wood of dead deciduous trees, stumps, and logs.
+
 ### Mature
 
+Old beech and oak forests. Adults feed on many flowers including Apiaceae and flowering shrubs such as Cornus.
+
 ## Distribution
+
+Widespread from France to the Baltic states and European Russia, but rarest of the Temnostoma species in Luxembourg.
+
 ```{r m3}
 #| echo: false
 #| warning: false
 #| message: false
 get_species_map(params$species, rtp = rtp, base_map = base_map)
 ```
-
 ```{r}
 #| echo: false
 #| results: asis
@@ -158,15 +168,39 @@ n_obs <- DB %>% filter(ID == params$species) %>% nrow()
 cat(sprintf('<div class="obs-count"> Records : <strong>%d</strong></div>\n', n_obs))
 if (n_obs < seuil_obs) {
   cat(sprintf(
-    '<div class="obs-warning"> ⚠ Low number of records (&lt; %d).</div>\n',
+    '<div class="obs-warning"> ⚠ Low number of records.</div>\n',
     seuil_obs
   ))
 }
 ```
+### Average neighbourhood land cover
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+#| fig.height: 2
+#| fig.width: 9
+plot_habitat_espece(params$species, data = DB_habitat)
+```
+
+### Average neighbourhood across all species
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+#| fig.height: 2
+#| fig.width: 9
+plot_habitat_moyen()
+```
+
 
 ## Notes
 
-
+Temnostoma also mimi wasps in behavior with the extension of forelegs beyond their head to resemble wasp antennae.
 
 ### Author {.author-species}
+
+Julian Wittische
 

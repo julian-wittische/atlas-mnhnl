@@ -64,7 +64,7 @@ cat('</div>\n</div>\n')
 ::: species-taxonomy
 
 **EN** Yellow-haired Sun Fly <br>
-**LB** Batmanschwiefmecke <br>
+**LB** Batmanschwiefméck <br>
 **FR** Éristale des fleurs <br>
 **DE** Totenkopfschwebfliege
 
@@ -173,7 +173,6 @@ if (n_obs < seuil_obs) {
   ))
 }
 ```
-
 ### Average neighbourhood land cover
 ```{r}
 #| echo: false
@@ -183,6 +182,17 @@ if (n_obs < seuil_obs) {
 #| fig.height: 2
 #| fig.width: 9
 plot_habitat_espece(params$species, data = DB_habitat)
+```
+
+### Average neighbourhood across all species
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+#| fig.height: 2
+#| fig.width: 9
+plot_habitat_moyen()
 ```
 
 

@@ -1,8 +1,8 @@
 ---
-title: "Myathropa florea"
-subtitle: "(Linnaeus, 1758)"
+title: "Callicera aurata"
+subtitle: "(Rossi, 1790)"
 params:
-  species: "Myathropa florea"
+  species: "Callicera aurata"
 include-in-header:
   - text: |
       <style>
@@ -57,16 +57,16 @@ cat('</div>\n</div>\n')
 
 ::: species-taxonomy
 
-**Subfamily** Eristalinae   &nbsp; **Tribe** Eristalini
+**Subfamily** Eristalinae   &nbsp; **Tribe** Callicerini
 
 :::
 
 ::: species-taxonomy
 
-**EN** Yellow-haired Sun Fly <br>
-**LB** Batmanschwiefmecke <br>
-**FR** Éristale des fleurs <br>
-**DE** Totenkopfschwebfliege
+**EN** European Golden Longhorn <br>
+**LB**  <br>
+**FR**  <br>
+**DE** 
 
 :::
 
@@ -110,7 +110,7 @@ cat('</div>\n</div>\n')
 
 ::: {.column width="25%"}
 
-![](/images/LNT.png){.logo}
+![](/images/NTLU.png){.logo}
 
 :::
 
@@ -120,8 +120,8 @@ cat('</div>\n</div>\n')
 
 :::
 
-![](/images/myathropa_florea.Raoul Gerend.CC-BY-NC.png){.species-photo}
-[CC-BY-NC Raoul Gerend]{.image-credit}
+![](/images/callicera_aurata.TobiBo.CC-BY-NC.png){.species-photo}
+[CC-BY-NC TobiBo]{.image-credit}
 
 ## Activity period
 
@@ -136,27 +136,18 @@ plot_heatmap(params$species)
 
 ## Description
 
-A medium hoverfly with a bright yellow-orangish coloration. Very particular black-colour pattern on the thorax representing a bat or a skull, giving it the surname of “common batman fly” (Bot & Van de Meutter, 2023). This pattern could be reduced.
-
 ## Habitat
 ### Immature
-
-Larva is a typical rat-tailed maggot and lives in rot-holes trees or standing water (Speight, 2017) even in stagnant water at the bottom of tires or cow troughs (Bot & Van de Meutter, 2023).
-
 ### Mature
 
-Really widespread and common, this species can be find around deciduous forest and open habitat. This species like to sunbath on leaves and can be noticed through transparency when standing on leaves. The male is territorial and will fight in the air other insects (Bot & Van de Meutter, 2023).
-
 ## Distribution
-
-Well distributed through the country.
-
 ```{r m3}
 #| echo: false
 #| warning: false
 #| message: false
 get_species_map(params$species, rtp = rtp, base_map = base_map)
 ```
+
 ```{r}
 #| echo: false
 #| results: asis
@@ -173,6 +164,7 @@ if (n_obs < seuil_obs) {
   ))
 }
 ```
+
 ### Average neighbourhood land cover
 ```{r}
 #| echo: false
@@ -198,9 +190,7 @@ plot_habitat_moyen()
 
 ## Notes
 
-Microsatellite analysis has shown that the population is genetically homogeneous across Luxembourg as far as Cologne, despite significant urbanisation (Wittische et al., 2024). However, two morphs are occurring at the same period and could transform this species in a species complex of two species in Europe if DNA evidence supports this theory.
+
 
 ### Author {.author-species}
-
-Hinatea Ariey
 

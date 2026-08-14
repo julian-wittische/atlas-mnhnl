@@ -150,6 +150,8 @@ Les données géographiques nécessaires au nouvel atlas doivent être placées 
 | Climat WorldClim (BIO1/BIO12) | — | Automatique (package R `geodata`) | — |
 | Altitude (MNS Lidar 2024) | `MNS_Lidar2024.tif` | Manuel | [Téléchargement (39.9 GB)](https://download.data.public.lu/resources/bd-l-lidar2024-releve-3d-du-territoire-luxembourgeois/20241223-093912/MNS_Lidar2024.tif)  |
 | Géologie (géoportail.lu, flux OAPIF) | `GEO_stratunit.xlsx` (table couleurs uniquement) | Automatique (flux) + Manuel (xlsx) | [GEO25K50K.zip](https://geologie.lu/opendata/cartgeol/geo25k50k/GEO25K50K.zip) (`\GEO25K50K\DOC\GEO_stratunit.xlsx`) |
+https://data.public.lu/en/datasets/carte-des-associations-de-sols/ + 
+
 | Red List européenne | `EuropeanRedList.xlsx` | Manuel | à importer selon son jeu de données |
 
 

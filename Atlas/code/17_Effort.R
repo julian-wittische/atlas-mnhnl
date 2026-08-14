@@ -17,7 +17,6 @@ country_labels_cell <- data.frame(
 
 ############ Effort d'échantillonnage par cellule ----
 # une "sortie" =  combinaison unique Cellule/Station/Date dans HN
-# (évite de compter plusieurs fois la même sortie si plusieurs insectes y ont été collectés)
 effort_cell <- HN %>%
   distinct(Cell, Station, Date)  %>%
   count(Cell, name = "Nb_sorties") %>%
@@ -40,7 +39,7 @@ carte_effort_cell <- function(effort_cell, rtp, lux_borders, GR2169_c) {
     geom_sf_text(data = centroids, aes(label = Nb_sorties), size = 3.5, color = "black") +
     geom_sf(data = lux_sf, fill = NA, color = "black", linewidth = 0.5) +
     geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
-    scale_fill_gradient(name = NULL, low = "white", high = "red", na.value = "grey90") +
+    scale_fill_gradient(name = "Field Surveys", low = "white", high = "red", na.value = "grey90") +
     geom_text(data = country_labels_cell, aes(x = x, y = y, label = name),
               size = 6, color = "grey40", fontface = "italic") +
     theme_void() +
@@ -89,7 +88,7 @@ carte_ratio_cell <- function(ratio_cell, rtp, lux_borders, GR2169_c) {
     geom_sf_text(data = centroids, aes(label = round(Ratio, 1)), size = 3.5, color = "black") +
     geom_sf(data = lux_sf, fill = NA, color = "black", linewidth = 0.5) +
     geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
-    scale_fill_gradient(name = NULL, low = "white", high = "red", na.value = "grey90") +
+    scale_fill_gradient(name = "Ratio", low = "white", high = "red", na.value = "grey90") +
     geom_text(data = country_labels_cell, aes(x = x, y = y, label = name),
               size = 6, color = "grey40", fontface = "italic") +
     theme_void() +
@@ -135,7 +134,7 @@ carte_ratio_especes_cell <- function(ratio_especes_cell, rtp, lux_borders, GR216
     geom_sf_text(data = centroids, aes(label = round(Ratio, 1)), size = 3.5, color = "black") +
     geom_sf(data = lux_sf, fill = NA, color = "black", linewidth = 0.5) +
     geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
-    scale_fill_gradient(name = NULL, low = "white", high = "red", na.value = "grey90") +
+    scale_fill_gradient(name = "Ratio", low = "white", high = "red", na.value = "grey90") +
     geom_text(data = country_labels_cell, aes(x = x, y = y, label = name),
               size = 6, color = "grey40", fontface = "italic") +
     theme_void() +

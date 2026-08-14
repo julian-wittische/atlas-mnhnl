@@ -21,8 +21,10 @@ source(here::here("Atlas", "code", "13_DSM.R"))
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-width: 20
-#| fig-height: 15
+#| fig-width: 10.7
+#| fig-height: 14.5
+#| out-width: "80%"
+#| fig-align: "center"
 
 plot_carte_geologique(uniteGeo_lux, failles_lux, df_excel)
 ```
@@ -106,8 +108,10 @@ English legend available soon
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-width: 20
-#| fig-height: 15
+#| fig-width: 10.7
+#| fig-height: 14.5
+#| out-width: "80%"
+#| fig-align: "center"
 terra::terraOptions(progress = 0)
 carte_altitude(DATAPATH)
 ```
@@ -123,8 +127,10 @@ carte_altitude(DATAPATH)
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-width: 20
-#| fig-height: 15
+#| fig-width: 10.7
+#| fig-height: 14.5
+#| out-width: "80%"
+#| fig-align: "center"
 
 plot_carte_sols(DATAPATH)
 ```

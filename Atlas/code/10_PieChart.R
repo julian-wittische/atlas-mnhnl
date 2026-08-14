@@ -52,6 +52,7 @@ plot_tribe_pie <- function(DB_taxo) {
 ####### Subfamily ---
 
 # camembert des sous-familles, une couleur par sous-famille
+
 plot_subfamily_pie <- function(DB_taxo) {
   Subfamily_counts <- DB_taxo %>%
     filter(!is.na(Subfamily)) %>%
@@ -68,6 +69,7 @@ plot_subfamily_pie <- function(DB_taxo) {
     coord_polar(theta = "y") +
     theme_void() +
     theme(legend.position = "right", legend.text = element_text(size = 13), legend.title = element_text(size = 15)) +
+    labs(fill = "Subfamily") +
     geom_text(aes(y = ypos, label = ifelse(prop > 0.04, label, "")), color = "white", size = 3.5, fontface = "bold") +
     geom_text_repel(
       data = subset(Subfamily_counts, prop <= 0.04), aes(y = ypos, label = label), size = 3.5, nudge_x = 0.7, segment.color = NA, show.legend = FALSE

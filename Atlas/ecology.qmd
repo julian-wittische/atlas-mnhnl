@@ -55,26 +55,26 @@ function closeLightbox() {
 ![](/images/phylogenetic_graph.png){width="80%" fig-align="center"}
 ::: 
 
-## Tribes dispersion
+## Species Distribution by Tribe
 
-Colored by subfamily 
+Colored by subfamily
 
 ```{r Tribes}
 #| echo: false
 #| warning: false
 #| message: false
-#| fig.height: 11
-#| fig.width: 11
+#| fig.height: 8
+#| fig.width: 10
 plot_tribe_pie(DB_taxo)
 ```
 
-## Subfamilies dispersion
+## Species Distribution by Subfamily
 
 ```{r Subfamily}
 #| echo: false
 #| warning: false
 #| message: false
-#| fig.height: 11
-#| fig.width: 11
+#| fig.height: 8
+#| fig.width: 10
 plot_subfamily_pie(DB_taxo)
 ```
