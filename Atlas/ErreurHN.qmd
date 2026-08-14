@@ -3,9 +3,6 @@ title: "Vérification des coordonnées GPS et des numéros de cellule"
 subtitle: "Jeu de données HN — Hand netting atlas"
 date: today
 format:
-  html:
-    toc: true
-    embed-resources: true
   docx:
     toc: false
 execute:
