@@ -51,7 +51,6 @@ plot_bio1_map <- function(bioclim_lux, lux_borders) {
       panel.background = element_rect(fill = "white", color = NA),
       legend.title = element_text(size = 13),  legend.text = element_text(size = 11), legend.key.size = unit(1, "cm"))
 }
-plot_bio1_map(bioclim_lux, lux_borders)
 
 ############ Carte BIO12 (précipitations annuelles) ----
 plot_bio12_map <- function(bioclim_lux, lux_borders) {

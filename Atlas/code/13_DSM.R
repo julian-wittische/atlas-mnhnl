@@ -53,7 +53,7 @@ carte_altitude <- function(datapath, fact_aggregation = 100) {
     coord_sf(crs = "EPSG:2169", xlim = c(bbox_2169["xmin"], bbox_2169["xmax"]),
              ylim = c(bbox_2169["ymin"], bbox_2169["ymax"]),  expand = FALSE) +
     annotation_scale(location = "bl", width_hint = 0.2,
-                     style = "ticks", text_cex = 0.7,
+                     style = "ticks", text_cex = 1,
                      line_width = 1, height = unit(0.5, "cm"),
                      pad_x = unit(0.7, "cm"), pad_y = unit(0.8, "cm")) +
     annotation_north_arrow(location = "tr", which_north = "true",

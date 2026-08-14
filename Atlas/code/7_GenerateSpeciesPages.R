@@ -46,9 +46,14 @@ DB_taxo <- DB_taxo %>%
   ) %>%
   arrange(verbatim_name)
 
-stopifnot(
-  "DB_taxo contient des species_key en double" = !anyDuplicated(DB_taxo$species_key)
-)
+doublons_taxo <- DB_taxo %>% count(species_key) %>% filter(n > 1)
+if (nrow(doublons_taxo) > 0) {
+  warning(
+    "DB_taxo contient des species_key en double ",
+    paste(doublons_taxo$species_key, collapse = ", "),
+    call. = FALSE
+  )
+}
 
 ############  Noms vernaculaires COL-Inat-Wikidata ----
 
@@ -76,19 +81,17 @@ fetch_vernacular_col <- function(species_name) {
 
 
 # recupere les noms vernaculaires depuis l'API iNaturalist, seulement pour les langues encore manquantes
-fetch_vernacular_inat <- function(species_name, labels_needed) { # inat api
+fetch_vernacular_inat <- function(species_name, labels_needed) {
   empty <- set_names(rep("", length(labels_needed)), labels_needed)
   if (length(labels_needed) == 0) return(empty)
-  
   res <- tryCatch(
     httr::GET(
       "https://api.inaturalist.org/v1/taxa",
-      query = list(q = species_name, all_names = "true", per_page = 1),
-      httr::user_agent("AtlasMNHNL/1.0 (contact: <ton email>)") ),
-    error = function(e) NULL  )
+      query = list(q = species_name, all_names = "true", per_page = 1) ),
+    error = function(e) NULL )
   if (is.null(res) || httr::status_code(res) != 200) return(empty)
   data <- tryCatch(
-    jsonlite::fromJSON(httr::content(res, as = "text", encoding = "UTF-8"), flatten = TRUE), 
+    jsonlite::fromJSON(httr::content(res, as = "text", encoding = "UTF-8"), flatten = TRUE),
     error = function(e) NULL )
   if (is.null(data) || is.null(data$results) || nrow(data$results) == 0) return(empty)
   noms <- data$results$names[[1]]
@@ -106,9 +109,7 @@ fetch_vernacular_inat <- function(species_name, labels_needed) { # inat api
 fetch_vernacular_wikidata <- function(species_name, labels_needed) {
   empty <- set_names(rep("", length(labels_needed)), labels_needed)
   if (length(labels_needed) == 0) return(empty)
-  
   codes_needed <- wikidata_lang_codes[labels_needed]
-  
   sparql <- sprintf(
     'SELECT ?commonName ?lang WHERE {
        ?item wdt:P225 "%s" .
@@ -116,27 +117,23 @@ fetch_vernacular_wikidata <- function(species_name, labels_needed) {
        BIND(LANG(?commonName) AS ?lang)
        FILTER(?lang IN (%s))}',
     species_name,
-    paste0('"', codes_needed, '"', collapse = ", ")
-  )
-  
+    paste0('"', codes_needed, '"', collapse = ", ") )
   res <- tryCatch(
     httr::GET(
       "https://query.wikidata.org/sparql",
-      query = list(query = sparql, format = "json"),
-      httr::user_agent("AtlasMNHNL/1.0 (contact: <ton email>)")  ),
-    error = function(e) NULL )
+      query = list(query = sparql, format = "json")),
+    error = function(e) NULL)
   if (is.null(res) || httr::status_code(res) != 200) return(empty)
   data <- tryCatch(
     jsonlite::fromJSON(httr::content(res, as = "text", encoding = "UTF-8"), flatten = TRUE),
-    error = function(e) NULL )
+    error = function(e) NULL)
   bindings <- data$results$bindings
   if (is.null(bindings) || !is.data.frame(bindings) || nrow(bindings) == 0) return(empty)
   out <- empty
   for (lbl in labels_needed) {
     code <- wikidata_lang_codes[[lbl]]
     hit <- bindings[bindings$lang.value == code, ]
-    if (nrow(hit) > 0) out[[lbl]] <- hit$commonName.value[1]
-  }
+    if (nrow(hit) > 0) out[[lbl]] <- hit$commonName.value[1]}
   out
 }
 
@@ -162,7 +159,6 @@ fetch_vernacular_names <- function(species_name) {
   out
 }
 
-
 ############ Images : avec <slug>.<Photographe>.<Licence>.png ----
 # Exemple : temnostoma_meridionale.Sam_Schaack.CC-BY-NC.png
 #   -> species_key = "temnostoma_meridionale"
@@ -175,8 +171,7 @@ build_image_table <- function(images_dir) {
   fichiers_images <- fichiers_images[str_count(fichiers_images, "\\.") >= 3] # ecarte les fichiers hors convention
   if (length(fichiers_images) == 0) {
     return(tibble(fichier = character(), species_key = character(),
-                  photographe = character(), licence = character()))
-  }
+                  photographe = character(), licence = character())) }
   
   parties <- str_split_fixed(fichiers_images, "\\.", 4)  
   
@@ -184,21 +179,16 @@ build_image_table <- function(images_dir) {
     fichier     = fichiers_images,
     species_key = parties[, 1],
     photographe = str_replace_all(parties[, 2], "_", " "),
-    licence     = parties[, 3]
-  )
+    licence     = parties[, 3])
 }
 
 get_image_info <- function(species_key, images_table) {
   ligne <- images_table %>% filter(species_key == !!species_key)
   if (nrow(ligne) == 0) {
     warning("Aucune image trouvee pour : ", species_key, call. = FALSE)
-    return(list(fichier = "", credit = ""))
-  }
+    return(list(fichier = "", credit = ""))}
   
-  list(
-    fichier = ligne$fichier[1],
-    credit  = paste(ligne$licence[1], ligne$photographe[1])  # ex: "CC-BY-NC Sam Schaack"
-  )
+  list(fichier = ligne$fichier[1], credit  = paste(ligne$licence[1], ligne$photographe[1])) 
 }
 
 
@@ -222,8 +212,7 @@ build_species_page <- function(row, vernacular_names, image_info, template_text)
     fr = safe_val(vernacular_names[["FR"]]),
     de = safe_val(vernacular_names[["DE"]]),
     image_file   = safe_val(image_info$fichier),
-    image_credit = safe_val(image_info$credit)
-  )
+    image_credit = safe_val(image_info$credit))
 }
 
 # genere un .qmd par espece de DB_taxo, sans ecraser les fichiers deja presents
@@ -263,7 +252,7 @@ generate_species_pages <- function(DB_taxo, species_dir, template_text, images_t
 
 ############ Mise à jour de _quarto.yml ----
 
-# insere les nouveaux .qmd dans le bloc "chapters:" sous "part: Species accounts", en respectant l'indentation existante
+# insere les nouveaux .qmd dans le bloc "chapters:" sous "part: Species accounts"
 update_quarto_yml <- function(yml_path, species_dir, DB_taxo) {
   lines <- readLines(yml_path, encoding = "UTF-8")
   
@@ -273,14 +262,17 @@ update_quarto_yml <- function(yml_path, species_dir, DB_taxo) {
   }
   
   chapters_offset <- which(str_detect(lines[(part_line + 1):length(lines)], "chapters:"))[1]
+  if (is.na(chapters_offset)) {
+    stop("Impossible de localiser 'chapters:' sous 'part: Species accounts' dans _quarto.yml")
+  }
   chapters_line <- part_line + chapters_offset
-  
-  first_item_idx <- chapters_line + 1
-  indent <- str_extract(lines[first_item_idx], "^\\s*")
+
+  # si e bloc Species accounts est vide :
+  indent <- str_extract(lines[chapters_line], "^\\s*")
   item_pat <- paste0("^", indent, "- ")
   
   end_idx <- chapters_line
-  j <- first_item_idx
+  j <- chapters_line + 1
   while (j <= length(lines) && str_detect(lines[j], item_pat)) {
     end_idx <- j
     j <- j + 1
@@ -292,7 +284,6 @@ update_quarto_yml <- function(yml_path, species_dir, DB_taxo) {
   lines <- c(lines[seq_len(chapters_line)], new_chapter_lines, lines[(end_idx + 1):length(lines)])
   writeLines(lines, yml_path, useBytes = TRUE)
 }
-
 
 ############ Exécution ----
 

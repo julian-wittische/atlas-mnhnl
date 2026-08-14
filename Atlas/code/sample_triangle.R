@@ -6,7 +6,7 @@
 #   via des graphiques ternaires (ggtern) : par cellule puis par observation(buffer 500m)
 
 ############ Reprojection des observations dans le système de la grille ----
-DB_sf <- st_transform(DB3_sf, st_crs(rtp_sf))
+DB_sf <- st_transform(DB_sf, st_crs(rtp_sf))
 
 
 ############ Richesse spécifique par cellule (jointure spatiale) ----
@@ -22,9 +22,9 @@ richness_par_cellule <- DB_sf %>%
 ############ Données d'occupation du sol (rasters Copernicus) ----
 
 # rasters de couverture prairie (Grassland) et de densité de couvert arboré (Tree Cover
-# Density), millésime 2024, pour le Luxembourg
-grassland <- rast("Atlas/data/Grassland/20240101/CLMS_HRLVLCC_GRA_LU_0.tif")
-forest <- rast("Atlas/data/TreeCover/20240101/CLMS_HRLVLCC_TCD_LU_0.tif")
+# Density)
+grassland <- rast(file.path(DATAPATH, "Grassland/20240101/CLMS_HRLVLCC_GRA_LU_0.tif"))
+forest   <- rast(file.path(DATAPATH, "TreeCover/20240101/CLMS_HRLVLCC_TCD_LU_0.tif"))
 
 grassland
 forest
@@ -124,7 +124,7 @@ plot_habitat_ternaire("Blera fallax")
 #######################################################################
 
 ############ Variante avec land cover vectoriel ----
-# lc <- st_read("Atlas/data/LandCover_Luxembourg_2018_2021_2024.gdb",
+# l# lc <- st_read(file.path(DATAPATH, "LandCover_Luxembourg_2018_2021_2024.gdb"),
 #               layer = "LandCover_Luxembourg_2018_2021_2024") %>%
 #   st_transform(2169) %>%
 #   mutate(HabitatClass = case_when(
@@ -186,7 +186,7 @@ plot_habitat_ternaire_lc <- function(espece, data = habitat_par_observation) {
     )
 }
 
-# plot_habitat_ternaire_lc("Volucella zonaria")
+
 
 
 

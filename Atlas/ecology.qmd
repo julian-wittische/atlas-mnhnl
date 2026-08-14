@@ -1,52 +1,80 @@
----
-title: "Ecology of Luxembourg Hoverflies"
-bibliography: references.bib
----
 
-<!-- # ```{r setup} -->
-<!-- # #| echo: false -->
-<!-- # #| warning: false -->
-<!-- # #| message: false -->
-<!-- # #| results: hide -->
-<!-- # here::i_am("atlas-mnhnl.Rproj") -->
-<!-- # source(here::here("Atlas", "code", "0_Initialisation.R")) -->
-<!-- # source(here::here("Atlas", "code", "Taxonomie.R")) -->
-<!-- # source(here::here("Atlas", "code", "10_Piechart.R")) -->
-<!-- # ``` -->
+# Ecology of Luxembourg Hoverfly
 
-### Author {.author}
+
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+source(here::here("Atlas", "code", "Taxonomie.R"))
+source(here::here("Atlas", "code", "10_Piechart.R"))
+```
+
+```{=html}
+<div id="img-modal">
+  <span class="close-btn" onclick="closeLightbox()">&times;</span>
+  <img id="img-modal-content" src="">
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".lightbox img").forEach(function(img) {
+    img.addEventListener("click", function() {
+      document.getElementById("img-modal-content").src = this.src;
+      document.getElementById("img-modal").classList.add("active");
+    });
+  });
+});
+
+document.addEventListener("click", function(e) {
+  if (e.target.id === "img-modal") closeLightbox();
+});
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeLightbox();
+});
+
+function closeLightbox() {
+  document.getElementById("img-modal").classList.remove("active");
+}
+</script>
+```
 
 ## Phylogenetic circle
 
 
-
+::: {.lightbox}
 ![](/images/phylogenetic_circle.png){width="80%" fig-align="center"}
+::: 
 
 ## Phylogenetic graph
 
-
+::: {.lightbox}
 ![](/images/phylogenetic_graph.png){width="80%" fig-align="center"}
+::: 
 
 ## Tribes dispersion
 
 Colored by subfamily 
 
-<!-- # ```{r Tribes} -->
-<!-- # #| echo: false -->
-<!-- # #| warning: false -->
-<!-- # #| message: false -->
-<!-- # #| fig.height: 11 -->
-<!-- # #| fig.width: 11 -->
-<!-- # plot_tribe_pie(DB_taxo) -->
-<!-- # ``` -->
+```{r Tribes}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig.height: 11
+#| fig.width: 11
+plot_tribe_pie(DB_taxo)
+```
 
 ## Subfamilies dispersion
 
-<!-- # ```{r Subfamily} -->
-<!-- #| echo: false -->
-<!-- #| warning: false -->
-<!-- #| message: false -->
-<!-- #| fig.height: 11 -->
-<!-- #| fig.width: 11 -->
-<!-- plot_subfamily_pie(DB_taxo) -->
-<!-- ``` -->
+```{r Subfamily}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig.height: 11
+#| fig.width: 11
+plot_subfamily_pie(DB_taxo)
+```

@@ -166,12 +166,13 @@ Ces scripts ne sont pas chargés par `0_Initialisation.R`. Ils sont appelés dir
 | `15_LandOverMap.R` | Contient la fonction de production de la carte d'occupation du sol. |
 | `16_CommunesMap.R` | Produit les cartes de richesse spécifique (`carte_especes_commune`) et de nombre d'observations (`carte_obs_commune`) agrégées par commune. |
 | `17_Effort.R` | Produit les cartes d'effort d'échantillonnage : nombre de sorties terrain (`carte_effort_cell`), ratio observations/sortie (`carte_ratio_cell`) et ratio espèces/sortie (`carte_ratio_especes_cell`). |
-| `18_redList.R` | Prépare les données nécessaires à l'extraction des catégories IUCN à partir du fichier de données fourni. |
+| `18_RedList.R` | Prépare les données nécessaires à l'extraction des catégories IUCN à partir du fichier de données fourni. |
+| `19_Barplot.R` | Produit un graphique en barres empilées (plot_habitat_espece) représentant la proportion d'habitat dominant (Grassland/Forest/Other) associée aux observations d'une espèce donnée, calculée soit par cellule de grille soit par voisinage autour de chaque point. |
 | `Taxonomie.R` | Construit `DB_taxo`, contenant la hiérarchie taxonomique des espèces à partir du Catalogue of Life. |
 | `PhylogeneticGraph.R` | Produit l'arbre interactif de la hiérarchie Subfamily / Tribe / Genus / espèce avec `collapsibleTree`. |
 | `LandCoverBarplot.R` | Produit des graphiques d'habitat par espèce à partir de l'occupation du sol dans un rayon de 500 m autour des observations. |
-| `sample_triangle.R` | Produit un graphique ternaire reliant richesse spécifique et composition de l'habitat par cellule. |
-| `pre-render.R` | Exécute les opérations nécessaires avant le rendu : mise à jour de la taxonomie, génération des fiches espèces et mise à jour de certains éléments dynamiques du livre. |
+| `sample_triangle.R` | Produit des graphiques ternaires (triangle) reliant composition d'habitat et richesse spécifique, par cellule de grille ou par observation (buffer 500 m, un graphique par espèce). |
+| `pre-render.R` | Exécute les opérations nécessaires avant le rendu : mise à jour de la taxonomie, génération des fiches espèces et mise à jour des titres dynamiques du livre. |
 
 ## Données d'observation
 
@@ -266,8 +267,9 @@ Dans l'ordre d'apparition, une fiche contient :
 6.  **Description, habitat, distribution** et autres contenus rédactionnels.
 7.  **Carte de répartition interactive**.
 8.  **Compteur d'observations** et avertissement conditionnel lorsque le nombre d'observations est inférieur au seuil défini.
-9.  **Notes**.
-10. **Auteur** de la fiche.
+9. **Barplot landcover** répartition de l'habitat dominant (Grassland/Forest/Other) autour des observations de l'espèce.
+10.  **Notes**.
+11. **Auteur** de la fiche.
 
 ## Carte de répartition des espèces
 
@@ -321,11 +323,11 @@ Dans `_template.qmd`, le statut est récupéré avec :
 status <- get_iucn_status(params$species)
 ```
 
-Les catégories européennes et UE27 sont issues des données préparées par `18_redList.R`.
+Les catégories européennes et UE27 sont issues des données préparées par `18_RedList.R`.
 
 ### Fichier source
 
-`18_redList.R` utilise le fichier :
+`18_RedList.R` utilise le fichier :
 
 ``` text
 data/EuropeanRedList.xlsx
@@ -388,7 +390,7 @@ Les pictogrammes de statut de conservation sont utilisés par les fiches espèce
 
 `9_LastSpecies.R` récupère automatiquement `last_syrphidae.jpg` pour la dernière observation utilisée dans `acknowledgement.qmd`.
 
-Les images `phylogenetic_circle.png` et `phylogenetic_graph.png` sont utilisées dans `ecology.qmd`.
+Les images `phylogenetic_circle.png` et `phylogenetic_graph.png` sont utilisées dans `ecology.qmd` et sont à fournir.
 
 ## Chapitres biophysiques
 
@@ -531,14 +533,13 @@ Deux fichiers sont utilisés pour la bibliographie :
 
 ## Données géographiques (`data/`)
 
-Le dossier `data/` regroupe les données géographiques utilisées par les différents chapitres et scripts.
+En plus de données d'observation, le dossier `data/` regroupe les données géographiques utilisées par les différents chapitres et scripts.
 
-Il peut notamment contenir :
+Les scripts n'utilisent pas de chemin en dur : ils accèdent aux fichiers via la variable `DATAPATH`, définie par chaque utilisateur dans `1_config.R`. Le dossier doit notamment contenir :
 
 - les frontières nationales et régionales ;
 - les données géologiques ;
 - les données sur les sols ;
-- les données d'occupation du sol sous forme raster et vecteur ;
 - les couches spécifiques utilisées pour les analyses d'habitat ;
 - les limites communales.
 

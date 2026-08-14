@@ -8,11 +8,11 @@
 
 ############ Filtrage ----
 DB$Certainty <- !grepl("\\?", DB$ID)
-sum(DB3$Certainty, na.rm = TRUE)
+sum(DB$Certainty, na.rm = TRUE)
 
 ############ espèces à traiter (données sources) ----
 
-species_list <- DB3 %>% 
+species_list <- DB %>% 
   filter(Certainty) %>% 
   pull(ID) %>% 
   unique() %>% 
@@ -44,11 +44,16 @@ message(length(species_manquantes), " nouvelle(s) espèce(s) à interroger sur C
 ############ Catalogue of Life : uniquement pour les nouvelles espèces ----
 if (length(species_manquantes) > 0) {
   
-
+  
   message("Interrogation de l'API Catalogue of Life...")
   matches <- purrr::map_dfr(species_manquantes, function(sp) {
     res <- rcol::col_match(sp)
-    res$verbatim_name <- sp  # Alignement manuel e
+    res$verbatim_name <- sp  # Alignement manuel
+    
+    if ("names_index_id" %in% names(res)) {
+      res$names_index_id <- as.character(res$names_index_id)
+    }
+    
     return(res)
   })
   
@@ -72,15 +77,15 @@ if (length(species_manquantes) > 0) {
     ) %>%
     select(verbatim_name, name, authorship, Subfamily, Tribe, Genus)
   
-
+  
   non_resolues <- setdiff(species_manquantes, nouvelles_lignes$verbatim_name)
   if (length(non_resolues) > 0) {
     warning(
-      "Espèce non résoluepar Catalogue of Life : \n",
+      "Espèce non résolue par Catalogue of Life : \n",
       paste(paste0("- ", non_resolues), collapse = "\n")
     )
     
-
+    
     lignes_manquees <- tibble(
       verbatim_name = non_resolues,
       name          = NA_character_,

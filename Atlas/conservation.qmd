@@ -1,10 +1,7 @@
----
-title: "Conservation of Hoverflies in Luxembourg"
----
 
-### Author {.author}
+# Conservation of Hoverfly in Luxembourg
+
 
 
 ## The importance of citizen science platforms 
 
-communitty implication

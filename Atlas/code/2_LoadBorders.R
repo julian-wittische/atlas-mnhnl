@@ -4,12 +4,10 @@
 # Start: Summer 2026
 # Script objective : get borders for nice map
 
-
 ############ Bbox for the Greater Region
 bbox <- st_bbox(c(xmin = 5.7, xmax = 6.60, ymax = 50.2, ymin = 49.4),
                 crs = st_crs(4326))
-
-bbox_2169 <- st_bbox(st_transform(st_as_sfc(bbox),c(xmin = 5.7, xmax = 6.55, ymax = 50.2, ymin = 49.4), crs = 2169))
+bbox_2169 <- st_bbox(st_transform(st_as_sfc(bbox), crs = 2169))
 
 ############ Greater Region borders
 invisible(capture.output(GRborders <- st_read(paste0(DATAPATH, "GRborders.gpkg"), quiet = TRUE)))
@@ -21,10 +19,6 @@ lux5km <- raster(nrows = 12, ncols = 17,
                  vals = 1:204)
 
 ############ Frontière nationale du Luxembourg
-lux_borders <- gb_get_adm0("Luxembourg")
-lux_borders <- st_transform(lux_borders, crs = "EPSG:2169")
-lux_borders <- as(lux_borders, "Spatial")  # rasterize() attend un objet sp, pas sf
-
 lux_borders_sf <- gb_get_adm0("Luxembourg")
 lux_borders_sf <- st_transform(lux_borders_sf, crs = "EPSG:2169")
 lux_borders <- as(lux_borders_sf, "Spatial")

@@ -103,6 +103,7 @@ plot_legende_sols <- function(datapath,
                               x_intersp = 0.5,
                               y_intersp = 0.8) {
   sols <- sf::st_read(file.path(datapath, "Carte_associations_de_sols"), quiet = TRUE)
+  sols_lux <- st_intersection(sols, st_geometry(lux_borders_sf))
   
   prep <- .preparer_legende_sols(sols_lux)
   
@@ -115,4 +116,3 @@ plot_legende_sols <- function(datapath,
     text.width = max(strwidth(prep$labels, cex = cex_legende))
   )
 }
-

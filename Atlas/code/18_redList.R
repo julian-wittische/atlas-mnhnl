@@ -7,7 +7,7 @@
 
 ############ Chargement et nettoyage de la Red List européenne ----
 # renommage des noms
-redList <- read_xlsx(here::here(DATAPATH, "EuropeanRedList.xlsx"), sheet = 1) %>%
+redList <- read_xlsx(paste0(DATAPATH, "EuropeanRedList.xlsx"), sheet = 1) %>%
   rename(
     European_Category = `European\r\nCategory`,
     European_Criteria  = `European Criteria`,

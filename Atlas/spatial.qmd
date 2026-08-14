@@ -1,8 +1,4 @@
-# Spatial analysis of hoverfly diversity
-
-### Author {.author}
-
-
+# Spatial analysis of Hoverfly diversity
 
 ```{r setup}
 #| echo: false
@@ -13,10 +9,7 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 source(here::here("Atlas", "code", "16_CommunesMap.R"))
 source(here::here("Atlas", "code", "17_Effort.R"))
-
 ```
-
-
 
 ## Number of Field Surveys per Grid Cell
 
@@ -126,3 +119,7 @@ carte_obs_commune(DB)
 carte_especes_commune(DB)
 ```
 :::
+
+
+### Author {.author}
+ 

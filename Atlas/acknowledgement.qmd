@@ -35,7 +35,7 @@ cat("\n\n### Other sources\n\n")
 print_recorder_list(MD[MD$Origin == "Other", ])
 ```
 
-## Last Hoverfly recorded (iNaturalist)
+## Last `r taxon` recorded (iNaturalist)
 
 ![](last_observation.jpg){fig-pos="H"}
 ```{r}

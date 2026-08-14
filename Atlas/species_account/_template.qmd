@@ -25,7 +25,8 @@ include-in-header:
 #| results: hide
 here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
-source(here::here("Atlas", "code", "18_redList.R"))
+source(here::here("Atlas", "code", "18_RedList.R"))
+source(here::here("Atlas", "code", "19_Barplot.R"))
 ```
 
 ```{r}
@@ -163,6 +164,18 @@ if (n_obs < seuil_obs) {
   ))
 }
 ```
+
+### Average neighbourhood land cover
+```{r}
+#| echo: false
+#| results: asis
+#| warning: false
+#| message: false
+#| fig.height: 2
+#| fig.width: 9
+plot_habitat_espece(params$species, data = DB_habitat)
+```
+
 
 ## Notes
 

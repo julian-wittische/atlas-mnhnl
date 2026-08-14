@@ -9,12 +9,13 @@ here::i_am("atlas-mnhnl.Rproj")
 source(here::here("Atlas", "code", "0_Initialisation.R"))
 source(here::here("Atlas", "code", "11_Geology.R"))
 source(here::here("Atlas", "code", "12_SoilsMap.R"))
-# source(here::here("Atlas", "code", "13_DSM.R"))
+source(here::here("Atlas", "code", "13_DSM.R"))
 ```
 
-### Author {.author}
 
 ## Geology 
+
+::: {.lightbox}
 
 ```{r geology}
 #| echo: false
@@ -25,6 +26,8 @@ source(here::here("Atlas", "code", "12_SoilsMap.R"))
 
 plot_carte_geologique(uniteGeo_lux, failles_lux, df_excel)
 ```
+
+::: 
 
 ```{=html}
 <div id="img-modal">
@@ -97,15 +100,24 @@ English legend available soon
 
 ## Altitude {.unnumbered} 
 
+::: {.lightbox}
+
 ```{r altitude}
 #| echo: false
 #| warning: false
 #| message: false
+#| fig-width: 20
+#| fig-height: 15
+terra::terraOptions(progress = 0)
 carte_altitude(DATAPATH)
 ```
 
+::: 
+
 
 ## Soil {.unnumbered}
+
+::: {.lightbox}
 
 ```{r soil}
 #| echo: false
@@ -116,6 +128,7 @@ carte_altitude(DATAPATH)
 
 plot_carte_sols(DATAPATH)
 ```
+:::
 
 ::: {.lightbox}
 

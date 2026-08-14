@@ -1,5 +1,9 @@
 ### Create a config.R file with paths locally and ignore it in git
 
+## Taxon s name
+
+#taxon <- "Hoverfly"
+
 ## Location of Dataset 1
 
 #DATAPATH <- "C:/Users/CAG569/Desktop/HinateaCarte/HoverflyAtlasDATA/"

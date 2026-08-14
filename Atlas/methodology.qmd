@@ -1,14 +1,6 @@
 # Methodology
 
+
+
+
 ### Author {.author}
-
-## Data sources
-
-specimen small table data source
-
-- citizen science (Nat, Obs)
-- MNHNL
-- LBB
-- Insekteraich
-- Hoverfly Atlas
-- Monipol
