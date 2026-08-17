@@ -1,71 +1,58 @@
-# History files
+# --- R / RStudio ---
 .Rhistory
 .Rapp.history
-# Session Data files
 .RData
 .RDataTmp
-# User-specific files
+.RDataTmp*
 .Ruserdata
-# Example code in package build process
-*-Ex.R
-# Output files from R CMD build
-/*.tar.gz
-# Output files from R CMD check
-/*.Rcheck/
-# RStudio files
+.Renviron
 .Rproj.user/
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+atlas-mnhnl.Rproj
+*-Ex.R
+/*.tar.gz
+/*.Rcheck/
+
+# --- Auth / tokens ---
 .httr-oauth
-# knitr and R markdown default cache directories
+
+# --- Quarto / knitr / R Markdown ---
 *_cache/
 /cache/
-# Temporary files created by R markdown
 *.utf8.md
 *.knit.md
-# R Environment Variables
-.Renviron
-# pkgdown site
-docs/
-# translation temp files
-po/*~
-# RStudio Connect folder
-rsconnect/
-atlas-mnhnl.Rproj
-Atlas/_book/
-Atlas/_freeze/
-Atlas/_book/history.html
-*.html
-Atlas/data/MNS_Lidar2024.tif
-Atlas/data/MNS_Lidar2024.tif
 /.quarto/
 **/*.quarto_ipynb
-.RDataTmp*
-.Rhistory
-.RData
 Atlas/_book/
-.Rhistory
-.RData
-Atlas/_book/
+Atlas/_book/history.html
+Atlas/_freeze/
+Atlas/biophysical_files/
+Atlas/biophysical_files/figure-html/
+vignettes/*.html
+vignettes/*.pdf
+*.html
+
+# --- pkgdown / translation / rsconnect ---
+docs/
+po/*~
+rsconnect/
+
+# --- Data files (large / raw) ---
+Atlas/data/MNS_Lidar2024.tif
+Atlas/data/LandCover_Luxembourg_status_2024.tif
+Atlas/data/Carte_associations_de_sols/
+Atlas/data/landcover-vector-2018-2021-2024-gdb/
 *.gdb/
 *.ppkx
 *.gml
 *.gfs
-.RDataTmp*
-.Rhistory
-.RData
-Atlas/_book/
-Atlas/data/Carte_associations_de_sols/
-Atlas/data/landcover-vector-2018-2021-2024-gdb/
-Atlas/biophysical_files/
-*.png
-Atlas/biophysical_files/
-Atlas/biophysical_files/figure-html/
-Atlas/data/LandCover_Luxembourg_status_2024.tif
+
+# --- Broken / temp qmd files ---
 Atlas/ErreurBC.qmd
 Atlas/ErreurHN.qmd
 Atlas/code/HNCell.qmd
 Atlas/code/BCCell.qmd
+
+# --- Images: ignore all PNGs except the atlas logos ---
+*.png
+!Atlas/images/*.png
 Atlas/images/cover.png
