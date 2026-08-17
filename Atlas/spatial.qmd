@@ -11,20 +11,6 @@ source(here::here("Atlas", "code", "16_CommunesMap.R"))
 source(here::here("Atlas", "code", "17_Effort.R"))
 ```
 
-## Number of Field Surveys per Grid Cell
-
-```{r}
-#| fig-width: 10.7
-#| fig-height: 14.5
-#| out-width: "80%"
-#| fig-align: "center"
-#| echo: false
-#| warning: false
-#| message: false
-
-carte_effort_cell(effort_cell, rtp, lux_borders, GR2169_c)
-```
-
 ```{=html}
 <div id="img-modal">
   <span class="close-btn" onclick="closeLightbox()">&times;</span>
@@ -53,6 +39,23 @@ function closeLightbox() {
 }
 </script>
 ```
+
+## Number of Field Surveys per Grid Cell
+
+::: {.lightbox}
+```{r}
+#| fig-width: 10.7
+#| fig-height: 14.5
+#| out-width: "80%"
+#| fig-align: "center"
+#| echo: false
+#| warning: false
+#| message: false
+
+carte_effort_cell(effort_cell, rtp, lux_borders, GR2169_c)
+```
+::: 
+
 
 To account for differences in sampling effort, the two maps below show the average number of records (left) and different species (right) recorded per field survey in each grid cell.
 
