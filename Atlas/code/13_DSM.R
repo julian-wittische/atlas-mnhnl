@@ -61,9 +61,9 @@ carte_altitude <- function(datapath, fact_aggregation = 100) {
                            pad_x = unit(1.5, "cm"), pad_y = unit(1, "cm")) +
     theme_void() +
     theme(
-      plot.background = element_rect(fill = "white", color = NA), legend.position = c(0.85, 0.65), 
-      legend.title = element_text(size = 9), legend.text = element_text(size = 8), legend.key.size = unit(0.5, "cm"),
-      plot.margin = margin(0, 0, 0, 0, "cm"))
+    plot.background = element_rect(fill = "white", color = NA), legend.position = c(0.85, 0.65), 
+    legend.title = element_text(size = 11), legend.text = element_text(size = 10), legend.key.size = unit(0.7, "cm"),
+    plot.margin = margin(0, 0, 0, 0, "cm"))
   
   return(carte)
 }
