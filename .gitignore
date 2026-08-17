@@ -1,4 +1,4 @@
-# --- R / RStudio ---
+# --- R ---
 .Rhistory
 .Rapp.history
 .RData
@@ -11,9 +11,9 @@ atlas-mnhnl.Rproj
 *-Ex.R
 /*.tar.gz
 /*.Rcheck/
-# --- Auth / tokens ---
+
 .httr-oauth
-# --- Quarto / knitr / R Markdown ---
+# --- Quarto ---
 *_cache/
 /cache/
 *.utf8.md
@@ -28,11 +28,11 @@ Atlas/biophysical_files/figure-html/
 vignettes/*.html
 vignettes/*.pdf
 *.html
-# --- pkgdown / translation / rsconnect ---
+
 docs/
 po/*~
 rsconnect/
-# --- Data files (large / raw) ---
+# --- Data files (large) ---
 Atlas/data/MNS_Lidar2024.tif
 Atlas/data/LandCover_Luxembourg_status_2024.tif
 Atlas/data/Carte_associations_de_sols/
@@ -46,7 +46,7 @@ Atlas/ErreurBC.qmd
 Atlas/ErreurHN.qmd
 Atlas/code/HNCell.qmd
 Atlas/code/BCCell.qmd
-# --- Images: ignore all PNGs except the atlas status logos ---
+# --- all PNG except  status logos ---
 *.png
 !Atlas/images/CD.png
 !Atlas/images/CR.png
