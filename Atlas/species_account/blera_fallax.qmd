@@ -128,7 +128,7 @@ cat('</div>\n</div>\n')
 #| echo: false
 #| warning: false
 #| message: false
-#| fig.height: 2
+#| fig.height: 3
 #| fig.width: 9
 plot_heatmap(params$species)
 ```
