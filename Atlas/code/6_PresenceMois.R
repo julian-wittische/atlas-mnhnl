@@ -63,12 +63,10 @@ plot_heatmap <- function(species_name, data = DB) {
       axis.title = element_blank(),
       axis.ticks.y = element_blank(),
       panel.grid = element_blank(),
-      plot.margin = margin(t = 0, r = 0.5, b = 0, l = 0.5, unit = "cm"),
+      plot.margin = margin(t = 0.6, r = 0.5, b = 0.1, l = 0.5, unit = "cm"),
       legend.title = element_text(size = 10),
       legend.position = "bottom",
-      legend.box.spacing = unit(0.8, "cm")
+      legend.box.spacing = unit(1.5, "cm"),
+      legend.margin = margin(t = 10, unit = "pt")
     )
 }
-plot_heatmap("Blera fallax")
-
-

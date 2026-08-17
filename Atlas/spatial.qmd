@@ -14,9 +14,10 @@ source(here::here("Atlas", "code", "17_Effort.R"))
 ## Number of Field Surveys per Grid Cell
 
 ```{r}
-#| fig-width: 14
-#| fig-height: 14
-#| fig-align: center
+#| fig-width: 10.7
+#| fig-height: 14.5
+#| out-width: "80%"
+#| fig-align: "center"
 #| echo: false
 #| warning: false
 #| message: false
@@ -63,9 +64,10 @@ To account for differences in sampling effort, the two maps below show the avera
 ::: {.lightbox}
 
 ```{r}
-#| fig-width: 14
-#| fig-height: 14
-#| fig-align: center
+#| fig-width: 10.7
+#| fig-height: 14.5
+#| out-width: "80%"
+#| fig-align: "center"
 #| echo: false
 #| warning: false
 #| message: false
@@ -81,9 +83,10 @@ carte_ratio_cell(ratio_cell, rtp, lux_borders, GR2169_c)
 ::: {.lightbox}
 
 ```{r}
-#| fig-width: 14
-#| fig-height: 14
-#| fig-align: center
+#| fig-width: 10.7
+#| fig-height: 14.5
+#| out-width: "80%"
+#| fig-align: "center"
 #| echo: false
 #| warning: false
 #| message: false
@@ -98,9 +101,10 @@ carte_ratio_especes_cell(ratio_especes_cell, rtp, lux_borders, GR2169_c)
 ## Spatial Distribution of Observations
 ::: {.lightbox}
 ```{r}
-#| fig-width: 14
-#| fig-height: 14
-#| fig-align: center
+#| fig-width: 10.7
+#| fig-height: 14.5
+#| out-width: "80%"
+#| fig-align: "center"
 #| echo: false
 #| warning: false
 #| message: false
@@ -110,16 +114,13 @@ carte_obs_commune(DB)
 ## Spatial Distribution of Species
 ::: {.lightbox}
 ```{r}
-#| fig-width: 14
-#| fig-height: 14
-#| fig-align: center
+#| fig-width: 10.7
+#| fig-height: 14.5
+#| out-width: "80%"
+#| fig-align: "center"
 #| echo: false
 #| warning: false
 #| message: false
 carte_especes_commune(DB)
 ```
 :::
-
-
-### Author {.author}
- 

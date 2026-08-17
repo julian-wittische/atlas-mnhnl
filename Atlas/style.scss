@@ -63,6 +63,9 @@ h3 {
   font-size: .9rem;
 }
 
+.sidebar-item-container a[href*="species_account/"] {
+  font-style: italic;
+}
 
 .sidebar-item-container .active,
 .sidebar-item-container .sidebar-item-text.active,
@@ -95,6 +98,7 @@ h3.author{
 .columns.header-row {
   align-items: flex-start;
 }
+
 
 h3.author-species {
   margin-top: 3.5rem !important;

@@ -145,7 +145,7 @@ plot_habitat_espece <- function(espece, data = DB_habitat) {
       expand = c(0, 0)
     ) +
     scale_fill_manual(values = c(
-      "Grassland" = "yellow",  "Forest"   = "darkgreen", "Other" = "grey" )) +
+      "Grassland" = "yellow",  "Forest" = "#22B14C", "Other" = "grey" )) +
     labs(
       x = NULL, y = NULL, fill = "Habitat type" ) +
     theme_minimal(base_size = 13) +
@@ -214,7 +214,6 @@ plot_habitat_moyen <- function(data = DB_habitat) {
     )
 }
 
-plot_habitat_moyen()
 
 
 # ############ Bloc de test : visualisation de la forme de la fenêtre glissante ----
