@@ -11,10 +11,8 @@ atlas-mnhnl.Rproj
 *-Ex.R
 /*.tar.gz
 /*.Rcheck/
-
 # --- Auth / tokens ---
 .httr-oauth
-
 # --- Quarto / knitr / R Markdown ---
 *_cache/
 /cache/
@@ -30,12 +28,10 @@ Atlas/biophysical_files/figure-html/
 vignettes/*.html
 vignettes/*.pdf
 *.html
-
 # --- pkgdown / translation / rsconnect ---
 docs/
 po/*~
 rsconnect/
-
 # --- Data files (large / raw) ---
 Atlas/data/MNS_Lidar2024.tif
 Atlas/data/LandCover_Luxembourg_status_2024.tif
@@ -45,14 +41,24 @@ Atlas/data/landcover-vector-2018-2021-2024-gdb/
 *.ppkx
 *.gml
 *.gfs
-
 # --- Broken / temp qmd files ---
 Atlas/ErreurBC.qmd
 Atlas/ErreurHN.qmd
 Atlas/code/HNCell.qmd
 Atlas/code/BCCell.qmd
-
-# --- Images: ignore all PNGs except the atlas logos ---
+# --- Images: ignore all PNGs except the atlas status logos ---
 *.png
-!Atlas/images/*.png
-Atlas/images/cover.png
+!Atlas/images/CD.png
+!Atlas/images/CR.png
+!Atlas/images/DD.png
+!Atlas/images/EN.png
+!Atlas/images/EW.png
+!Atlas/images/EX.png
+!Atlas/images/LC.png
+!Atlas/images/LD.png
+!Atlas/images/LNT.png
+!Atlas/images/LPNT.png
+!Atlas/images/MD.png
+!Atlas/images/NE.png
+!Atlas/images/NT.png
+!Atlas/images/VU.png
