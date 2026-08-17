@@ -35,6 +35,13 @@ book:
 bibliography: references.bib
 
 format:
+  pdf:
+    documentclass: scrreprt
+    geometry:
+      - margin=2.5cm
+    toc: false 
+    number-sections: true
+
   html:
     number-sections: false
     toc: true
@@ -49,5 +56,5 @@ execute:
   echo: true
   warning: false
   message: false
-  freeze: auto
+  # freeze: auto
   prefer-html: true
