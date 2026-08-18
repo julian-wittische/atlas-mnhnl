@@ -120,30 +120,3 @@ MD_carte <- ggplot() +
 MD_carte 
 
 
-############ Carte statique MNHNL seule, avant le début du citizen science ----
-
-
-p <- ggplot() +
-  geom_sf(data = lux_borders_sf, fill = "white", color = "black", linewidth = 0.3) +
-  geom_sf(data = DB_pre_cs, aes(color = Source), size = 1, alpha = 0.7) +
-  ggtitle(paste("Avant", first_cs_year)) +
-  theme_void() +
-  annotation_scale(location = "bl", width_hint = 0.2,
-                   style = "ticks", text_cex = 0.6,
-                   line_width = 0.5, height = unit(0.2, "cm"),
-                   pad_x = unit(0.8, "cm"), pad_y = unit(1, "cm")) +
-  annotation_north_arrow(location = "tr", which_north = "true",
-                         style = north_arrow_fancy_orienteering(),
-                         height = unit(1, "cm"), width = unit(1, "cm"),
-                         pad_x = unit(1, "cm"), pad_y = unit(1, "cm")) +
-  geom_sf(data = GR2169_c, fill = NA, color = "grey", linewidth = 0.5) +
-  geom_text(data = country_labels, aes(x = x, y = y, label = name),
-            size = 3, color = "grey40", fontface = "italic") +
-  theme_void() +
-  theme(legend.position = c(0.7, 0.85),
-        legend.background = element_blank(),
-        legend.title = element_text(size = 7),
-        legend.text = element_text(size = 6),
-        legend.key.size = unit(0.35, "cm"),
-        legend.spacing.y = unit(0.05, "cm"))
-p
