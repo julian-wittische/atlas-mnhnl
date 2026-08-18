@@ -1,91 +1,64 @@
-/*-- scss:defaults --*/
-
-$primary: #5f7132 !default;
-$body-color: #263126 !default;
-$body-bg: #ffffff !default;
-$headings-color: #16200f !default;
-$link-color: #52662d !default;
-
-
 /*-- scss:rules --*/
 
-
-/* General */
+/* ==========================================================================
+   1. BASE GÉNÉRALE DU SITE
+   ========================================================================== */
 
 body {
-  color: $body-color;
+  color: #263126;
   line-height: 1.65;
 }
+
+
+/* ==========================================================================
+   2. BLOC DE TITRE (page d'accueil / entête de document)
+   ========================================================================== */
 
 #title-block-header .title {
   margin-bottom: 3rem !important;
 }
 
-#title-block-header .subtitle{
-    text-align:center;
-    font-size:1.3rem;
-    font-style:normal;
-    font-family:Georgia, "Times New Roman", serif;
-    color:#000;
-    margin-top: -9rem !important;
-    margin-bottom: 6rem !important;
+/* marge du haut négative = on remonte le sous-titre pour le coller sous le titre */
+#title-block-header .subtitle {
+  text-align: center;
+  font-size: 1.3rem;
+  font-style: normal;
+  font-family: Georgia, "Times New Roman", serif;
+  color: #000;
+  margin-top: -9rem !important;
+  margin-bottom: 6rem !important;
 }
+
+
+/* ==========================================================================
+   3. TITRES (h2, h3)
+   ========================================================================== */
 
 h2 {
   font-size: 1.4rem;
   margin-top: 2.5rem;
   margin-bottom: 2rem;
-  padding-bottom: .5rem;
-  border-bottom: 1.5px solid rgba($primary, 0.65);
-  color: $headings-color;
+  padding-bottom: 0.5rem;
+  border-bottom: 1.5px solid rgba(95, 113, 50, 0.65); /* vert primaire adouci */
+  color: #16200f;
   font-weight: 600;
+}
+
+/* variante utilisée quand le h2 est collé en haut d'un bloc (ex: fiche espèce) */
+h2.no-top-margin {
+  margin-top: 0 !important;
 }
 
 h3 {
   font-size: 1.15rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  color: $headings-color;
+  color: #16200f;
   font-weight: 500;
 }
 
-
-/* Sidebar / Table of contents */
-
-
-.sidebar-title {
-  color: $headings-color;
-  font-weight: 600;
-}
-
-
-.sidebar-item-container {
-  font-size: .9rem;
-}
-
-.sidebar-item-container a[href*="species_account/"] {
-  font-style: italic;
-}
-
-.sidebar-item-container .active,
-.sidebar-item-container .sidebar-item-text.active,
-.sidebar nav[role="doc-toc"] a.active,
-.sidebar-item-section .active {
-  color: $primary;
-  font-weight: 600;
-}
-
-
-.sidebar nav[role="doc-toc"] ul > li > ul li a,
-.sidebar-item-container .sidebar-item-toggle ~ ul .sidebar-item-text,
-ul.sidebar-section .sidebar-item-text {
-  color: $headings-color;
-  font-size: .85rem;
-  opacity: 0.65;
-  font-weight: 400;
-}
-
-h3.author{
+/* petit texte italique sous un titre, ex: nom d'auteur d'une page */
+h3.author {
   font-size: 1rem;
   font-weight: 400;
   font-style: italic;
@@ -93,13 +66,58 @@ h3.author{
 }
 
 
-/* Species */
+/* ==========================================================================
+   4. BARRE LATÉRALE / SOMMAIRE (sidebar & table des matières)
+   ========================================================================== */
+
+.sidebar-title {
+  color: #16200f;
+  font-weight: 600;
+}
+
+.sidebar-item-container {
+  font-size: 0.9rem;
+}
+
+/* les liens vers une fiche espèce sont écrits en italique (nom latin) */
+.sidebar-item-container a[href*="species_account/"] {
+  font-style: italic;
+}
+
+/* élément actif (page courante) dans la sidebar / TOC */
+.sidebar-item-container .active,
+.sidebar-item-container .sidebar-item-text.active,
+.sidebar nav[role="doc-toc"] a.active,
+.sidebar-item-section .active {
+  color: #52662d;
+  font-weight: 600;
+}
+
+/* sous-niveaux de la sidebar / TOC : plus discrets */
+.sidebar nav[role="doc-toc"] ul > li > ul li a,
+.sidebar-item-container .sidebar-item-toggle ~ ul .sidebar-item-text,
+ul.sidebar-section .sidebar-item-text {
+  color: #16200f;
+  font-size: 0.85rem;
+  opacity: 0.65;
+  font-weight: 400;
+}
+
+
+/* ==========================================================================
+   5. FICHES ESPÈCES
+   ========================================================================== */
+
+/* -- en-tête de la fiche (nom scientifique / colonnes) -- */
 
 .columns.header-row {
   align-items: flex-start;
 }
 
-
+/* nom de l'auteur de la fiche espèce, au-dessus du texte descriptif.
+   Le "& + p" à l'intérieur cible le paragraphe juste après ce titre,
+   pour qu'il garde le même style discret (petit texte gris) sans
+   avoir à créer une classe séparée dans le HTML. */
 h3.author-species {
   margin-top: 3.5rem !important;
   margin-bottom: 0.2rem !important;
@@ -116,55 +134,6 @@ h3.author-species {
   }
 }
 
-.dropdown {
-          position: relative;
-          display: inline-block;
-}
-
-.dropdown-btn {
-          padding: 10px 16px;
-          cursor: pointer;
-          background: #2c3e50;
-          color: white;
-          border: none;
-          border-radius: 4px;
-      }
-
-.dropdown-content span {
-          display: block;
-          padding: 6px 14px;
-          font: inherit;
-          color: #333;
-      }
-.dropdown.open .dropdown-content {
-          display: block;
-      }
-      
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  min-width: 250px;
-  padding: 10px 0;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  border-radius: 4px;
-  z-index: 1000;
-  max-height: 250px;
-  overflow-y: auto;
-}
-
-
-.scroller {
-  scrollbar-color: #D60000 #f0f0f0;
-}
-
-
-.dropdown-content span {
-  font-size: 0.90rem;
-}
-
 .species-common-names {
   color: #5c635c;
   font-size: 1rem;
@@ -172,11 +141,25 @@ h3.author-species {
   margin-bottom: 2.5rem;
 }
 
-.logo {
-  height: 45px;
-  margin-bottom: 0;
+/* -- taxonomie (classification scientifique) -- */
+
+.species-taxonomy {
+  color: #263126;
+  line-height: 1.65;
+  text-align: left;
 }
 
+.species-taxonomy em,
+.species-taxonomy i {
+  font-style: italic;
+}
+
+.species-taxonomy strong {
+  font-weight: 700;
+  color: #16200f;
+}
+
+/* -- photo de l'espèce + crédit photo -- */
 
 .species-photo {
   display: block;
@@ -190,6 +173,7 @@ h3.author-species {
   margin-left: auto;
   margin-right: auto;
 }
+
 .image-credit {
   display: block;
   max-width: 70%;
@@ -202,36 +186,50 @@ h3.author-species {
   margin-bottom: 5rem;
 }
 
-/* Columns */
+/* -- mise en colonnes générique (statut, infos en ligne, etc.) --
+   Ça sert à aligner plusieurs blocs côte à côte sur une même ligne
+   (ex: statut de conservation + icônes), avec le texte centré par
+   défaut sauf la première colonne, gardée à gauche (voir plus bas). */
+
 .columns {
   display: flex !important;
   align-items: center;
   margin: 0.1rem 0;
 }
+
 .column {
   text-align: center;
 }
+
+/* la première colonne d'une ligne reste alignée à gauche */
 .columns > .column:first-child {
   text-align: left;
 }
+
 .columns h3 {
   margin-top: 0;
   margin-bottom: 0;
   font-size: 1rem;
   font-weight: 400;
-  color: $body-color;
-}
-
-h2.no-top-margin {
-  margin-top: 0 !important;
+  color: #263126;
 }
 
 .columns.status-row {
   margin: 0;
 }
 
+
+/* ==========================================================================
+   6. MENU DÉROULANT (dropdown, ex: sélection de région/liste)
+   Le menu est fermé par défaut (.dropdown-content en display:none).
+   Un script JS ajoute la classe "open" sur .dropdown quand on clique
+   sur le bouton, ce qui affiche le contenu. Rien ici n'ouvre le menu
+   tout seul, c'est purement visuel.
+   ========================================================================== */
+
 .dropdown {
   display: block;
+  position: relative;
   width: fit-content;
   margin-top: 0;
   margin-right: auto;
@@ -239,61 +237,110 @@ h2.no-top-margin {
   margin-left: auto;
 }
 
-.species-taxonomy {
-  color: $body-color;
-  line-height: 1.65;
-  text-align :left;}
-
-.species-taxonomy em, .species-taxonomy i { font-style: italic; }
-.species-taxonomy strong { font-weight: 700; color: $headings-color; }
-
-.spacer {
-  height: 2rem;
+.dropdown-btn {
+  padding: 10px 16px;
+  cursor: pointer;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 4px;
 }
 
-.obs-count{
-    text-align:center;
-    margin-top:0.5rem;
-    margin-bottom:0.1rem; 
-    font-size:0.85rem;
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  min-width: 250px;
+  padding: 10px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 1000;
+  max-height: 250px;
+  overflow-y: auto;
 }
-.obs-warning{
-    color:#333;
-    border-radius:6px;
-    padding:0.6rem 1rem;
-    margin:0 auto 4rem auto; 
-    max-width:600px;
-    text-align:center;
-    font-size:0.85rem;
+
+.dropdown.open .dropdown-content {
+  display: block;
 }
+
+.dropdown-content span {
+  display: block;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* barre de défilement du menu déroulant (Firefox) */
+.scroller {
+  scrollbar-color: #d60000 #f0f0f0;
+}
+
+
+/* ==========================================================================
+   7. COMPTEUR ET MESSAGE D'AVERTISSEMENT (observations)
+   ========================================================================== */
+
+.obs-count {
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.1rem;
+  font-size: 0.85rem;
+}
+
+.obs-warning {
+  color: #333;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  margin: 0 auto 4rem auto;
+  max-width: 600px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+
+/* ==========================================================================
+   8. IMAGE EN GRAND FORMAT (lightbox / modale plein écran)
+   Principe : on clique sur une petite image (.lightbox img), un script
+   JS ajoute la classe "active" sur #img-modal, ce qui fait apparaître
+   l'image en grand sur un fond noir qui couvre tout l'écran.
+   ========================================================================== */
 
 .lightbox img {
   cursor: pointer;
   transition: opacity 0.2s;
 }
+
 .lightbox img:hover {
   opacity: 0.85;
 }
 
-
+/* la modale est masquée par défaut, cachée derrière tout le reste */
 #img-modal {
   display: none;
   position: fixed;
   z-index: 9999;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.85);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
   justify-content: center;
   align-items: center;
 }
+
 #img-modal.active {
   display: flex;
 }
+
 #img-modal img {
   max-width: 90%;
   max-height: 90%;
   cursor: default;
 }
+
 #img-modal .close-btn {
   position: absolute;
   top: 20px;
@@ -305,7 +352,10 @@ h2.no-top-margin {
   line-height: 1;
 }
 
-/* Map */
+
+/* ==========================================================================
+   9. CARTE DE RÉPARTITION
+   ========================================================================== */
 
 .map-distribution {
   max-width: 100%;
@@ -314,7 +364,12 @@ h2.no-top-margin {
   border-radius: 4px;
 }
 
+.bio-map {
+  margin: 1rem auto;
+  text-align: center;
+}
 
+/* liste déroulante utilisée au-dessus de la carte (choix de la variable) */
 .bio-select {
   display: block;
   width: 100%;
@@ -334,13 +389,27 @@ h2.no-top-margin {
   box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.2);
 }
 
-.bio-map {
-  margin: 1rem auto;
-  text-align: center;
-}
 
-/* Slider */
+/* ==========================================================================
+   10. CURSEUR / SLIDER (ex: filtre temporel)
+   ========================================================================== */
 
 .irs-grid-pol.small {
   display: none !important;
+}
+
+
+/* ==========================================================================
+   11. DIVERS
+   ========================================================================== */
+
+/* simple espaceur vertical réutilisable */
+.spacer {
+  height: 2rem;
+}
+
+/* petit logo dans l'entête */
+.logo {
+  height: 45px;
+  margin-bottom: 0;
 }
