@@ -12,6 +12,8 @@ source(here::here("Atlas", "code", "9_LastSpecies.R"), local=FALSE)
 
 ## Observer names
 
+The top 50 observers are shown in bold.
+
 ```{r}
 #| echo: false
 #| results: asis
