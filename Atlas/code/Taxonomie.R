@@ -38,8 +38,8 @@ if (file.exists(chemin_cache)) {
 species_list <- species_list[!is.na(species_list) & species_list != ""]
 species_manquantes <- setdiff(species_list, DB_taxo$verbatim_name)
 
-message(length(species_manquantes), " nouvelle(s) espèce(s) à interroger sur Catalogue of Life (",
-        length(species_list) - length(species_manquantes), " déjà en cache).")
+message(length(species_manquantes), " nouvelles espèces à interroger sur Catalogue of Life (",
+        length(species_list) - length(species_manquantes), " déjà chargées).")
 
 ############ Catalogue of Life : uniquement pour les nouvelles espèces ----
 if (length(species_manquantes) > 0) {
@@ -102,8 +102,8 @@ if (length(species_manquantes) > 0) {
     distinct(verbatim_name, .keep_all = TRUE)
   
   saveRDS(DB_taxo, chemin_cache)
-  message("Cache mis à jour avec succès.")
+  message("Mis à jour")
   
 } else {
-  message("Aucune nouvelle espèce.")
+  message("Aucune nouvelle espèce")
 }
