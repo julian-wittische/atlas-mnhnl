@@ -66,21 +66,22 @@ Le fichier `1_config.R` contient les paramètres propres au projet et au poste d
 
 ## 4.1 Créer `1_config.R`
 
-1. Ouvrir `Atlas/code/`.
-2. Ouvrir `ConfigTEMPLATE.txt`.
-3. Copier son contenu.
-4. Créer un fichier nommé exactement :
-```text
+1.  Ouvrir `Atlas/code/`.
+2.  Ouvrir `ConfigTEMPLATE.txt`.
+3.  Copier son contenu.
+4.  Créer un fichier nommé exactement :
+
+``` text
 1_config.R
 ```
-dans `Atlas/code/`.
-5. Coller le contenu de `ConfigTEMPLATE.txt` dans ce fichier.
+
+dans `Atlas/code/`. 5. Coller le contenu de `ConfigTEMPLATE.txt` dans ce fichier.
 
 ## 4.2 Adapter les paramètres à votre projet
 
 Le contenu collé se présente ainsi, avec les lignes de paramètres commentées :
 
-```r
+``` r
 ### Create a config.R file with paths locally and ignore it in git
 ## Taxon's name
 #taxon <- "Hoverfly"
@@ -91,18 +92,21 @@ Le contenu collé se présente ainsi, avec les lignes de paramètres commentées
 ### Le taxon étudié
 
 Remplacer `"Hoverfly"` par le nom de votre taxon, par exemple :
-```r
+
+``` r
 taxon <- "Hoverfly"
 ```
-Ce nom sera utilisé automatiquement dans les titres du book, des chapitres et des fiches espèces générés dynamiquement
 
+Ce nom sera utilisé automatiquement dans les titres du book, des chapitres et des fiches espèces générés dynamiquement
 
 ### Le chemin d'accès aux données (`DATAPATH`)
 
 Remplacer le chemin par celui de votre propre poste de travail, pointant vers votre dossier de données local, par exemple :
-```r
+
+``` r
 DATAPATH <- "C:/Users/VotreNom/Chemin/vers/VosDonnees/"
 ```
+
 ------------------------------------------------------------------------
 
 ## Étape 5 — Préparer les données d'observation
@@ -142,65 +146,36 @@ Atlas/code/3_LoadData.R
 
 Les données géographiques nécessaires au nouvel atlas doivent être placées dans `Atlas/data/`, à l'emplacement pointé par `DATAPATH` (voir Étape 4).
 
-
 | Source de données | Chemin attendu dans `DATAPATH` | Téléchargement | Lien |
-|---|---|---|---|
+|------------------|------------------|------------------|------------------|
 | Copernicus HRL VLCC — Grassland (2017–présent, 10 m) | `Grassland/20240101/CLMS_HRLVLCC_GRA_LU_0.tif` | Manuel | [land.copernicus.eu](https://land.copernicus.eu/en/products/high-resolution-layer-grasslands/grassland-2017-present-raster-10-m-europe-yearly) |
 | Copernicus HRL VLCC — Tree Cover Density (2018–présent, 10 m) | `TreeCover/20240101/CLMS_HRLVLCC_TCD_LU_0.tif` | Manuel | [land.copernicus.eu](https://land.copernicus.eu/en/products/high-resolution-layer-forests-and-tree-cover/tree-cover-density-2018-present-raster-10-m-europe-yearly) |
 | Climat WorldClim (BIO1/BIO12) | — | Automatique (package R `geodata`) | — |
-| Altitude (MNS Lidar 2024) | `MNS_Lidar2024.tif` | Manuel | [Téléchargement (39.9 GB)](https://download.data.public.lu/resources/bd-l-lidar2024-releve-3d-du-territoire-luxembourgeois/20241223-093912/MNS_Lidar2024.tif)  |
+| Altitude (MNS Lidar 2024) | `MNS_Lidar2024.tif` | Manuel | [Téléchargement (39.9 GB)](https://download.data.public.lu/resources/bd-l-lidar2024-releve-3d-du-territoire-luxembourgeois/20241223-093912/MNS_Lidar2024.tif) |
 | Géologie (géoportail.lu, flux OAPIF) | `GEO_stratunit.xlsx` (table couleurs uniquement) | Automatique (flux) + Manuel (xlsx) | [GEO25K50K.zip](https://geologie.lu/opendata/cartgeol/geo25k50k/GEO25K50K.zip) (`\GEO25K50K\DOC\GEO_stratunit.xlsx`) |
-https://data.public.lu/en/datasets/carte-des-associations-de-sols/ + 
-
+| Soils map | `Carte_associations_de_sols` | Automatique | <https://data.public.lu/en/datasets/carte-des-associations-de-sols/> |
 | Red List européenne | `EuropeanRedList.xlsx` | Manuel | à importer selon son jeu de données |
 
-
-------------------------------------------------------------------------
-## Étape 7 — Préparer les images
-
-Les images utilisées par le livre sont placées dans :
-
-``` text
-Atlas/images/
-```
-
-### Image de couverture
-
-L'image de couverture doit être nommée exactement :
-
-``` text
-cover.png
-```
-
-### Images des espèces
-
-Les images d'espèces doivent respecter la convention utilisée automatiquement par `7_GenerateSpeciesPages.R` :
-
-``` text
-<species_key>.<Photographe>.<Licence>.<extension>
-```
-
-Par exemple :
-
-``` text
-temnostoma_meridionale.Sam_Schaack.CC-BY-NC.png
-```
-
-Le `species_key` correspond au nom de l'espèce transformé en identifiant de fichier.
-
-Le nom du photographe et la licence sont utilisés pour générer automatiquement le crédit affiché sur la fiche.
-
-### Phylogenetic circle et phylogenetic graph
-
-2 images sont attendues pour le chapitre *Ecology* :
-
-`phylogenetic_circle.png` et `phylogenetic_graph.png`
-
-### Images déjà fournies avec le template
-
-Les pictogrammes de statut de conservation sont déjà fournies dans le projet.
-
-------------------------------------------------------------------------
+|  |
+|:-----------------------------------------------------------------------|
+| \## Étape 7 — Préparer les images |
+| Les images utilisées par le livre sont placées dans : |
+| `text Atlas/images/` |
+| \### Image de couverture |
+| L'image de couverture doit être nommée exactement : |
+| `text cover.png` |
+| \### Images des espèces |
+| Les images d'espèces doivent respecter la convention utilisée automatiquement par `7_GenerateSpeciesPages.R` : |
+| `text <species_key>.<Photographe>.<Licence>.<extension>` |
+| Par exemple : |
+| `text temnostoma_meridionale.Sam_Schaack.CC-BY-NC.png` |
+| Le `species_key` correspond au nom de l'espèce transformé en identifiant de fichier. |
+| Le nom du photographe et la licence sont utilisés pour générer automatiquement le crédit affiché sur la fiche. |
+| \### Phylogenetic circle et phylogenetic graph |
+| 2 images sont attendues pour le chapitre *Ecology* : |
+| `phylogenetic_circle.png` et `phylogenetic_graph.png` |
+| \### Images déjà fournies avec le template |
+| Les pictogrammes de statut de conservation sont déjà fournies dans le projet. |
 
 ## Étape 8 — Préparer les fiches espèces
 
@@ -298,8 +273,8 @@ Pour modifier la structure ou la présentation de **toutes les fiches espèces**
 ``` text
 Atlas/species_account/_template.qmd
 ```
-Il faut ensuite supprimer les qmd des espèces déjà générés et lancer le livre.
 
+Il faut ensuite supprimer les qmd des espèces déjà générés et lancer le livre.
 
 ------------------------------------------------------------------------
 
