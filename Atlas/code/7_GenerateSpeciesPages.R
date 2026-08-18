@@ -19,13 +19,13 @@ DB_taxo <- readRDS(taxo_path)
 
 ############ MODE TEST  ----
 ## Pour tester le script sur seulement quelques espèces / choix manuel des espèces ---
-species_test <- c(
-  "Temnostoma meridionale",
-  "Myathropa florea",
-  "Blera fallax",
-  "Callicera aurata"
-)
-DB_taxo <- DB_taxo %>% filter(verbatim_name %in% species_test)
+# species_test <- c(
+#   "Temnostoma meridionale",
+#   "Myathropa florea",
+#   "Blera fallax",
+#   "Callicera aurata"
+# )
+# DB_taxo <- DB_taxo %>% filter(verbatim_name %in% species_test)
 ############
 
 ############ Id de page  ----

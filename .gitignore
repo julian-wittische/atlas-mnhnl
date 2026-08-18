@@ -11,7 +11,6 @@ atlas-mnhnl.Rproj
 *-Ex.R
 /*.tar.gz
 /*.Rcheck/
-
 .httr-oauth
 # --- Quarto ---
 *_cache/
@@ -28,7 +27,6 @@ Atlas/biophysical_files/figure-html/
 vignettes/*.html
 vignettes/*.pdf
 *.html
-
 docs/
 po/*~
 rsconnect/
@@ -41,24 +39,8 @@ Atlas/data/landcover-vector-2018-2021-2024-gdb/
 *.ppkx
 *.gml
 *.gfs
-# --- Broken / temp qmd files ---
+# --- Test rapport auto ---
 Atlas/ErreurBC.qmd
 Atlas/ErreurHN.qmd
 Atlas/code/HNCell.qmd
 Atlas/code/BCCell.qmd
-# --- all PNG except  status logos ---
-*.png
-!Atlas/images/CD.png
-!Atlas/images/CR.png
-!Atlas/images/DD.png
-!Atlas/images/EN.png
-!Atlas/images/EW.png
-!Atlas/images/EX.png
-!Atlas/images/LC.png
-!Atlas/images/LD.png
-!Atlas/images/LNT.png
-!Atlas/images/LPNT.png
-!Atlas/images/MD.png
-!Atlas/images/NE.png
-!Atlas/images/NT.png
-!Atlas/images/VU.png

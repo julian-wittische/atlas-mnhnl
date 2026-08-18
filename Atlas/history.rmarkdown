@@ -1,0 +1,30 @@
+
+# History of Hoverfly recording in Luxembourg
+
+
+
+## Observation before 2012
+
+```{r setup}
+#| echo: false
+#| warning: false
+#| message: false
+#| results: hide
+here::i_am("atlas-mnhnl.Rproj")
+source(here::here("Atlas", "code", "0_Initialisation.R"))
+```
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-width: 10.7
+#| fig-height: 14
+#| out-width: "80%"
+#| fig-align: "center"
+
+MD_carte
+```
+
+
