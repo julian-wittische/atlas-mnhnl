@@ -5,7 +5,6 @@
 # Script objective : Load libraries
 
 
-
 ############ Lecture / écriture de fichiers ----
 library(readxl)
 library(openxlsx)
@@ -54,6 +53,8 @@ library(scales)
 library(tidyterra)
 
 ############ Taxonomie / bibliographie ----
+#install.packages("pak")
+#pak::pak("CatalogueOfLife/rcol")
 library(rcol)           # Catalogue of Life
 library(taxize)
 library(bib2df)
@@ -63,8 +64,6 @@ library(collapsibleTree)
 library(ggtern)
 library(viridis)
 library(vegan)
-      
-
 
 
 source(here::here("Atlas", "code", "1_config.R"))
