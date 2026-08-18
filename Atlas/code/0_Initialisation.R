@@ -53,9 +53,9 @@ library(scales)
 library(tidyterra)
 
 ############ Taxonomie / bibliographie ----
-#install.packages("pak")
-#pak::pak("CatalogueOfLife/rcol")
-library(rcol)           # Catalogue of Life
+# install.packages("pak")
+# pak::pak("CatalogueOfLife/rcol")
+library(rcol)           # Catalogue of Life/ rtools needed
 library(taxize)
 library(bib2df)
 
