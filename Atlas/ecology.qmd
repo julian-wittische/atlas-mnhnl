@@ -1,6 +1,6 @@
-
-# Ecology of Luxembourg Hoverfly
-
+---
+title: Ecology of Luxembourg Hoverfly
+---
 
 ```{r setup}
 #| echo: false

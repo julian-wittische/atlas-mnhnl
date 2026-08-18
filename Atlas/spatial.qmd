@@ -1,4 +1,6 @@
-# Spatial analysis of Hoverfly diversity
+---
+title: Spatial analysis of Hoverfly diversity
+---
 
 ```{r setup}
 #| echo: false
