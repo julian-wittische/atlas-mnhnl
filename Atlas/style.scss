@@ -11,7 +11,7 @@ body {
 
 
 /* ==========================================================================
-   2. BLOC DE TITRE (page d'accueil / entête de document)
+   2. BLOC DE TITRE 
    ========================================================================== */
 
 #title-block-header .title {
@@ -67,7 +67,7 @@ h3.author {
 
 
 /* ==========================================================================
-   4. BARRE LATÉRALE / SOMMAIRE (sidebar & table des matières)
+   4. SOMMAIRE (sidebar et table des matières)
    ========================================================================== */
 
 .sidebar-title {
@@ -79,7 +79,7 @@ h3.author {
   font-size: 0.9rem;
 }
 
-/* les liens vers une fiche espèce sont écrits en italique (nom latin) */
+/* les liens vers une fiche espèce sont écrits en italique */
 .sidebar-item-container a[href*="species_account/"] {
   font-style: italic;
 }
@@ -93,7 +93,7 @@ h3.author {
   font-weight: 600;
 }
 
-/* sous-niveaux de la sidebar / TOC : plus discrets */
+/* sous-niveaux de la sidebar */
 .sidebar nav[role="doc-toc"] ul > li > ul li a,
 .sidebar-item-container .sidebar-item-toggle ~ ul .sidebar-item-text,
 ul.sidebar-section .sidebar-item-text {
@@ -108,16 +108,14 @@ ul.sidebar-section .sidebar-item-text {
    5. FICHES ESPÈCES
    ========================================================================== */
 
-/* -- en-tête de la fiche (nom scientifique / colonnes) -- */
+/* -- en-tête de la fiche (nom scientifique ) -- */
 
 .columns.header-row {
   align-items: flex-start;
 }
 
 /* nom de l'auteur de la fiche espèce, au-dessus du texte descriptif.
-   Le "& + p" à l'intérieur cible le paragraphe juste après ce titre,
-   pour qu'il garde le même style discret (petit texte gris) sans
-   avoir à créer une classe séparée dans le HTML. */
+   Le "& + p" à  intérieur cible le paragraphe juste après ce titre */
 h3.author-species {
   margin-top: 3.5rem !important;
   margin-bottom: 0.2rem !important;
@@ -141,7 +139,7 @@ h3.author-species {
   margin-bottom: 2.5rem;
 }
 
-/* -- taxonomie (classification scientifique) -- */
+/* -- taxonomie -- */
 
 .species-taxonomy {
   color: #263126;
@@ -186,10 +184,7 @@ h3.author-species {
   margin-bottom: 5rem;
 }
 
-/* -- mise en colonnes générique (statut, infos en ligne, etc.) --
-   Ça sert à aligner plusieurs blocs côte à côte sur une même ligne
-   (ex: statut de conservation + icônes), avec le texte centré par
-   défaut sauf la première colonne, gardée à gauche (voir plus bas). */
+/* -- mise en colonnes générique (statut, infos en ligne ...) --*/
 
 .columns {
   display: flex !important;
@@ -220,11 +215,7 @@ h3.author-species {
 
 
 /* ==========================================================================
-   6. MENU DÉROULANT (dropdown, ex: sélection de région/liste)
-   Le menu est fermé par défaut (.dropdown-content en display:none).
-   Un script JS ajoute la classe "open" sur .dropdown quand on clique
-   sur le bouton, ce qui affiche le contenu. Rien ici n'ouvre le menu
-   tout seul, c'est purement visuel.
+   6. MENU DÉROULANT 
    ========================================================================== */
 
 .dropdown {
@@ -280,7 +271,7 @@ h3.author-species {
 
 
 /* ==========================================================================
-   7. COMPTEUR ET MESSAGE D'AVERTISSEMENT (observations)
+   7. COMPTEUR ET MESSAGE D'AVERTISSEMENT 
    ========================================================================== */
 
 .obs-count {
@@ -302,10 +293,7 @@ h3.author-species {
 
 
 /* ==========================================================================
-   8. IMAGE EN GRAND FORMAT (lightbox / modale plein écran)
-   Principe : on clique sur une petite image (.lightbox img), un script
-   JS ajoute la classe "active" sur #img-modal, ce qui fait apparaître
-   l'image en grand sur un fond noir qui couvre tout l'écran.
+   8. IMAGE  FORMAT 
    ========================================================================== */
 
 .lightbox img {
@@ -317,7 +305,6 @@ h3.author-species {
   opacity: 0.85;
 }
 
-/* la modale est masquée par défaut, cachée derrière tout le reste */
 #img-modal {
   display: none;
   position: fixed;
@@ -369,7 +356,7 @@ h3.author-species {
   text-align: center;
 }
 
-/* liste déroulante utilisée au-dessus de la carte (choix de la variable) */
+/* liste déroulante  */
 .bio-select {
   display: block;
   width: 100%;
@@ -391,7 +378,7 @@ h3.author-species {
 
 
 /* ==========================================================================
-   10. CURSEUR / SLIDER (ex: filtre temporel)
+   10. CURSEUR
    ========================================================================== */
 
 .irs-grid-pol.small {
@@ -403,12 +390,11 @@ h3.author-species {
    11. DIVERS
    ========================================================================== */
 
-/* simple espaceur vertical réutilisable */
+/*  espaceur vertical réutilisable */
 .spacer {
   height: 2rem;
 }
 
-/* petit logo dans l'entête */
 .logo {
   height: 45px;
   margin-bottom: 0;

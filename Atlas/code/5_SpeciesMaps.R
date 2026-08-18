@@ -248,7 +248,13 @@ get_species_map_static <- function(species_name, data, rtp, lux_borders, GR2169_
   species_map_static
 }
 
-
+get_species_map_static(
+  species_name = "Blera fallax",
+  data         = DB,
+  rtp          = rtp,
+  lux_borders  = lux_borders,
+  GR2169_c     = GR2169_c
+)
 
 
 
