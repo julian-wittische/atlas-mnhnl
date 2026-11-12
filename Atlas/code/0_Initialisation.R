@@ -4,6 +4,7 @@
 # Start: Summer 2026
 # Script objective : Load libraries
 
+library(beepr)
 
 ############ Lecture / écriture de fichiers ----
 library(readxl)
