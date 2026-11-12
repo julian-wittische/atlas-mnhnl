@@ -4,6 +4,8 @@
 # Start: Summer 2026
 # Script objective : Load libraries
 
+
+############ Developpement ----
 library(beepr)
 
 ############ Lecture / écriture de fichiers ----
